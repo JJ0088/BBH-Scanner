@@ -1,4 +1,0 @@
-https://api-stage.fidelity.com/brokerage-debit-card-order/v1
-https://api-test.fidelity.com/brokerage-account-checking-stop-payment/v1
-https://api.fidelity.com/brokerage-account-checking-stop-payment/v1
-https://api.fidelity.com/brokerage-debit-card-order/v1

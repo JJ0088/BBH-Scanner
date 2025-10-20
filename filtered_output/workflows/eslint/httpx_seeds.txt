@@ -1,3 +1,0 @@
-https://github.com/eslint/eslint
-https://github.com/eslint/eslint-github-bot
-https://jenkins.eslint.org/

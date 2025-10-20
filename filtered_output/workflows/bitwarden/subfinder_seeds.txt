@@ -1,9 +1,0 @@
-https://bitwarden.com/
-https://com.8bit.bitwarden/
-https://com.bitwarden.authenticator/
-https://com.x8bit.bitwarden/
-https://docs.passwordless.dev/
-https://help.bitwarden.com/
-https://identity.bitwarden.com/
-https://v4.passwordless.dev/
-https://vault.bitwarden.com/

@@ -1,5 +1,0 @@
-Azure AD, Google Drive, Link Sharing Websites
-Credit/Debit Card Testing
-https://api.prod.whoop.com/
-Support System
-WHOOP 5.0/MG STRAP

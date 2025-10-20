@@ -1,9 +1,0 @@
-https://app.strongdm.com/
-https://help.strongdm.com/
-https://sdm client - macos (sdm.app)/
-https://sdm client - windows (sdm.exe)/
-https://SDM Gateway - *nix/
-https://sdm.network/
-https://security.strongdm.com/
-https://status.strongdm.com/
-https://www.strongdm.com/

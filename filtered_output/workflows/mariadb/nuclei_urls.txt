@@ -1,4 +1,0 @@
-MariaDB Server & Connectors  - Denial of Service
-MariaDB Server & Connectors - Access control bypass
-MariaDB Server & Connectors - Data corruption, exfiltration, disclosure
-MariaDB Server & Connectors - Remote Code Execution

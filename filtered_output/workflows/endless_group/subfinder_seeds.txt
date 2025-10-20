@@ -1,6 +1,0 @@
-(*).endl.site
-(*).endlessgroup.org
-(*).itsendless.org
-(*).theendlessweb.com
-https://app.raisable.org/
-https://no-mans-land.theendlessweb.com/

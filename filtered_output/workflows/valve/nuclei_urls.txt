@@ -1,4 +1,0 @@
-https://api.steampowered.com/
-https://github.com/valvesoftware
-Steam Client
-Steam Servers

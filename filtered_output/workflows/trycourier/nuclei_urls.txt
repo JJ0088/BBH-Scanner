@@ -1,2 +1,0 @@
-https://api.courier.com/
-https://api.trycourier.app/

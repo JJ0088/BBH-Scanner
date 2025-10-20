@@ -1,5 +1,0 @@
-API & SDKs
-Claude Code
-https://github.com/modelcontextprotocol
-Infrastructure & Internal Apps/Services
-Official Clients

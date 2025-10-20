@@ -1,3 +1,0 @@
-Any IP belonging to Liberapay
-https://github.com/liberapay/liberapay.com
-https://github.com/liberapay/liberapay.com/blob/master/sql/app-conf-defaults.sql

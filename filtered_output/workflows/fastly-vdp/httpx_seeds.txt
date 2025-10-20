@@ -1,5 +1,0 @@
-https://api.fastly.com/
-https://community.fastly.com/
-https://connect.fastly.com/
-https://docs.fastly.com/
-https://manage.fastly.com/

@@ -1,9 +1,0 @@
-https://api.outpost.co/
-https://app.liveplan.com/
-https://app.outpost.co/
-https://www.bplans.com/
-https://www.liveplan.com/
-https://www.mplans.com/
-https://www.outpost.co/
-https://www.paloalto.com/
-https://www.teamoutpost.com/

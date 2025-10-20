@@ -1,2 +1,0 @@
-https://api.gocardless.com/
-https://ob-sandbox.gocardless.io

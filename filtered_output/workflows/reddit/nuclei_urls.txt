@@ -1,5 +1,0 @@
-Android App
-Core Assets
-https://api.reddit.com/
-iOS App
-Non-Core Assets

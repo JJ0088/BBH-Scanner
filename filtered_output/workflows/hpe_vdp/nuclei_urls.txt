@@ -1,4 +1,0 @@
-Additional HPE Asset
-Aruba
-https://api.support.hpe.com/
-Vulnerabilities in any HPE products

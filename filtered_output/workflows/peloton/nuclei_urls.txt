@@ -1,1 +1,0 @@
-Security vulnerabilities that are identified in Peloton products or in website domains owned, operated, or controlled by Peloton that are not listed above are OOS

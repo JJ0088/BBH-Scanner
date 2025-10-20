@@ -1,3 +1,0 @@
-3rd party hosted assets
-GS Select iOS app
-https://api.foliofn.com/

@@ -1,5 +1,0 @@
-https://help.usertesting.com/
-https://qa.usertesting.com/
-teston.io
-usertesting.com
-www.usertesting.com/*

@@ -1,3 +1,0 @@
-https://forum.codeigniter.com/
-https://github.com/bcit-ci/CodeIgniter
-https://www.codeigniter.com/

@@ -1,6 +1,0 @@
-https://alfred.syfe.com/
-https://api-uat-bugbounty.nonprod.syfe.com/
-https://com.syfe/
-https://mark8.syfe.com/
-https://uat-bugbounty.nonprod.syfe.com/
-https://www.syfe.com/

@@ -1,5 +1,0 @@
-https://com.urbanclap.provider/
-https://com.urbanclap.urbanclap/
-https://other urbancompany.com subdomains except for the ones in-scope/
-https://www.urbanclap.com/
-https://www.urbancompany.com/

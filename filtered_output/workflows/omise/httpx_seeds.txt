@@ -1,7 +1,0 @@
-https://api.omise.co/
-https://dashboard.omise.co/
-https://github.com/
-https://offsite.omise.co/
-https://vault.omise.co/
-https://www.omise.co/
-https://www.opn.ooo/

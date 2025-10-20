@@ -1,9 +1,0 @@
-fax.plus
-https://plus.fax.android/
-https://plus.fax.FaxPlus/
-https://plus.scan.android/
-https://plus.scan.ScanPlus/
-https://plus.sign.android/
-https://plus.sign.SignPlus/
-https://www.alohi.com/
-sign.plus

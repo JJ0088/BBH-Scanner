@@ -1,8 +1,0 @@
-https://app.grammarly.com/
-https://capi.grammarly.com/
-https://com.grammarly.android.keyboard/
-https://com.grammarly.keyboard/
-https://grammarly.ai/
-https://grammarly.com/
-https://grammarly.io/
-https://grammarlyaws.com/

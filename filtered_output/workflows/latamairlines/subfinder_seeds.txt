@@ -1,8 +1,0 @@
-http://*.appslatam.com
-http://*.lan.com
-http://*.lanchile.cl
-http://*.lanchile.com
-http://*.latam.com
-http://*.latamairlines.com
-http://*.latampass.cl
-http://*.latampass.com

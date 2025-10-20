@@ -1,7 +1,0 @@
-github.com/urbandictionary
-https://av.urbandictionary.biz/
-https://com.urbandictionary.android/
-https://com.urbandictionary.iphone/
-https://help.urbandictionary.com/
-https://urbandictionary.github.io/
-twitter.com/urbandictionary

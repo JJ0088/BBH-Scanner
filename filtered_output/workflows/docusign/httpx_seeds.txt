@@ -1,4 +1,0 @@
-All Docusign apps and assets not listed below as Out of Scope
-https://admin.docusign.com
-https://app.docusign.com/
-https://www.docusign.net/signing/

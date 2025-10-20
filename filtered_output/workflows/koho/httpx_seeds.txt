@@ -1,9 +1,0 @@
-1091010942
-http://api.koho.ca/1.0
-http://api.koho.ca/partner
-https://app.koho.ca/
-https://ca.koho/
-https://usercontent.koho.ca/
-https://web.koho.ca/
-https://webgateway.koho.ca/
-https://www.koho.ca/

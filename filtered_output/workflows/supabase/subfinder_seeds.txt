@@ -1,4 +1,0 @@
-db.*.supabase.co
-https://*.database.dev/
-https://*.supabase.co
-https://supabase.com/

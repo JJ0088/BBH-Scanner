@@ -1,5 +1,0 @@
-1174276185
-549057844
-http://h1-your-domain.zendesk.com/qa/
-http://h1-your-domain.zendesk.com/wfm/
-https://developer.zendesk.com/documentation/zendesk-sdks/

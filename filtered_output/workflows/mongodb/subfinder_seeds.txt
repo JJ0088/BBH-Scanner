@@ -1,8 +1,0 @@
-account.mongodb.com/*
-cloud.mongodb.com/*
-https://*.corp.mongodb.com*
-https://.NET Driver/
-https://Node.js Driver/
-https://www.mongodb.com/community/forums/*
-mongodb.com/*
-mongodb.live/*

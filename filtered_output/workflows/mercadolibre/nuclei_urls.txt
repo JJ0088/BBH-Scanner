@@ -1,7 +1,0 @@
-Crypto
-developersforum
-https://api.mercadolibre.com/
-https://api.mercadopago.com/
-Leaked Credentials
-Point Smart
-Redelcom

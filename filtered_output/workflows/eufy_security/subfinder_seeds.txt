@@ -1,8 +1,0 @@
-https://com.anker.AnkerMake/
-https://com.anker.charging/
-https://com.eufylife.EufyHome/
-https://com.oceanwing.battery.cam/
-https://com.oceanwing.care.cam/
-https://com.oceanwing.FDMPrint/
-https://com.security.BatteryCam/
-https://com.security.care/

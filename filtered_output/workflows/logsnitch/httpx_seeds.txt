@@ -1,8 +1,0 @@
-https://api.logsnitch.com/
-https://console.logsnitch.com/
-https://flashpaper.logsnitch.com/
-https://logsnitch.com/
-https://mta-sts.logsnitch.com/
-https://mta-sts.mail.logsnitch.com/
-https://support.logsnitch.com/
-https://www.logsnitch.com/

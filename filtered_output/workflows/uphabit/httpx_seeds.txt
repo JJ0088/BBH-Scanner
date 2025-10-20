@@ -1,5 +1,0 @@
-1335632832
-https://api.uphabit.com/
-https://com.uphabit.android/
-https://uphabit.com/
-https://web.uphabit.com/

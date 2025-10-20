@@ -1,6 +1,0 @@
-gehmmocbbkpblljhkekmfhjpfbkclbph
-https://api.dashlane.com/
-https://www.dashlane.com/fr/directdownload-v2?os=none&platform=website&target=archive_win
-https://www.dashlane.com/fr/directdownload-v2?os=OS_X_10_12_6&platform=website&target=launcher_macosx
-SSO_Saml_connector
-Standalone Chrome extension

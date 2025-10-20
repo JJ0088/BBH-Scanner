@@ -1,7 +1,0 @@
-https://app.dashlane.com/
-https://com.dashlane.dashlanephonefinal/
-https://com.dashlane/
-https://console.dashlane.com/
-https://logs.dashlane.com/
-https://ws1.dashlane.com/
-https://www.dashlane.com/

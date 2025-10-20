@@ -1,9 +1,0 @@
-https://blog.rubygems.org/
-https://guide.rubygems.org/
-https://help.rubygems.org/
-https://rubygems.org/
-https://shipit.rubygems.org/
-https://stats.rubygems.org/
-https://status.rubygems.org/
-https://support.rubygems.org/
-https://uptime.rubygems.org/

@@ -1,2 +1,0 @@
-https://github.com/solidusio/solidus
-https://github.com/solidusio/solidus_auth_devise

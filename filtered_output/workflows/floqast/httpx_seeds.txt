@@ -1,3 +1,0 @@
-Any Asset Not Specifically Listed as In-Scope
-https://api-eu.floqast.app/
-s3://floqast

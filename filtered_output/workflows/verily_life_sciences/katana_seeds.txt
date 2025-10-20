@@ -1,4 +1,0 @@
-https://*.onduo.com/
-https://*.projectbaseline.com/
-https://*.signalpath.com/
-https://*.verily.com/

@@ -1,6 +1,0 @@
-https://api.account.clario.co/
-https://api.account.opendoor.ltd/
-Mackeeper app
-Tier 1
-Tier 2
-Tier 3

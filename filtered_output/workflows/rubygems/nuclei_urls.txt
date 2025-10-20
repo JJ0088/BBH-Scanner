@@ -1,5 +1,0 @@
-gem server command
-http://rubygems.org/names
-https://github.com/rubygems/rubygems
-https://s3-us-west-2.amazonaws.com/rubygems-dumps
-Malicious or compromised gem

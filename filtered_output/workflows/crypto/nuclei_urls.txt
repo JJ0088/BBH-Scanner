@@ -1,8 +1,0 @@
-https://crypto.com/exchange
-https://crypto.com/nft
-https://crypto.com/price
-https://etherscan.io/token/0xfe18ae03741a5b84e39c295ac9c856ed7991c38e
-https://github.com/crypto-com/chain-desktop-wallet
-https://github.com/crypto-com/cro-staking
-https://github.com/crypto-com/swap-contracts-core
-https://github.com/crypto-com/swap-contracts-periphery

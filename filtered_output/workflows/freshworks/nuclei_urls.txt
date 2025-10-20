@@ -1,9 +1,0 @@
-Freshcaller-iOS-App
-Freshchat-iOS-App
-Freshdesk-iOS-App
-Freshsales-iOS-App
-Freshservice Discovery Agent and Probe
-Freshservice-Intune-iOS-App
-Freshservice-iOS-App
-http://yourdomain.myfreshworks.com/crm/marketer
-http://yourdomain.myfreshworks.com/crm/sales

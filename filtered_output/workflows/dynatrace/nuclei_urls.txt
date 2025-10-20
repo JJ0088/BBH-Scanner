@@ -1,8 +1,0 @@
-All other Assets
-Core Assets
-Dynatrace ActiveGate
-Dynatrace MobileAgent
-Dynatrace OneAgent
-EasyTrade demo application
-easyTravel demo application
-https://github.com/Dynatrace

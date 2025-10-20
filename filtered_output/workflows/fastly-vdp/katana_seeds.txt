@@ -1,8 +1,0 @@
-https://*.fastly.com/
-https://community.fastly.com/
-https://connect.fastly.com/
-https://docs.fastly.com/
-https://fanout.io/
-https://fastly.net/
-https://manage.fastly.com/
-https://signalsciences.com/

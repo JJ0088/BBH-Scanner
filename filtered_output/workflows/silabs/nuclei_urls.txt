@@ -1,9 +1,0 @@
-Any other domain reasonably attributable to Silicon Labs
-Arduino Nano
-Gecko SDK
-https://github.com/SiliconLabsSoftware/matter_extension
-https://github.com/SiliconLabsSoftware/matter_sdk
-https://github.com/SiliconLabsSoftware/z-wave-protocol-controller
-Simplicity Studio Development Platform
-SiW917
-Wireless Microcontrollers (MCUs)

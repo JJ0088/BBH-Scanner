@@ -1,5 +1,0 @@
-cyral.com
-varonis-preprod.com
-varonis.com
-varonis.io
-varonis.net

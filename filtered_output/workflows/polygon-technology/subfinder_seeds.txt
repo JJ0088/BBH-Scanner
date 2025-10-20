@@ -1,6 +1,0 @@
-https://api-gateway.polygon.technology/
-https://faucet.polygon.technology/
-https://portal.polygon.technology/
-https://staking-api.polygon.technology/
-https://staking.polygon.technology/
-matic.network

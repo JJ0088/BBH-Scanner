@@ -1,4 +1,0 @@
-https://com.mobisystems.fileman/
-https://com.mobisystems.msdict.embedded.wireless.oxford.dictionaryofenglish/
-https://com.mobisystems.office/
-https://mobioffice_setup.exe/

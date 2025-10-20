@@ -1,6 +1,0 @@
-https://auth.privy.io/
-https://blog.privy.io/
-https://dashboard.privy.io/
-https://demo.privy.io/
-https://docs.privy.io/
-https://privy.io/

@@ -1,5 +1,0 @@
-Any 3rd party services linked to or used by Upserve
-Any Upserve hardware
-https://645892349820.vulnerbug.com
-https://api.breadcrumb.com/
-https://hq.upserve.com

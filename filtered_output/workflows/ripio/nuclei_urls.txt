@@ -1,2 +1,0 @@
-http://auth.ripio.com
-https://kyc.ripio.com/

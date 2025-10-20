@@ -1,5 +1,0 @@
-https://community.silabs.com/
-https://cpms.silabs.com/
-https://docs.silabs.com/
-https://ops.silabs.com/
-silabs.com

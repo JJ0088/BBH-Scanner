@@ -1,5 +1,0 @@
-https://covid19app.who.int/
-https://github.com/WorldHealthOrganization/app
-https://hack.whocoronavirus.org/
-https://int.who.whomyhealth/
-https://org.who.whomyhealth/

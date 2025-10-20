@@ -1,4 +1,0 @@
-https://api.singlestore.com/
-https://portal-staging.dev.helios.singlestore.com/
-https://portal.singlestore.com/
-https://portal.singlestore.com/admin

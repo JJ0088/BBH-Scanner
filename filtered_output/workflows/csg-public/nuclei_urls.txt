@@ -1,8 +1,0 @@
-Citrix End Point Analysis (EPA) client for Linux
-Citrix End Point Analysis (EPA) client for Windows
-Citrix Secure Access client for Android
-Citrix Secure Access client for iOS
-Citrix Secure Access client for Linux
-Citrix Secure Access client for macOS
-Citrix Secure Access client for Windows
-https://api.adm.cloud.com/

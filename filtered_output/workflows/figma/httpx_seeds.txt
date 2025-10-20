@@ -1,8 +1,0 @@
-Figma Atlassian App
-Figma Desktop App
-Figma for Microsoft Teams
-Figma iOS and Android apps
-Figma Slack App
-https://api.figma.com/
-https://www.designsystems.com/
-https://www.figma.com/

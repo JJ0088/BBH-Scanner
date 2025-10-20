@@ -1,5 +1,0 @@
-https://api.moonpay.com/
-https://apps.apple.com/app/id1635031432
-https://github.com/moonpay
-https://github.com/moonpay/moonpay-sign
-https://play.google.com/store/apps/details?id=com.moonpay

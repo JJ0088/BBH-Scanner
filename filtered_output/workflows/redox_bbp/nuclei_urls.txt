@@ -1,2 +1,0 @@
-https://api.redoxengine.com/
-https://redoxengine.atlassian.net

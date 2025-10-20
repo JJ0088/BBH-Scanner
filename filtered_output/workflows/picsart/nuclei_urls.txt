@@ -1,4 +1,0 @@
-587366035
-9WZDNCRFJ10M
-https://api.picsart.com/
-https://api.picsart.io/

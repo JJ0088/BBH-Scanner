@@ -1,7 +1,0 @@
-https://blog.chain.link/
-https://chain.link/
-https://chainlinklabs.com/
-https://create.smartcontract.com/
-https://docs.chain.link/
-https://github.com/smartcontractkit/chainlink/contracts/src/*/dev/
-https://smartcontract.com/

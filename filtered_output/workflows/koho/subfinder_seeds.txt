@@ -1,7 +1,0 @@
-https://app.koho.ca/
-https://ca.koho/
-https://usercontent.koho.ca/
-https://web.koho.ca/
-https://webgateway.koho.ca/
-https://www.koho.ca/
-koho.ca/cdn-cgi

@@ -1,6 +1,0 @@
-3rd Party Quip Apps
-https://api.slack.com/
-https://apps.apple.com/us/app/quip-docs-chat-sheets/id647922896
-https://github.com/slackhq/nebula
-https://salesforce.quip.com/blog/desktop
-Slack Desktop Application

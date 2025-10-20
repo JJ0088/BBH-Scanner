@@ -1,3 +1,0 @@
-545599256
-Android & iOS App for Instacart Shoppers
-https://api.instacart.com/

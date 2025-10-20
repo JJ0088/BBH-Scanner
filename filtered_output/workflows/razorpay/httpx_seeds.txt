@@ -1,6 +1,0 @@
-https://api.razorpay.com/
-https://checkout.razorpay.com/
-https://dashboard.razorpay.com/
-https://invoices.razorpay.com/
-https://payroll.razorpay.com/
-https://x.razorpay.com/

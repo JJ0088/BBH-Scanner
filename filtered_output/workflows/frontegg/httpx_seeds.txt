@@ -1,4 +1,0 @@
-https://api.au.frontegg.com/
-https://api.frontegg.com/
-https://portal.au.frontegg.com/
-https://portal.frontegg.com/

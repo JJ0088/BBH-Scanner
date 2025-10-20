@@ -1,3 +1,0 @@
-https://api.irccloud.com/
-https://github.com/irccloud/android
-https://github.com/irccloud/ios

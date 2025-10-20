@@ -1,1 +1,0 @@
-https://jenkins.eslint.org/

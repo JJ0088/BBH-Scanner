@@ -1,4 +1,0 @@
-https://api.krisp.ai/
-https://download.krisp.ai/mac
-https://download.krisp.ai/win
-Other

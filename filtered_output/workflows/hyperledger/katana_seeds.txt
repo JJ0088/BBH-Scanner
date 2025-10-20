@@ -1,6 +1,0 @@
-https://chat.hyperledger.org/
-https://identity.linuxfoundation.org/
-https://jira.hyperledger.org/
-https://lists.hyperledger.org/
-https://www.hyperledger.org/
-https://www.linuxfoundation.org/

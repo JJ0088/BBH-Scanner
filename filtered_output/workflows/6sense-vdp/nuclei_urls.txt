@@ -1,4 +1,0 @@
-https://6sense.com/platform/sales/signup
-https://api.6sense.com/docs/
-https://chromewebstore.google.com/detail/6sense-si-extension-for-c/mkpoonlmiaknmcdcmdhbnehhglndcolf?hl=en
-Security vulnerabilities that are identified in 6sense products or in website domains owned, operated, or controlled by 6sense are in scope
