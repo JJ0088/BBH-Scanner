@@ -1,0 +1,14 @@
+http://api.zellepay.com
+http://api.zmsp.earlywarning.com
+http://earlywarningapi.force.com
+https://ccpa.zellepay.com/
+https://demo.earlywarning.com/
+https://docs.earlywarning.com/
+https://ews-fusion.my.site.com/
+https://flip0717.earlywarning.com/
+https://platform.cat.earlywarning.io/
+https://platformtest.cat.earlywarning.io/
+https://toolkit.zellepay.com/
+https://zellepay.earlywarning.com/
+https://zellepay.force.com/
+https://zelleservice.my.site.com/

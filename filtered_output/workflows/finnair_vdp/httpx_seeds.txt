@@ -1,0 +1,2 @@
+Finnair Assets
+https://auth.finnair.com/

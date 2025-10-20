@@ -1,0 +1,8 @@
+API
+Blockchain
+Helium Hotspot
+https://github.com/helium/helium-console-cli
+https://heliumdashboard.grafana.net
+https://www.helium.com/store
+id1640323514
+Telegram, Discord, Slack, Helium Forums

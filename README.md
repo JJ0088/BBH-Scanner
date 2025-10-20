@@ -149,4 +149,3 @@ grep '^\*\.' results/filtered/<handle>/subfinder_seeds.txt && echo "ATT: wildcar
 ## Roadmap immediata
 - **Fase 3 — Runner/Orchestrator**: esecuzione periodica di subfinder → httpx → katana (headless, senza limit depth) → reduce → nuclei (output JSONL), con integrazione log durate e notifiche.
 - **Collector API (HackerOne)**: fetch aggiornamenti, salva in formato compatibile e richiama `import_scopes`.
-

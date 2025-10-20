@@ -1,0 +1,38 @@
+{
+  "handle": "john-deere",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:22.943340",
+  "finished_at": "2025-10-20T10:59:22.962165",
+  "duration_sec": 0.019,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 1774,
+      "written": true,
+      "hash": "43d2b6f29bc6f4e58a1a959e37904c2b6687a5912f6107681a87edae699ce7ac"
+    },
+    "httpx_seeds.txt": {
+      "count": 1799,
+      "written": true,
+      "hash": "f35c479ca7f3c996995de32e509fa9f56d436934bc1193380884b012ac6820f7"
+    },
+    "katana_seeds.txt": {
+      "count": 1771,
+      "written": true,
+      "hash": "e80dde01191a71ee33be257ce6c4eac7a294a87465591770267cb7e35df50fc4"
+    },
+    "nuclei_urls.txt": {
+      "count": 29,
+      "written": true,
+      "hash": "79cbf39ede9967ae5b21261fa2661852b8fb0367dcfa0c19db43bf580e536a88"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 29,
+      "written": true,
+      "hash": "eadcb998518706d7b0a1979f50c6d4c8d20c60094839ce80adf3ecdacf9343b8"
+    }
+  },
+  "scope_count": 1812,
+  "last_scope_hash": "cc882e8c177762de18647a18a07bed501ad5a938e340a28a23944cedce8b47d0"
+}

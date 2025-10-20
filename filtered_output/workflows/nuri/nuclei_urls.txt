@@ -1,0 +1,2 @@
+https://api.app.bitwala.com/
+https://api.app.nuri.com/

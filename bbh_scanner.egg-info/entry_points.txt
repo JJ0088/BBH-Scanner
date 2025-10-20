@@ -1,0 +1,2 @@
+[console_scripts]
+bbh-scan = bbh_code.runner:main

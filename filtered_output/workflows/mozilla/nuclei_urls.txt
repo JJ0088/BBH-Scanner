@@ -1,0 +1,4 @@
+https://api.profiler.firefox.com/
+Mozilla Ad Routing Service
+Mozilla VPN Clients
+Product Delivery

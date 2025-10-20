@@ -1,0 +1,9 @@
+194.73.139.0/27
+194.73.90.96/27
+81.139.47.64/28
+https://prizm.inzpire.com/
+https://prizmapi.inzpire.com/
+https://prizmstaging.inzpire.com
+https://prizmstagingapi.inzpire.com/
+https://prizmsupport.inzpire.com/
+https://www.inzpire.com

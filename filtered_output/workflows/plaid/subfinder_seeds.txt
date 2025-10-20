@@ -1,0 +1,7 @@
+https://cdn.plaid.com/
+https://dashboard.plaid.com/
+https://demo.plaid.com/
+https://my.plaid.com/
+https://plaid.com/
+https://production.plaid.com/
+https://secure.plaid.com/

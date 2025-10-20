@@ -1,0 +1,37 @@
+Anchor
+Android SDK
+Backstage source code
+Core Assets
+Findaway
+GHE
+https://api-partner.spotify.com/
+https://api.spotify.com/
+https://assets.spotify.com/
+https://backstage.io/
+https://com.anchorfminc.anchor/
+https://com.soundtrap.studioapp/
+https://com.spotify.client/
+https://com.spotify.kids/
+https://com.spotify.lite/
+https://com.spotify.music/
+https://com.spotify.s4a/
+https://com.spotify.tv.android/
+https://everynoise.com/
+https://example.com/
+https://fm.anchor.android/
+iOS SDK
+Jira
+Megaphone
+Non-Core Assets
+Okta
+Other Spotify websites
+Podsights
+Preact
+Sonantic
+Soundtrap
+Spotify desktop application (Windows and Mac)
+Spotify SDKs
+The Ringer
+VPN
+Web Playback SDK
+Wrapped

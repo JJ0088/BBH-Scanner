@@ -1,0 +1,5 @@
+https://api.mergify.com/
+https://articles.mergify.com/
+https://blog.mergify.com/
+https://dashboard.mergify.com/
+https://mergify.com/

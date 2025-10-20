@@ -1,0 +1,8 @@
+https://account-sprint.dynatracelabs.com/
+https://dev.dynatracelabs.com/
+https://dynatrace.com/
+https://myaccount-hardening.dynatracelabs.com/
+https://sprint.apps.dynatracelabs.com/
+https://sprint.dynatracelabs.com/
+https://sso-sprint.dynatracelabs.com/
+https://university-staging.dynatracelabs.com/

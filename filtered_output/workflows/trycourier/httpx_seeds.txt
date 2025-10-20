@@ -1,0 +1,8 @@
+https://api.courier.com/
+https://api.trycourier.app/
+https://docs.courier.com/
+https://help.courier.com/
+https://status.courier.com/
+https://updates.courier.com/
+https://www.courier.com/
+https://www.trycourier.app/

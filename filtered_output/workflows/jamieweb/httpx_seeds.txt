@@ -1,0 +1,20 @@
+2604:a880:400:d1::aad:8001
+2a01:7e00::f03c:91ff:fec6:27a3
+3rd Party Email Servers in my MX Records
+https://139.162.222.67/
+https://157.230.83.95/
+https://acme-validation.jamieweb.net/
+https://gitlab.com/jamieweb/dl-integrity-verify
+https://gitlab.com/jamieweb/jamieweb
+https://gitlab.com/jamieweb/jw-config
+https://gitlab.com/jamieweb/results-whitelist
+https://gitlab.com/jamieweb/web-server-log-anonymizer-bloom-filter
+https://ipv4.jamieweb.net/
+https://ipv6.jamieweb.net/
+https://jamie3vkiwibfiwucd6vxijskbhpjdyajmzeor4mc4i7yopvpo4p7cyd.onion/
+https://jamieweb.net/
+https://jamiewebgbelqfno.onion/
+https://ldn01.jamieweb.net/
+https://nyc01.jamieweb.net/
+https://status.jamieweb.net/
+https://www.jamieweb.net/

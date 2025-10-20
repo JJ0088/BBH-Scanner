@@ -1,0 +1,10 @@
+https://api.irccloud.com/
+https://blog.irccloud.com/
+https://com.irccloud.android/
+https://com.irccloud.irccloud/
+https://github.com/irccloud/android
+https://github.com/irccloud/ios
+https://irc.irccloud.com/
+https://irccloud.com/
+https://team-irc.irccloud.com/
+https://www.irccloud.com/

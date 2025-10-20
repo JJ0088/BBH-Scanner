@@ -1,0 +1,5 @@
+com.smule.autorap.*
+com.smule.magicpiano.*
+com.smule.sing.*
+com.smule.singandroid.*
+smule.com

@@ -1,0 +1,12 @@
+https://1.1.1.1 resolver/
+https://cloudflare.com/
+https://cloudflarepartners.com/
+https://cloudflareworkers.com/
+https://community.cloudflare.com/
+https://dash.cloudflare.com/
+https://events.www.cloudflare.com/
+https://one.dash.cloudflare.com/
+https://support.cloudflare.com/
+https://support.cloudflarewarp.com/
+https://teams.cloudflare.com/
+https://waf.cumulusfire.net/

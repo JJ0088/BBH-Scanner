@@ -1,0 +1,6 @@
+Customer Connected Domain
+Customer Portal
+HubSpot Android Mobile App
+HubSpot iOS Mobile App
+HubSpot Sales Office 365 add-in
+Other HubSpot-owned (sub)domains not listed as Out of Scope

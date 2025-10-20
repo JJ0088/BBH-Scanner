@@ -1,0 +1,13 @@
+a.exodus.io
+atp-exodus.com
+exodus.com
+exodus.io
+get.exodus.*
+https://exodus-movement.exodus/
+https://exodus.atlassian.net/
+https://exodusmovement.exodus/
+https://exodusstore.blob.core.windows.net/
+https://slack-invite.exodus.com/
+https://support-helpers.a.exodus.io/
+https://support.exodus.com/
+www.exodus.com/job-application/*

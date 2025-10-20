@@ -1,0 +1,2 @@
+https://api.au.frontegg.com/
+https://api.frontegg.com/

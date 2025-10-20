@@ -1,0 +1,4 @@
+https://<locale>.trip.com/
+https://app.blueskytravelvietnam.com/
+https://com.trip.android/
+https://com.trip.ios/

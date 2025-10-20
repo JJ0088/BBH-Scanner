@@ -1,0 +1,12 @@
+https://api.playstation.com/
+https://ca.account.sony.com/
+https://checkout.playstation.com/
+https://direct.playstation.com/
+https://my.account.sony.com/
+https://my.playstation.com/
+https://playstation.net/
+https://ps5.np.playstation.net/
+https://social.playstation.com/
+https://sonyentertainmentnetwork.com/
+https://store.playstation.com/
+https://transact.playstation.com/

@@ -1,0 +1,17 @@
+app.citushealth.com/
+app.medifox-therapie.de/
+brightree.net/
+http://www.matrixcare.com
+https://admin.ectosense.com/login
+https://apps.apple.com/us/app/nightowl-companion/id1397382074
+https://dashboard.ectosense.com/login
+https://myapp.somnoware.com/login
+https://nightowl-admin.resmed.com/signin
+https://nightowl.resmed.com/signin
+https://play.google.com/store/apps/details?id=com.ectosense.nightowl&hl=en&gl=US
+https://referenzkunden.api.praxispad.de/
+https://resmed.ectosense.com/login
+https://snftest02.matrixcare.com/
+https://stgcef2r.somnoware.com/
+https://survey.ectosense.com/assessment/home
+produktion.api.praxispad.de/

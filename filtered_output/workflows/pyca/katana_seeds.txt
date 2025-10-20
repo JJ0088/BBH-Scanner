@@ -1,0 +1,2 @@
+https://cryptography.io/
+https://pyopenssl.org/

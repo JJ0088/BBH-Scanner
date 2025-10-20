@@ -1,0 +1,3 @@
+https://api.kiwi.ki/
+https://mobile.kiwi.ki/
+https://portal.kiwi.ki/

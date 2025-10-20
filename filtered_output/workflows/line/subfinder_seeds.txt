@@ -1,0 +1,9 @@
+*nvapis.line.me
+https://com.linecorp.linelite/
+https://jp.naver.line.android/
+https://prod-fido-fido2-server.line-apps.com/
+line-apps.com
+line.biz
+line.me
+line.naver.jp
+linecorp.com

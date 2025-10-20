@@ -1,0 +1,22 @@
+993135524
+Dyson Connected Products (IoT Hardware)
+Github findings
+https://api.dyson.at/
+https://api.dyson.be/
+https://api.dyson.ch/
+https://api.dyson.co.uk/
+https://api.dyson.com/
+https://api.dyson.de/
+https://api.dyson.dk/
+https://api.dyson.es/
+https://api.dyson.fr/
+https://api.dyson.ie/
+https://api.dyson.it/
+https://api.dyson.nl/
+https://api.dyson.no/
+https://api.dyson.pt/
+https://api.dyson.se/
+https://api.dysoncanada.ca/
+https://api.fi.dyson.com/
+https://api.q.dyson.cn/
+Other Dyson Assets

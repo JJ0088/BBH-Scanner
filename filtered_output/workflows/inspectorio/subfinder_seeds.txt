@@ -1,0 +1,7 @@
+https://app.stg.inspectorio.com/
+https://docuflow.stg.inspectorio.com/
+https://files-stg.inspectorio.com/
+https://id.stg.inspectorio.com/
+https://report-html-sight.stg.inspectorio.com/
+https://rise-api.stg.inspectorio.com/
+https://rise.stg.inspectorio.com/

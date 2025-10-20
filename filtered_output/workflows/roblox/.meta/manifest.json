@@ -1,0 +1,38 @@
+{
+  "handle": "roblox",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:23.204230",
+  "finished_at": "2025-10-20T10:59:23.205199",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 5,
+      "written": true,
+      "hash": "4a4fb4f16bd5da34e6afcab3afbda28d0c027dbac9d55c8150708c5152433041"
+    },
+    "httpx_seeds.txt": {
+      "count": 4,
+      "written": true,
+      "hash": "e317e700dd61708005dd662bb00968da95cc2fd239e9d833f1af0c1584a347c2"
+    },
+    "katana_seeds.txt": {
+      "count": 5,
+      "written": true,
+      "hash": "6952ddd57c931d3f4518e77cf0705e39599394150123b1f9a778cb7a6b652cec"
+    },
+    "nuclei_urls.txt": {
+      "count": 3,
+      "written": true,
+      "hash": "1582ae679f85246ae06e4d60ad72278e32d76496c0ec6417a21cce823dcba573"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 3,
+      "written": true,
+      "hash": "d0a221aa534975ea78ade05b9632ef1cff471b86fe9cb8b0e540e30c809ac677"
+    }
+  },
+  "scope_count": 8,
+  "last_scope_hash": "4c439c3af9a6027c80c3f5ba68c97eb72b375f2e691743d0a9c2e282423b866a"
+}

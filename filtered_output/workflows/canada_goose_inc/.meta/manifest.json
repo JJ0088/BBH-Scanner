@@ -1,0 +1,38 @@
+{
+  "handle": "canada_goose_inc",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:22.371547",
+  "finished_at": "2025-10-20T10:59:22.372707",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 2,
+      "written": true,
+      "hash": "56b3904a4237e043845dfed9b7fd48f15f5e513c9962a408daa978ad337d420e"
+    },
+    "httpx_seeds.txt": {
+      "count": 3,
+      "written": true,
+      "hash": "714696f9eca1c1ef0308780f38c125f0285fcfd35a108c22692db55908af6f4f"
+    },
+    "katana_seeds.txt": {
+      "count": 2,
+      "written": true,
+      "hash": "56b3904a4237e043845dfed9b7fd48f15f5e513c9962a408daa978ad337d420e"
+    },
+    "nuclei_urls.txt": {
+      "count": 1,
+      "written": true,
+      "hash": "0d494e0daf48a2f400e4da2dcdcb034b0b24b2fb6e085c50594abbb7eefe74b8"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 1,
+      "written": true,
+      "hash": "cad516dd63772cd9368bdb002dfc2bc7eb5fe7a1a6c487a7b9f2b857e81ed7c3"
+    }
+  },
+  "scope_count": 3,
+  "last_scope_hash": "76358bab3a8920f177b4f760871af7e014e123c317704582f64c183ae6e9c3a8"
+}

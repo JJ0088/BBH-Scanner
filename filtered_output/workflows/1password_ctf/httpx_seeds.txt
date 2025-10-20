@@ -1,0 +1,4 @@
+https://all other domains, subdomains, and 1password accounts that are not owned by you, including accounts where you are a user but not the owner, are out of scope./
+https://bugbounty-ctf.1password.com/
+https://support.1password.com
+https://www.1password.com/

@@ -1,0 +1,16 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bbh-scanner"
+version = "0.3.0"
+description = "BBH-Scanner: filterer + runner per bug bounty automation"
+requires-python = ">=3.11"
+
+[project.scripts]
+bbh-scan = "bbh_code.runner:main"
+
+[tool.setuptools]
+packages = ["bbh_code"]
+include-package-data = true

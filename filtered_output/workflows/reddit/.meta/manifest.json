@@ -1,0 +1,38 @@
+{
+  "handle": "reddit",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:23.179025",
+  "finished_at": "2025-10-20T10:59:23.180168",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 24,
+      "written": true,
+      "hash": "84222d0018ca502d3e645c3cfcfab83133eb925432ad4be766e8e6b299c09863"
+    },
+    "httpx_seeds.txt": {
+      "count": 21,
+      "written": true,
+      "hash": "6fb98fe9d744c21473adf94a9d20242739bb9829cf54373e2befc946799c7cc8"
+    },
+    "katana_seeds.txt": {
+      "count": 24,
+      "written": true,
+      "hash": "85f97fa073cc3e34f9f0042da01cc59239207621be989cf338c1f8b4ee3b3b5d"
+    },
+    "nuclei_urls.txt": {
+      "count": 5,
+      "written": true,
+      "hash": "539e61dbe0f7a8d2cc350cdad9b1c09fb4ed73eceb6309b7cbe53967084b3ade"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 5,
+      "written": true,
+      "hash": "5aebc8033fbf5fc51ac897d608fc6916be22b64da8e390622f2930a5054c553c"
+    }
+  },
+  "scope_count": 29,
+  "last_scope_hash": "a5b4b3563038a3898a0dd886dcf000d5b23adcedcd2073a5b54197675f52b116"
+}

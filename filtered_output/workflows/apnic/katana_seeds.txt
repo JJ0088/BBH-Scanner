@@ -1,0 +1,25 @@
+https://* IPv4 addresses/
+https://* IPv6 addresses/
+https://apidt.org/
+https://apnic.foundation/
+https://apnic.net/
+https://aso.apnic.net/
+https://autodiscover.apnic.net/
+https://enterpriseenrollment.apnic.net/
+https://enterpriseregistration.apnic.net/
+https://ftp.apnic.net/
+https://help.apnic.net/
+https://info.apnic.net/
+https://isif.asia/
+https://login.apnic.net/
+https://lyncdiscover.apnic.net/
+https://nori.apnic.net/
+https://orbit.apnic.net/
+https://registry-testbed.apnic.net/
+https://rpki.apnic.net/
+https://rsync.apnic.net/
+https://seedalliance.net/
+https://sip.apnic.net/
+https://stats.labs.apnic.net/
+https://submission.apnic.net/
+https://upload.apnic.net/

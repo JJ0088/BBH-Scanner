@@ -1,0 +1,38 @@
+{
+  "handle": "mercadolibre",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:23.031419",
+  "finished_at": "2025-10-20T10:59:23.033041",
+  "duration_sec": 0.002,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 82,
+      "written": true,
+      "hash": "d2539691815e0c12406afbab7085659751cd3f05c3c657a69f21be47dc834e35"
+    },
+    "httpx_seeds.txt": {
+      "count": 52,
+      "written": true,
+      "hash": "7e569e0b5f4af34c5f1a8329eee83e6a3d28b97dc6d087164aa4ef8be7e56313"
+    },
+    "katana_seeds.txt": {
+      "count": 82,
+      "written": true,
+      "hash": "61bd3c4c34fbf9939a8e9fccbfc26ceec450081a82d6840dbbbb956f63bdcf16"
+    },
+    "nuclei_urls.txt": {
+      "count": 7,
+      "written": true,
+      "hash": "8a71629f5cfdfad9285b1e8e730160a44479a43bd2f95c30e11016b5bf3c461d"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 7,
+      "written": true,
+      "hash": "14ab4e828f536759c5e237ee2beb9e73f03d847b20de4b5850bc72867dc22c10"
+    }
+  },
+  "scope_count": 89,
+  "last_scope_hash": "b746b2dd97dcedab15a3ed4ea51670afbc6b0bb7ed2ca5b074f35ea078b58f3b"
+}

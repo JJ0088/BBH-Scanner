@@ -1,0 +1,7 @@
+Blockchain testnet
+https://github.com/nimiq/core-js/
+https://github.com/nimiq/core-rs-albatross
+https://github.com/nimiq/core-rs/
+https://github.com/nimiq/ledger-app-nimiq
+https://keyguard.nimiq.com/
+https://miner.nimiq.com/

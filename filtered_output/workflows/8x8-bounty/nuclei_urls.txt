@@ -1,0 +1,30 @@
+8x8 Communication APIs
+8x8 Partner Portal
+8x8-meeting-rooms
+8x8-work
+asn: AS10976
+asn: AS133144
+asn: AS13896
+asn: AS14294
+asn: AS198554
+asn: AS199687
+asn: AS206422
+asn: AS32308
+asn: AS395362
+asn: AS398067
+asn: AS44965
+asn: AS46680
+asn: AS49856
+asn: AS62306
+asn: AS62876
+Cloud Misconfigurations
+Discovered Leaked Credentials
+https://8x8.vc/xmpp-websocket
+https://api.8x8.com/
+https://github.com/jitsi
+https://webrtc.8x8.com/
+https://www.npmjs.com/package/@8x8/pui-partner-comm
+Intellectual Property on Public Domains
+Jitsi Meet Desktop
+Third Party Application
+Virtual Office Desktop

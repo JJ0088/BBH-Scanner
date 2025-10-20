@@ -1,0 +1,38 @@
+{
+  "handle": "security",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:23.217782",
+  "finished_at": "2025-10-20T10:59:23.219051",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 31,
+      "written": true,
+      "hash": "20aff4f2cf427c1b5551925dbd1db9650a166615a94dc6596be10dc95e82c037"
+    },
+    "httpx_seeds.txt": {
+      "count": 32,
+      "written": true,
+      "hash": "178ad95a7053d502d84af2a5976b95a588210af60c7a4705bb6ae83b680d8136"
+    },
+    "katana_seeds.txt": {
+      "count": 31,
+      "written": true,
+      "hash": "5be0810b2bda06c18b7c41ecc0d1313e0c395afc9d4074eb1230828c6027aee9"
+    },
+    "nuclei_urls.txt": {
+      "count": 4,
+      "written": true,
+      "hash": "f987b837bc96c0143f73e27817f9afd9e359ecca2e2ca1e9ffb314af5bea5fcc"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 4,
+      "written": true,
+      "hash": "b6c0c42bec1640d0608a4e2e3f9c9566f284d86e950bd19370d4f908a11ddd06"
+    }
+  },
+  "scope_count": 35,
+  "last_scope_hash": "e76276c3d75f3243c042326febaed1979b73f37a0272c9fc1c6236e95fc9c978"
+}

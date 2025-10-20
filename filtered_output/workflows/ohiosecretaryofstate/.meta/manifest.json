@@ -1,0 +1,38 @@
+{
+  "handle": "ohiosecretaryofstate",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:23.101615",
+  "finished_at": "2025-10-20T10:59:23.102537",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 10,
+      "written": true,
+      "hash": "a00d706fc095bbae27a07a3a64b5847d2229443292f3bac6e2c69709c8d36218"
+    },
+    "httpx_seeds.txt": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "katana_seeds.txt": {
+      "count": 10,
+      "written": true,
+      "hash": "92c42267d9149dd561df89430fb20b49bcc2d8f389cec640df2f3c25f29e5ef2"
+    },
+    "nuclei_urls.txt": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "scope_count": 10,
+  "last_scope_hash": "58c17eb38c492ba13950523bca939bae59fe1eb5d2ffa29de7028bbe4e4a95fe"
+}

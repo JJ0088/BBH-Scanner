@@ -1,0 +1,3 @@
+https://api.faraday.ai/
+s3://faraday-secret
+s3://faraday-uploads

@@ -1,0 +1,38 @@
+{
+  "handle": "drugs_com",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:22.623293",
+  "finished_at": "2025-10-20T10:59:22.624469",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 3,
+      "written": true,
+      "hash": "224588ed165610f9f23765d78cd34857a9924878967d3c25865e648a4a2f31e2"
+    },
+    "httpx_seeds.txt": {
+      "count": 3,
+      "written": true,
+      "hash": "224588ed165610f9f23765d78cd34857a9924878967d3c25865e648a4a2f31e2"
+    },
+    "katana_seeds.txt": {
+      "count": 3,
+      "written": true,
+      "hash": "224588ed165610f9f23765d78cd34857a9924878967d3c25865e648a4a2f31e2"
+    },
+    "nuclei_urls.txt": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "scope_count": 3,
+  "last_scope_hash": "1944c3c2d3d127e4d648c97779890063b3cd3ad9b6c724baac34aef9ad5b97da"
+}

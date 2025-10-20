@@ -1,0 +1,11 @@
+54.175.255.192/27
+Coinbase WaaS (Wallet as a Service)
+http://coinbase.com
+https://api.coinbase.com/
+https://api.custody.coinbase.com/
+https://base.org
+https://chrome.google.com/webstore/detail/coinbase-wallet-extension/hnfanknocfeofbddgcijnmhnfnkdnaad
+https://github.com/coinbase/cb-mpc
+N/A - Not Coinbase owned or operated
+Other
+Web3 Smart Contracts

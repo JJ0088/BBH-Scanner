@@ -1,0 +1,38 @@
+{
+  "handle": "us-department-of-state",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:23.318585",
+  "finished_at": "2025-10-20T10:59:23.322604",
+  "duration_sec": 0.004,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 21,
+      "written": true,
+      "hash": "e3c241168a2a7e62bf7f0d0f8b255b5fa87856e152b5894b1728dbe792b2f37c"
+    },
+    "httpx_seeds.txt": {
+      "count": 3,
+      "written": true,
+      "hash": "b21ca923612ac6dc2f132a16df5c7153123f00560ecab7e5d40f9094fc528fcf"
+    },
+    "katana_seeds.txt": {
+      "count": 21,
+      "written": true,
+      "hash": "b32306c8ad23ccb400bce18a011a72b70ce2e29e3b133fca32fc05bdf736c617"
+    },
+    "nuclei_urls.txt": {
+      "count": 3,
+      "written": true,
+      "hash": "b21ca923612ac6dc2f132a16df5c7153123f00560ecab7e5d40f9094fc528fcf"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 3,
+      "written": true,
+      "hash": "aecc4008b31573728402a8e1ec7d6d79d0ca4c6c0990c55521e1f5e80c8dff53"
+    }
+  },
+  "scope_count": 24,
+  "last_scope_hash": "fab3de588ae216d512e63c82a68448bce25ff94dc8164045e2082b88fbb0f871"
+}

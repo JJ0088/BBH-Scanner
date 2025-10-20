@@ -1,0 +1,38 @@
+{
+  "handle": "wealthsimple",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:23.347622",
+  "finished_at": "2025-10-20T10:59:23.348610",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 8,
+      "written": true,
+      "hash": "ed5b79ca3d728aaaa2907c00e20c37ef167ddbb4644c98f3c922331b261b35ac"
+    },
+    "httpx_seeds.txt": {
+      "count": 6,
+      "written": true,
+      "hash": "8cb77d50a108925b67078c77b45117749a7ae0f41a64053a32926d842da3577e"
+    },
+    "katana_seeds.txt": {
+      "count": 8,
+      "written": true,
+      "hash": "1244be5b820894ca7e325e3cdf28a30079fd0137ce4a43e73d7bedc0447f4ecd"
+    },
+    "nuclei_urls.txt": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "scope_count": 8,
+  "last_scope_hash": "a8145e303580eb365654d979e5b7c7982514c9b4a624068bbd1f66b1689fd409"
+}

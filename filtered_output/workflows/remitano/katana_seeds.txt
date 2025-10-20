@@ -1,0 +1,11 @@
+https://blog.remitano.com/
+https://cdn.remitano.com/
+https://com.remitano.remitano/
+https://developers.remitano.com/
+https://s3.remitano.com/
+https://security.remitano.com/
+https://sendgrid.remitano.com/
+https://socket.remitano.com/
+https://status.remitano.com/
+https://support.remitano.com/
+https://www.remitano.com/

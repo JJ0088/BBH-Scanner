@@ -1,0 +1,2 @@
+https://api.ort-one-pingone.com/
+https://api.pingone.com/

@@ -1,0 +1,13 @@
+https://api.supabase.com/
+https://api.supabase.com/platform/pg-meta/project_id/query
+https://ctf.supabase.com
+https://github.com/supabase
+https://github.com/supabase-community/
+https://github.com/supabase-community/supabase-mcp
+https://multiplayer.dev
+https://supabase.com/
+https://supabase.dev/
+https://supabase.help
+https://supabase.link
+https://supabase.productions/
+https://supabase.store

@@ -1,0 +1,3 @@
+duckduckgo.com
+https://com.duckduckgo.mobile.android/
+https://com.duckduckgo.mobile.ios/

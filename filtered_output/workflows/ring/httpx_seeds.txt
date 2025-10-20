@@ -1,0 +1,23 @@
+1013961111
+1218902777
+926252661
+Anything not in scope
+Blink Indoor
+Blink Mini
+Blink Outdoor
+Blink Sync Module 2
+Blink Video Doorbell
+Chime
+Devices
+https://com.immediasemi.android.blink/
+https://com.ring.neighborhoods/
+https://com.ringapp/
+https://prd-ring-web-us.prd.rings.solutions/
+https://publicsafety.ring.com/
+Indoor Cam
+Peephole Cam
+Ring Alarm
+Ring Smart Lighting Bridge
+Services, Apps, Mobile
+Stickup Cam
+Video Doorbell

@@ -6,38 +6,41 @@ import_scopes.py — importa il dump HackerOne nel DB SQLite (con filtri increme
 Novità operative:
 - Log file: logs/bbh_importer<YYYY.MM.DD-HH.MM.SS>.log
 - Riepilogo finale con durata e contatori (stdout + log + Slack se SLACK_WEBHOOK_URL)
-- Nessun cambio alla logica dati rispetto all'ultima versione
+- **Fix pre-commit/ruff (E402)**: import ordinati in testa, gli import tardivi hanno `# noqa: E402`.
 """
 
 from __future__ import annotations
+
+# --- Import in testa per soddisfare ruff E402 ---
 from pathlib import Path
 import argparse
 import json
 from urllib.parse import urlparse, urlunparse
 from datetime import datetime, timezone
+from typing import List, Dict, Tuple
+import urllib.request as _ur
 import os
 import sys
 import time
 import logging
 
-# --- PATH dinamici e import del package locale ---
+# --- PATH dinamici e sys.path per package locale ---
 _DEFAULT_ROOT = Path(__file__).resolve().parents[1]
 ROOT = Path(os.environ.get("BBH_ROOT", str(_DEFAULT_ROOT)))
 if str(ROOT) not in sys.path:
     sys.path.append(str(ROOT))
 
-from typing import List, Dict, Tuple
-
 try:
-    from bbh_code.store import Store, init_db  # type: ignore
+    # noqa su E402: questo import dipende dalla modifica del sys.path di cui sopra
+    from bbh_code.store import Store, init_db  # type: ignore  # noqa: E402
 except ModuleNotFoundError as e:
-    msg = (
-        "Impossibile importare bbh_code.store.\n"
-        "Assicurati che la cartella del package si chiami 'bbh_code' (underscore),\n"
-        "che contenga un __init__.py, e che tu stia lanciando il comando dalla root del progetto.\n"
-        "Esempio: python -m bbh_code.import_scopes -i data/H1-All-Scopes.json\n"
-    )
+    msg = """Impossibile importare bbh_code.store.
+Assicurati che la cartella del package si chiami 'bbh_code' (underscore),
+che contenga un __init__.py, e che tu stia lanciando il comando dalla root del progetto.
+Esempio: python -m bbh_code.import_scopes -i data/H1-All-Scopes.json
+"""
     raise SystemExit(msg) from e
+
 
 # --- Logging uniforme ---
 LOGS_DIR = ROOT / "logs"
@@ -52,7 +55,7 @@ logging.basicConfig(
 logger = logging.getLogger("importer")
 
 # --- Slack opzionale ---
-import urllib.request as _ur
+
 
 def notify_slack(text: str) -> None:
     url = os.environ.get("SLACK_WEBHOOK_URL")
@@ -66,7 +69,9 @@ def notify_slack(text: str) -> None:
         # non bloccare l'import in caso di errore di notifica
         logger.warning("Slack notify fallita", exc_info=False)
 
+
 # --- Helpers di normalizzazione ---
+
 
 def _is_url(s: str) -> bool:
     s = s.strip()
@@ -118,6 +123,7 @@ def detect_and_normalize(asset_identifier: str) -> Tuple[str, str]:
 
 def sha256_hex(items: List[str]) -> str:
     import hashlib
+
     h = hashlib.sha256()
     for s in sorted(items):
         h.update(s.encode("utf-8", errors="ignore"))
@@ -127,11 +133,13 @@ def sha256_hex(items: List[str]) -> str:
 class DummyCtx:
     def __enter__(self):
         return None
+
     def __exit__(self, *exc):
         return False
 
 
 # --- Loader JSON robusto ---
+
 
 def load_programs(data: object) -> List[Dict]:
     if isinstance(data, dict) and isinstance(data.get("programs"), dict):
@@ -147,7 +155,9 @@ def load_programs(data: object) -> List[Dict]:
         return data["programs"]  # type: ignore[return-value]
     if isinstance(data, list):
         return data  # type: ignore[return-value]
-    raise ValueError("Formato JSON non riconosciuto: atteso {programs:{...}} o {programs:[...]} o [...].")
+    raise ValueError(
+        "Formato JSON non riconosciuto: atteso {programs:{...}} o {programs:[...]} o [...]."
+    )
 
 
 def now_iso() -> str:
@@ -155,6 +165,7 @@ def now_iso() -> str:
 
 
 # --- Import principale ---
+
 
 def import_scopes(
     json_path: Path,
@@ -200,7 +211,7 @@ def import_scopes(
     inserted_scopes = 0
     inserted_programs = 0
 
-    with (store.conn if not dry_run else DummyCtx()):
+    with store.conn if not dry_run else DummyCtx():
         for p in programs:
             handle = p.get("handle") or p.get("name") or p.get("id")
             if not handle:
@@ -220,7 +231,9 @@ def import_scopes(
                 scopes_list = p["scopes"]
             elif isinstance(p.get("relationships"), dict):
                 rel = p["relationships"]
-                if isinstance(rel.get("structured_scopes"), dict) and isinstance(rel["structured_scopes"].get("data"), list):
+                if isinstance(rel.get("structured_scopes"), dict) and isinstance(
+                    rel["structured_scopes"].get("data"), list
+                ):
                     scopes_list = rel["structured_scopes"]["data"]
 
             asset_ids: List[str] = []
@@ -243,14 +256,20 @@ def import_scopes(
                     maxsev = s.get("max_severity") if isinstance(s, dict) else None
                     created = s.get("created_at") if isinstance(s, dict) else None
                     updated = s.get("updated_at") if isinstance(s, dict) else None
-                    scope_id = str(s.get("id") if isinstance(s, dict) and s.get("id") else f"{handle}:{ai}")
+                    scope_id = str(
+                        s.get("id")
+                        if isinstance(s, dict) and s.get("id")
+                        else f"{handle}:{ai}"
+                    )
 
                 if isinstance(ai, str):
                     ai = ai.strip()
                 if not ai:
                     continue
 
-                if skip_ineligible and (elig is False or elig == 0 or str(elig).lower() == "false"):
+                if skip_ineligible and (
+                    elig is False or elig == 0 or str(elig).lower() == "false"
+                ):
                     continue
 
                 if cutoff and updated:
@@ -268,19 +287,23 @@ def import_scopes(
                 asset_ids.append(str(ai))
 
                 if not dry_run:
-                    Store().save_scope({  # usa una nuova connessione? preferiamo riusare store
-                        "id": scope_id,
-                        "program_handle": handle,
-                        "asset_identifier": str(ai),
-                        "asset_type": at,
-                        "eligible_for_bounty": int(bool(elig)) if elig is not None else None,
-                        "instruction": instr,
-                        "max_severity": maxsev,
-                        "created_at": created,
-                        "updated_at": updated or now_iso(),
-                        "normalized_type": ntype,
-                        "normalized_value": nvalue,
-                    })
+                    store.save_scope(
+                        {
+                            "id": scope_id,
+                            "program_handle": handle,
+                            "asset_identifier": str(ai),
+                            "asset_type": at,
+                            "eligible_for_bounty": (
+                                int(bool(elig)) if elig is not None else None
+                            ),
+                            "instruction": instr,
+                            "max_severity": maxsev,
+                            "created_at": created,
+                            "updated_at": updated or now_iso(),
+                            "normalized_type": ntype,
+                            "normalized_value": nvalue,
+                        }
+                    )
 
                 inserted_scopes += 1
                 if inserted_scopes % max(1, progress) == 0:
@@ -289,17 +312,19 @@ def import_scopes(
 
             scope_hash = sha256_hex(asset_ids) if asset_ids else None
             if not dry_run:
-                Store().save_program({
-                    "id": program_id,
-                    "handle": handle,
-                    "name": name,
-                    "url": url,
-                    "state": state,
-                    "submission_state": submission_state,
-                    "last_fetch_at": last_fetch_at,
-                    "scope_count": len(asset_ids),
-                    "scope_hash": scope_hash,
-                })
+                store.save_program(
+                    {
+                        "id": program_id,
+                        "handle": handle,
+                        "name": name,
+                        "url": url,
+                        "state": state,
+                        "submission_state": submission_state,
+                        "last_fetch_at": last_fetch_at,
+                        "scope_count": len(asset_ids),
+                        "scope_hash": scope_hash,
+                    }
+                )
 
             inserted_programs += 1
             if inserted_programs % 100 == 0:
@@ -330,17 +355,41 @@ def import_scopes(
 
 # --- CLI ---
 
+
 def main():
-    ap = argparse.ArgumentParser(description="Importa H1-All-Scopes.json nel DB store.db")
-    ap.add_argument("--input", "-i", type=Path, default=ROOT / "data" / "H1-All-Scopes.json",
-                    help="Percorso al file JSON esportato dal Collector")
-    ap.add_argument("--dry-run", action="store_true", help="Parse senza scrivere sul DB")
-    ap.add_argument("--only-handles", type=str, default="", help="Lista di handle separati da virgola")
-    ap.add_argument("--progress", type=int, default=1000, help="Frequenza log progresso (scopes)")
-    ap.add_argument("--skip-ineligible", action="store_true",
-                    help="Salta gli scope non eligibili per bounty")
-    ap.add_argument("--min-updated-since", type=str, default="",
-                    help="Importa solo scope con updated_at >= YYYY-MM-DD (o ISO completo)")
+    ap = argparse.ArgumentParser(
+        description="Importa H1-All-Scopes.json nel DB store.db"
+    )
+    ap.add_argument(
+        "--input",
+        "-i",
+        type=Path,
+        default=ROOT / "data" / "H1-All-Scopes.json",
+        help="Percorso al file JSON esportato dal Collector",
+    )
+    ap.add_argument(
+        "--dry-run", action="store_true", help="Parse senza scrivere sul DB"
+    )
+    ap.add_argument(
+        "--only-handles",
+        type=str,
+        default="",
+        help="Lista di handle separati da virgola",
+    )
+    ap.add_argument(
+        "--progress", type=int, default=1000, help="Frequenza log progresso (scopes)"
+    )
+    ap.add_argument(
+        "--skip-ineligible",
+        action="store_true",
+        help="Salta gli scope non eligibili per bounty",
+    )
+    ap.add_argument(
+        "--min-updated-since",
+        type=str,
+        default="",
+        help="Importa solo scope con updated_at >= YYYY-MM-DD (o ISO completo)",
+    )
     args = ap.parse_args()
 
     init_db()
@@ -356,4 +405,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

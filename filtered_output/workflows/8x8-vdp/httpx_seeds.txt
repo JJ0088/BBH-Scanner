@@ -1,0 +1,38 @@
+8x8-meeting-rooms
+8x8-work
+https://8x8.force.com/
+https://accountmanager.8x8.com/
+https://admin.8x8.com/
+https://cloud8.8x8.com/
+https://com.atlassian.jitsimeet.ios/
+https://com.spot8x8.spot/
+https://connect.8x8.com/
+https://express.8x8.com/
+https://feedback.wavecell.com/
+https://fuze.me/
+https://get8x8.com/
+https://github.com/8x8/8x8_messaging_java_client
+https://github.com/jitsi
+https://investors.8x8.com/
+https://org.jitsi.meet/
+https://org.vom8x8.sipua/
+https://pay.8x8.com/
+https://platform.8x8.com/
+https://sso.8x8.com/
+https://supersite.8x8.com/
+https://support.8x8.com/
+https://user-profile-staging.8x8.com/
+https://user-profile.8x8.com/
+https://vm.8x8.com/
+https://voapi.8x8.com/
+https://wavecell.zendesk.com/
+https://webrtc.8x8.com/
+https://work-staging.8x8.com/
+https://work.8x8.com/
+https://www.8x8.com/
+https://www.fuzemeeting.com/
+https://www.wavecell.com/
+Intellectual Property on Public Domains
+Jitsi Meet Desktop
+Third Party Application
+Virtual Office Desktop

@@ -1,0 +1,17 @@
+https://com.android.browser/
+https://com.mi.global.shop/
+https://com.miui.cloudbackup/
+https://com.miui.cloudservice/
+https://com.miui.micloudsync/
+https://com.xiaomi.account/
+https://com.xiaomi.market/
+https://com.xiaomi.mibrain.speech/
+https://com.xiaomi.micloud.sdk/
+https://com.xiaomi.mipicks/
+https://com.xiaomi.payment/
+https://com.xiaomi.smarthome/
+mi.com
+miui.com
+miwifi.com
+xiaomi.com
+xiaomiyoupin.com

@@ -1,0 +1,4 @@
+https://affirm.com/
+https://com.affirm.central.audit/
+https://com.affirm.internal.hackerone/
+https://sandbox.affirm.com/

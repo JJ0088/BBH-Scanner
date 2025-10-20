@@ -1,0 +1,6 @@
+https://*.floqast.engineering
+https://api-eu.floqast.app/
+https://eu.floqast.app/
+https://floqast.app/
+https://floqast.com/
+https://floqast.studio/

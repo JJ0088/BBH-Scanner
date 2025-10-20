@@ -1,0 +1,38 @@
+{
+  "handle": "palo_alto_software",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:23.118083",
+  "finished_at": "2025-10-20T10:59:23.119112",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 8,
+      "written": true,
+      "hash": "07a93760437885ca67e2dfc6088aa77e8bc5332f7a56864bd9f673f356655f86"
+    },
+    "httpx_seeds.txt": {
+      "count": 9,
+      "written": true,
+      "hash": "4df4a1e7a09c8a1295ac9a194e4e884b695f8d4fa30ec6a8f374428bd49ea381"
+    },
+    "katana_seeds.txt": {
+      "count": 8,
+      "written": true,
+      "hash": "07a93760437885ca67e2dfc6088aa77e8bc5332f7a56864bd9f673f356655f86"
+    },
+    "nuclei_urls.txt": {
+      "count": 1,
+      "written": true,
+      "hash": "14af9d5732540b385220809285c5b1ccb7da0631e15b8db49bacce722298fc9d"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 1,
+      "written": true,
+      "hash": "deb5dd7a821ca6b668847ec38e25cefccc7e975972a2eee48e00066240ce1306"
+    }
+  },
+  "scope_count": 9,
+  "last_scope_hash": "bb7dd0f4bfadf0e3702beafb3215a6dcfbaf5e76839ee4ff9cdad75f4802aa62"
+}

@@ -1,0 +1,38 @@
+{
+  "handle": "british_airways_vdp",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:22.354592",
+  "finished_at": "2025-10-20T10:59:22.355837",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 3,
+      "written": true,
+      "hash": "72b967a2292ac475957f3144c5fd3c03e3700e2df445f8e6b44dfa00309ecf00"
+    },
+    "httpx_seeds.txt": {
+      "count": 4,
+      "written": true,
+      "hash": "c0725084a5c54503a3b6153001b0ab1b2456f9e8feb83b3fb682175e2d298e3a"
+    },
+    "katana_seeds.txt": {
+      "count": 3,
+      "written": true,
+      "hash": "6c335f33765b9600fe4d4dc81f51a054c4c949b2c3cfbf00a9650315ce3cd42a"
+    },
+    "nuclei_urls.txt": {
+      "count": 2,
+      "written": true,
+      "hash": "64547b97af5406a9e9bef746079d8a62b288d4614d6cada51417f08becc0bc28"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 2,
+      "written": true,
+      "hash": "0bd93b737af38aa6adb3405b19ae332544e1bef831532acd846b60244c319ea7"
+    }
+  },
+  "scope_count": 5,
+  "last_scope_hash": "3b8013953745a1d7d9b8e08cb1b316000f285f42a3ff7d29ff4b8ea695c77f73"
+}

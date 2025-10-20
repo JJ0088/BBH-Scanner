@@ -1,0 +1,4 @@
+https://demo-admin.openmage.com/
+https://demo.openmage.org/
+https://github.com/OpenMage/magento-lts
+https://www.openmage.org/

@@ -1,0 +1,5 @@
+https://cloud.rocket.chat/
+https://github.com/RocketChat/Rocket.Chat
+https://github.com/RocketChat/Rocket.Chat.Electron
+https://github.com/RocketChat/Rocket.Chat.ReactNative
+https://rocket.chat/

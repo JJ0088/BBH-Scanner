@@ -1,0 +1,38 @@
+{
+  "handle": "newegg",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:23.082418",
+  "finished_at": "2025-10-20T10:59:23.083482",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 10,
+      "written": true,
+      "hash": "b33a64c1895b698dfaaf4738f7e4a818b9fdf867e7e84fcfd21f35c9ee94beb8"
+    },
+    "httpx_seeds.txt": {
+      "count": 7,
+      "written": true,
+      "hash": "a5e0b188670a74f832c0e822bd2e12f1125df77527c8733622bcd18a8518ba07"
+    },
+    "katana_seeds.txt": {
+      "count": 10,
+      "written": true,
+      "hash": "b33a64c1895b698dfaaf4738f7e4a818b9fdf867e7e84fcfd21f35c9ee94beb8"
+    },
+    "nuclei_urls.txt": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "scope_count": 11,
+  "last_scope_hash": "a8a97dbdd4262a910cd7ea44d6aea4f019f106b6db53353376402ef5d5afe90a"
+}

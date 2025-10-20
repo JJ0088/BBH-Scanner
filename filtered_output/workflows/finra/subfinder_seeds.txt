@@ -1,0 +1,4 @@
+finra.org
+fip.finra.org
+https://ews.finra.org/*
+https://ews.qa.finra.org/*

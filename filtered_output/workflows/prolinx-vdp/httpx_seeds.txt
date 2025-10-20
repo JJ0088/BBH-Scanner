@@ -1,0 +1,7 @@
+https://ip range 194.74.25.97 - 194.74.25.110/
+https://ip range 217.33.241.33 - 217.33.241.62/
+https://ip range 81.128.176.2 - 81.128.176.62/
+https://ip range 81.128.180.193 - 81.128.180.254/
+https://mail1.wspsecure.co.uk/
+https://skanska-secure-partner.co.uk/
+https://www.prolinx.co.uk/

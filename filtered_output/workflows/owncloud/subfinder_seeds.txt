@@ -1,0 +1,4 @@
+https://com.owncloud.android/
+https://owncloud.iosapp/
+owncloud.com
+owncloud.org

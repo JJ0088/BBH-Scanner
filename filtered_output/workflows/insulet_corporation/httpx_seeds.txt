@@ -1,0 +1,19 @@
+https://aprms.insulet.com/
+https://com.insulet.myblue.pdm/
+https://eu-aprms.omnipodapps.com/
+https://eu-prod-device.omnipodcloud.com/
+https://eu-prod-internal.omnipodapps.com/
+https://eu-prod.omnipodapps.com/
+https://eu-prod.omnipodcloud.com/
+https://insuletid.com/
+https://prod-device.omnipodcloud.com/
+https://prod-internal.omnipodapps.com/
+https://prod.omnipodapps.com/
+https://prod.omnipodcloud.com/
+https://www.insulet.com/
+https://www.omnipod.com/
+https://www.poddercentral.com/
+The Omnipod DASH System Insulin Pump (DASH Omnipod)
+The Omnipod DASH System Personal Diabetes Manager (DASH PDM)
+The Omnipod System Insulin Pump (Omnipod)
+The Onmipod System Personal Diabetes Manager (PDM)

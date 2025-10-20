@@ -1,0 +1,14 @@
+gem server command
+http://rubygems.org/names
+https://blog.rubygems.org/
+https://github.com/rubygems/rubygems
+https://guide.rubygems.org/
+https://help.rubygems.org/
+https://rubygems.org/
+https://s3-us-west-2.amazonaws.com/rubygems-dumps
+https://shipit.rubygems.org/
+https://stats.rubygems.org/
+https://status.rubygems.org/
+https://support.rubygems.org/
+https://uptime.rubygems.org/
+Malicious or compromised gem

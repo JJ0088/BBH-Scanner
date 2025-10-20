@@ -1,0 +1,38 @@
+{
+  "handle": "porsche",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:23.154168",
+  "finished_at": "2025-10-20T10:59:23.156240",
+  "duration_sec": 0.002,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 106,
+      "written": true,
+      "hash": "c32e2dbdf4fd6d28272f6c5ca90be5f3c0cfdea1a6d97dc48280a0ebf199f26f"
+    },
+    "httpx_seeds.txt": {
+      "count": 111,
+      "written": true,
+      "hash": "db8ecf4a10822f8f610a9c8fb071a4464be152add0a52bd584b52d8f1cb7846b"
+    },
+    "katana_seeds.txt": {
+      "count": 106,
+      "written": true,
+      "hash": "c32e2dbdf4fd6d28272f6c5ca90be5f3c0cfdea1a6d97dc48280a0ebf199f26f"
+    },
+    "nuclei_urls.txt": {
+      "count": 5,
+      "written": true,
+      "hash": "c7ce57f55259f0ea45b2bac68fa3a0fcc9a5ad5f7495819b36f1848231ef5bc4"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 5,
+      "written": true,
+      "hash": "e464e4f32dc69647eb4e23e3f15e2ab984083623032dfdfbb00e2511df59bcce"
+    }
+  },
+  "scope_count": 111,
+  "last_scope_hash": "06f9cd52f4af30cd10e09ff51f3092a8b5b2b47e1a0683ab74c8d1de9808c004"
+}

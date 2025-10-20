@@ -1,0 +1,38 @@
+{
+  "handle": "chaturbate",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:22.488294",
+  "finished_at": "2025-10-20T10:59:22.489562",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 12,
+      "written": true,
+      "hash": "14308a0013af3e34ec9e2a995f037b292be10e5fbcdb953d5f9fe01c73dcabf1"
+    },
+    "httpx_seeds.txt": {
+      "count": 7,
+      "written": true,
+      "hash": "e6ac7af00f46267e5f8b6379673b4c4ba965125803402ba3ee4dfc7833953f0a"
+    },
+    "katana_seeds.txt": {
+      "count": 12,
+      "written": true,
+      "hash": "c90ec6e465cf4431bebed53f718f9aa4d15604c520577a571e54e00b35f5bab5"
+    },
+    "nuclei_urls.txt": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "scope_count": 12,
+  "last_scope_hash": "cf92171a7e5fa7b14f35f9eea84575147e3dd524ec494da46c969c195741b798"
+}

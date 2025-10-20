@@ -1,0 +1,4 @@
+http://api.gener8ads.com/auth
+http://gener8ads.com/iframes
+https://help.gener8ads.com/
+https://user.gener8ads.com/

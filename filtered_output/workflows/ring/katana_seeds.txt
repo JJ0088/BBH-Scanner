@@ -1,0 +1,15 @@
+https://*.blinkforhome.com/*
+https://*.immedia-semi.com/*
+https://admin.ring.com/*
+https://api.ring.com/*
+https://app.ring.com/*
+https://billing.ring.com/*
+https://com.immediasemi.android.blink/
+https://com.ring.neighborhoods/
+https://com.ringapp/
+https://fw.ring.com/*
+https://nw.ring.com/*
+https://oauth.ring.com/*
+https://prd-ring-web-us.prd.rings.solutions/
+https://publicsafety.ring.com/
+https://ring.com/*

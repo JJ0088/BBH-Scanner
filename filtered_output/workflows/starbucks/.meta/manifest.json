@@ -1,0 +1,38 @@
+{
+  "handle": "starbucks",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:23.255325",
+  "finished_at": "2025-10-20T10:59:23.256396",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 11,
+      "written": true,
+      "hash": "3e4cf069e834d661d7e4020b563c83039a58e69681654ceba0fb15652f2a9328"
+    },
+    "httpx_seeds.txt": {
+      "count": 13,
+      "written": true,
+      "hash": "c513a36f3b1626c7f9e86d45c22cfa30e41bbfcf93c9ee5fd101e0e58297a986"
+    },
+    "katana_seeds.txt": {
+      "count": 11,
+      "written": true,
+      "hash": "3e4cf069e834d661d7e4020b563c83039a58e69681654ceba0fb15652f2a9328"
+    },
+    "nuclei_urls.txt": {
+      "count": 2,
+      "written": true,
+      "hash": "3b3990c1c4dcc48180326ce66f21eeb37e92bbe29882abd8a4b362e3b8010179"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 2,
+      "written": true,
+      "hash": "128a26948a66c6e5124b8c3528509b30627055cf123b9f752e450dcd3181ec47"
+    }
+  },
+  "scope_count": 13,
+  "last_scope_hash": "439fff7452641774bda5902ba5ec32e0a0b411479375ac7c8c30329dbdc06933"
+}

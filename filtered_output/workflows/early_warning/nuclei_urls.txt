@@ -1,0 +1,3 @@
+http://api.zellepay.com
+http://api.zmsp.earlywarning.com
+http://earlywarningapi.force.com

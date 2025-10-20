@@ -1,0 +1,34 @@
+https://api-sandbox.gocardless.com/
+https://api-staging.gocardless.com/
+https://api.gocardless.com/
+https://auth0.gocardless.com/
+https://bankaccountdata.gocardless.com/
+https://brand.gocardless.com/
+https://connect-sandbox.gocardless.com/
+https://connect.gocardless.com/
+https://gc4x-api-sandbox.gocardless.com/
+https://gocardless-status.com, status.gocardless.com/
+https://learn.gocardless.com/
+https://manage-sandbox.gocardless.com/
+https://manage.gocardless-staging.io/
+https://manage.gocardless.com/
+https://oauth-sandbox.gocardless.com/
+https://oauth-staging.gocardless.com/
+https://oauth.gocardless.com/
+https://ob-sandbox.gocardless.io
+https://ob.gocardless.com/
+https://outgrow.gocardless.com/
+https://partnerportal.gocardless.com, gocardless.my.site.com/
+https://pay-sandbox.gocardless.com/
+https://pay.gocardless.com/
+https://payer-details-sandbox.gocardless.com/
+https://payer-details.gocardless.com/
+https://privacy.gocardless.com/
+https://qbo-api.gocardless.com/
+https://qbo.gocardless.com/
+https://storybook.gocardless.io/
+https://support.gocardless.com/
+https://www.gocardless.com/
+https://xero-sandbox.gocardless.com/
+https://xero-staging.gocardless.com/
+https://xero.gocardless.com/

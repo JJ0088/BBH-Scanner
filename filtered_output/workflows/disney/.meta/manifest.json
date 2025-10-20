@@ -1,0 +1,38 @@
+{
+  "handle": "disney",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:22.614705",
+  "finished_at": "2025-10-20T10:59:22.615881",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 24,
+      "written": true,
+      "hash": "54251542fa762bdff8a0692b059d9a04c1d4531e81ed2618b140cffd180d2221"
+    },
+    "httpx_seeds.txt": {
+      "count": 26,
+      "written": true,
+      "hash": "0193c251306b126916c6fef4350849be175d09eff26b12cbd6992a9d291f52ca"
+    },
+    "katana_seeds.txt": {
+      "count": 24,
+      "written": true,
+      "hash": "54251542fa762bdff8a0692b059d9a04c1d4531e81ed2618b140cffd180d2221"
+    },
+    "nuclei_urls.txt": {
+      "count": 2,
+      "written": true,
+      "hash": "0931f7247399d12231acb7637bbdcb8a5d28a330dba3dad2ca2739f721e680cd"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 2,
+      "written": true,
+      "hash": "fec549e6545eafe0341830dfc2a24355d45984b8b11a61a8351d5a870db2e341"
+    }
+  },
+  "scope_count": 26,
+  "last_scope_hash": "8ee90eccd330935ee7489740935d4f22a5e30facf5d4af4bee3568164790fc7e"
+}

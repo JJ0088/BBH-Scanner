@@ -1,0 +1,38 @@
+{
+  "handle": "epicgames",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:22.646493",
+  "finished_at": "2025-10-20T10:59:22.648933",
+  "duration_sec": 0.002,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 161,
+      "written": true,
+      "hash": "5cb531ac024adc2bfbf87b0473c1c1a45c47e3aa94ddd0874be99501ee9243d5"
+    },
+    "httpx_seeds.txt": {
+      "count": 139,
+      "written": true,
+      "hash": "d751ae8319fbe60e352c52301fc9d416157ffe7d18fc78a6872708e3a8bf1197"
+    },
+    "katana_seeds.txt": {
+      "count": 158,
+      "written": true,
+      "hash": "fc8b589ddc8b14640ab1712af087a32b00a197fc475b9513f90949c723730822"
+    },
+    "nuclei_urls.txt": {
+      "count": 12,
+      "written": true,
+      "hash": "6aab6d5c82dff13b74a464ecf9b6d9f0dc2031174169b7558c235c70dc4547b5"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 12,
+      "written": true,
+      "hash": "52906d7740a37da41638213068fd0deb56d8ad4564a1b44b1b07dc23367aa682"
+    }
+  },
+  "scope_count": 176,
+  "last_scope_hash": "53dcee5e9c0176b31c0a90d0f0fe82bdfb065da2f208bd748d6f5d3cbd877101"
+}

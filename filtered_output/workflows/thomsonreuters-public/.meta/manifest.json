@@ -1,0 +1,38 @@
+{
+  "handle": "thomsonreuters-public",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:23.279505",
+  "finished_at": "2025-10-20T10:59:23.280354",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 2,
+      "written": true,
+      "hash": "75e7c5634e0e214019f90d4bed99775e2e915de2252e3bacc98788936ec20fe7"
+    },
+    "httpx_seeds.txt": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "katana_seeds.txt": {
+      "count": 2,
+      "written": true,
+      "hash": "b800d684fb40c1d15c209adc3b1d156c79e845a62a5dc5a5a94d5aa3bb50a10a"
+    },
+    "nuclei_urls.txt": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "scope_count": 2,
+  "last_scope_hash": "15a0c3207a42ac6fd3bcba86b0fc69ea05d873e0fde653d25e7423ea709bcde8"
+}

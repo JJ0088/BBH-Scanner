@@ -1,0 +1,3 @@
+https://api2.frontapp.com/
+https://app.frontapp.com/
+https://com.frontapp.mobile/

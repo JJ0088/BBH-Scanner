@@ -1,0 +1,15 @@
+business.booking.com/
+http://secure-iphone-xml.booking.com/json/
+https://apps.apple.com/us/app/booking-com-hotels-travel/id367003839
+https://apps.apple.com/us/app/pulse-for-booking-com-partners/id992795726
+https://fareharbor.com/demo/
+https://iphone-xml.booking.com/json/
+https://play.google.com/store/apps/details?id=com.booking&hl=en
+https://play.google.com/store/apps/details?id=com.booking.hotelmanager&hl=en
+https://secure-iphone-xml.booking.com/json/
+https://secure.booking.com/companyjoin.html
+https://secure.booking.com/enterprise/signon.en-gb.html
+https://ugcupload.booking.com/upload_bbtool_company_logo
+https://www.booking.com/bbm.html
+spadmin.booking.com/
+welcomekit.booking.com/

@@ -1,0 +1,2 @@
+http://www.kiwi.com/stories
+https://github.com/kiwicom/pytest-recording

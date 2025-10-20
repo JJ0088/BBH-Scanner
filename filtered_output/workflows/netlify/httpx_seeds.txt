@@ -1,0 +1,14 @@
+https://answers.netlify.com/
+https://api.netlify.com/
+https://app.netlify.com/
+https://docs.netlify.com/
+https://github.com/netlify/
+https://internal-docs.netlify.com/
+https://internal.netlify.com/
+https://list-v2--netlify-plugins.netlify.app/
+https://netlify-cdp-loader.netlify.app/
+https://netlify-rum.netlify.app/
+https://screenshot-proxy.netlify.app/
+https://supportal.netlify.app/
+https://webpop.com/
+https://www.netlify.com/

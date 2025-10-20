@@ -1,0 +1,15 @@
+https://businessdeposits.digitalcommerce.truist.com
+https://creditcard.digitalcommerce.truist.com/
+https://deposits.digitalcommerce.truist.com/
+https://developer.truist.com
+https://developer.truist.com/
+https://dias.bank.truist.com/
+https://dias.oneview.truist.com
+https://dias.oneview.truist.com/
+https://lending.digitalcommerce.truist.com/
+https://new.digitalcommerce.truist.com
+https://oneview.truist.com
+https://teammate.digitalcommerce.truist.com/
+https://trade.digitalcommerce.truist.com
+https://trade.digitalcommerce.truist.com/
+other: Out-of-Scope

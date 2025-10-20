@@ -1,0 +1,9 @@
+8x8-meeting-rooms
+8x8-work
+https://github.com/8x8/8x8_messaging_java_client
+https://github.com/jitsi
+https://webrtc.8x8.com/
+Intellectual Property on Public Domains
+Jitsi Meet Desktop
+Third Party Application
+Virtual Office Desktop

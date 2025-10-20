@@ -1,0 +1,28 @@
+https://accounts.firefox.com/
+https://addons.allizom.org/
+https://api.profiler.firefox.com/
+https://aus5.mozilla.org/
+https://bugzilla.mozilla.org/
+https://community-tc.services.mozilla.com/
+https://crash-reports.allizom.org/
+https://crash-stats.allizom.org/
+https://developer.mozilla.org/
+https://firefox-ci-tc.services.mozilla.com/
+https://firefox.settings.services.mozilla.com/
+https://hg.mozilla.org/
+https://lando.services.mozilla.com/
+https://merino.services.mozilla.com/
+https://monitor.mozilla.org/
+https://mozilla-pontoon-staging.herokuapp.com/
+https://phabricator.allizom.org/
+https://profiler.firefox.com/
+https://push.services.mozilla.com/
+https://relay.firefox.com/
+https://stage.taskcluster.nonprod.cloudops.mozgcp.net/
+https://support.mozilla.org/
+https://sync.services.mozilla.com/
+https://vpn.mozilla.org/
+https://www.mozilla.org/
+Mozilla Ad Routing Service
+Mozilla VPN Clients
+Product Delivery

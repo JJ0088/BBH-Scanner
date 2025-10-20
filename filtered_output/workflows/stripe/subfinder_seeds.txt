@@ -1,0 +1,12 @@
+bridge.xyz
+getbouncer.com
+https://app.taxjar.com/
+https://com.stripe.android.dashboard/
+https://js.stripe.com/
+https://www.stripe.partners/
+lemonsqueezy.com
+link.co
+recko.io
+reckoproduction.com
+reckostaging.com
+stripe.com

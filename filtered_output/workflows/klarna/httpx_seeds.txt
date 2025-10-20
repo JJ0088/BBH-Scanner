@@ -1,0 +1,19 @@
+https://api-stage.pricerunner.com/swagger-ui.html
+https://api-us.pricerunner.com/swagger-ui.html
+https://api.klarna.com/
+https://api.pricerunner.com/swagger-ui.html
+https://app.klarna.com/
+https://app.klarna.com/us/api/connected_card_bff/
+https://js.klarna.com/
+https://klarna android app (com.myklarnamobile)/
+https://klarna ios app (com.klarna.app)/
+https://klarna.com/
+https://klarna.net/
+https://klarnacdn.net/
+https://locker.klarna.com/
+https://nuji.com/
+https://portal.openbanking.playground.klarna.com/
+https://pricerunner.com/
+https://xs2a.banking.playground.klarna.com/
+Kustom
+Merchant Portal

@@ -1,0 +1,16 @@
+https://buddypress.org,bbpress.org,profiles.wordpress.org/
+https://codex.wordpress.org,codex.bbpress.org,codex.buddypress.org/
+https://doaction.org/
+https://irclogs.wordpress.org/
+https://lists.wordpress.org/
+https://mercantile.wordpress.org/
+https://munin-*.wordpress.org/
+https://org.wordpress.android/
+https://planet.wordpress.org/
+https://status.wordpress.org,glotpress.blog,wordpress.tv/
+https://trac.wordpress.org, *.svn.wordpress.org, *.git.wordpress.org, github.com/WordPress/
+https://wordcamp.org/
+https://wordpress.com/
+https://wordpress.net/
+https://wordpress.org/
+https://wordpressfoundation.org/

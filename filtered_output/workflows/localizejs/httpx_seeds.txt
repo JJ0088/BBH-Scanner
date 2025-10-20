@@ -1,0 +1,4 @@
+https://api.localizestaging.com/
+https://app.localizestaging.com/
+https://cdn.localizestaging.com/
+https://localizestaging.com/

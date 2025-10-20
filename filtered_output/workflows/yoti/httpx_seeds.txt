@@ -1,0 +1,13 @@
+983980808
+https://api.yoti.com/
+https://ccloud.yoti.com/
+https://code.yoti.com/
+https://com.yoti.mobile.android.live/
+https://core.yoti.com/
+https://developers.yoti.com/
+https://hub.yoti.com/
+https://identity.yoti.com/
+https://www.yoti.com/
+https://www.yotisign.com/
+Yoti liveness detection campaign
+Yoti Password Manager browser extension

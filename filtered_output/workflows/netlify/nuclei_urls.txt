@@ -1,0 +1,2 @@
+https://api.netlify.com/
+https://github.com/netlify/

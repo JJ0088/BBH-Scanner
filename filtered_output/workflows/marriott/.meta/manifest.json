@@ -1,0 +1,38 @@
+{
+  "handle": "marriott",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:23.023504",
+  "finished_at": "2025-10-20T10:59:23.025015",
+  "duration_sec": 0.002,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 47,
+      "written": true,
+      "hash": "104b0c0b9d6ac3a1b41b730c2d74552345df5680919dd1761b667efaa4f13f79"
+    },
+    "httpx_seeds.txt": {
+      "count": 46,
+      "written": true,
+      "hash": "bf239f649ad0214d49c3624b99751efcea4ec6abf6b2f65ebe73cc3c96b1d957"
+    },
+    "katana_seeds.txt": {
+      "count": 47,
+      "written": true,
+      "hash": "d7206cd21a43b779759fbdede63274b6f4fdd5efff69018c82cfda4600faf583"
+    },
+    "nuclei_urls.txt": {
+      "count": 5,
+      "written": true,
+      "hash": "6f42f970bf063b4a2b6d49bc4906e63ed04b63ac34fde44abe31111b7ad223b6"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 5,
+      "written": true,
+      "hash": "466d4e785d4efa8a025542631fcf8424684586ece01c0694cd38aef884259351"
+    }
+  },
+  "scope_count": 52,
+  "last_scope_hash": "11f0b4d8465306e4bbfb813e865c77d39b7fd1ceb67030e82bfa8d339982d1ac"
+}

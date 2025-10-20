@@ -1,0 +1,11 @@
+https://account.brave.com/
+https://basicattentiontoken.org/
+https://brave.com/
+https://com.brave.browser/
+https://com.brave.browser_beta/
+https://com.brave.ios.browser/
+https://com.linkbubble.playstore/
+https://creators.basicattentiontoken.org/
+https://github.com/brave/*, https://github.com/brave-intl/*
+https://search.brave.com/
+https://talk.brave.com/

@@ -1,0 +1,5 @@
+3rd party integrations
+http://sandbox-api.fireblocks.io
+http://sb-console-api.fireblocks.io
+http://sb-mobile-api.fireblocks.io
+https://sandbox.fireblocks.io/v2/settings/notifications

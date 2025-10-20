@@ -17,11 +17,10 @@ __pycache__/
 # Database e backup locali (non versionare in pubblico)
 data/*.db
 data/backups/
-
+filtered_output
 # Output runtime (li rigeneriamo)
 logs/
 results/
 
 # Documentazione generata/esportata (se non vuoi versionarla)
 # Documentazione/
-

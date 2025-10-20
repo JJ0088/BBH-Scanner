@@ -1,0 +1,38 @@
+{
+  "handle": "logitech",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:23.002839",
+  "finished_at": "2025-10-20T10:59:23.004468",
+  "duration_sec": 0.002,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 69,
+      "written": true,
+      "hash": "4d6d9b46f0b4deaf53bd4e872e28cf20c400bb88642c3b66e362de7c95a4a84d"
+    },
+    "httpx_seeds.txt": {
+      "count": 64,
+      "written": true,
+      "hash": "37c65f01eb686770f25ba6cd7a036ecb96f39cbc365e925ae435741495bb40cf"
+    },
+    "katana_seeds.txt": {
+      "count": 69,
+      "written": true,
+      "hash": "21a2b34f32508fc66f3ffdfd4f081edf3f514b82feea9f76af3ad57595315c79"
+    },
+    "nuclei_urls.txt": {
+      "count": 26,
+      "written": true,
+      "hash": "e2eadf38fb1d35c3166910819fc61dc0e9d56927c02edf367edbebd5157b451a"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 26,
+      "written": true,
+      "hash": "ea45787ca388c2e04a43fd74f95af010cf63f32babe3a79b3652e37c472880fb"
+    }
+  },
+  "scope_count": 95,
+  "last_scope_hash": "4b3e398b5cf8069f11ce4fd7d0e7be52ae2bb4641a91029e3404be85613f3920"
+}

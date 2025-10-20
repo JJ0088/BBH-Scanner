@@ -1,0 +1,10 @@
+1351179184
+https://api.bykea.net
+https://bykea.com/
+https://com.bykea.pk.partner/
+https://com.bykea.pk/
+https://geocode-beta.bykea.net
+https://leaflet-map.bykea.net
+https://maps.bykea.net
+https://nominatim.bykea.net
+https://www.tilismtechservices.com/

@@ -1,0 +1,2 @@
+https://java component in search.maven.org/
+https://java component not in search.maven.org/

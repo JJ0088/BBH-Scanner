@@ -1,0 +1,17 @@
+https://*.ro.co/api/members
+https://*.ro.co/svc/auth-verifications/*/phone/*
+https://community.modernfertility.com/
+https://getroman.com/
+https://hellorory.com/
+https://kit.ro.co/
+https://login.ro.co/
+https://modernfertility.com/
+https://my.ro.co/
+https://myplenity.com/
+https://ro.co/
+https://ro.co/messages/*
+https://ro.co/svc/auth-verifications/*/phone/*
+https://ro.co/weight-loss/glp1-insurance-checker/*
+https://ro.co/weight-loss/supply-tracker/*
+https://ropharmacy.com/
+https://start.ro.co/

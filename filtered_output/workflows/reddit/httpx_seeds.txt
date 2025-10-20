@@ -1,0 +1,21 @@
+Android App
+Core Assets
+https://accounts.reddit.com/
+https://ads.reddit.com/
+https://amp.reddit.com/
+https://api.reddit.com/
+https://business.reddithelp.com/
+https://developers.reddit.com/
+https://gateway.reddit.com/
+https://gql.reddit.com/
+https://m.reddit.com/
+https://matrix.redditspace.com/
+https://meta-api.reddit.com/
+https://mod.reddit.com/
+https://new.reddit.com/
+https://reddit.secure.force.com/
+https://redditforbusiness.com/
+https://sh.reddit.com/
+https://strapi.reddit.com/
+iOS App
+Non-Core Assets

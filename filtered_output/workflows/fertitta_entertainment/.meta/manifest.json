@@ -1,0 +1,38 @@
+{
+  "handle": "fertitta_entertainment",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:22.679650",
+  "finished_at": "2025-10-20T10:59:22.680749",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 24,
+      "written": true,
+      "hash": "3d13f44d3457e2d6738ddec73358c371e2e1984373a7d19b8d359d93bffb1e5b"
+    },
+    "httpx_seeds.txt": {
+      "count": 23,
+      "written": true,
+      "hash": "27fb218cfda4b7adb3abbe321dd5d21c636374ebb6885a6cc1e6341ab7e79037"
+    },
+    "katana_seeds.txt": {
+      "count": 24,
+      "written": true,
+      "hash": "6e597f6e582ddeda2cfb4a23a547d3ee9469562427b7a7a9cd8dfc21fd183bf6"
+    },
+    "nuclei_urls.txt": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "scope_count": 24,
+  "last_scope_hash": "0d33594da79c1c48c13ce96a1700a419950df79ab671d62ec100e4dc35a10c43"
+}

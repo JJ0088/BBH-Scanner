@@ -1,0 +1,3 @@
+https://api.sorare.com/
+https://sorare.com/
+https://ws.sorare.com/

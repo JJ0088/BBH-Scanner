@@ -1,0 +1,124 @@
+Aero USB RFID Reader
+BLEGateway (IF-4041)
+CISA Aero PMS Service (Windows)
+CISA Reader App (iMac)
+CISA Reader App (Windows)
+Domo Connexa Button
+Encoder 2
+eServer
+eSigno Lock 2
+https://allegion.ca/
+https://apps.apple.com/au/app/schlage-breeze-guest/id1533768823
+https://apps.apple.com/au/app/schlage-breeze-hotel/id1533768772
+https://apps.apple.com/au/app/schlage-breeze/id1510864627
+https://apps.apple.com/in/app/gainsborough-freestyle/id1522406111
+https://apps.apple.com/la/app/isel/id1220364077
+https://apps.apple.com/la/app/schlage-base/id1634746027
+https://apps.apple.com/us/app/key/id1150331435
+https://apps.apple.com/us/app/key4friends/id1141846653
+https://apps.apple.com/us/app/kryptonite-locks-lights-app/id1534328893
+https://apps.apple.com/us/app/mobilekey/id1231074427
+https://apps.apple.com/us/app/pure-mobile/id1194728322
+https://apps.apple.com/us/app/schlage-home/id1038212933
+https://apps.apple.com/us/app/schlage-mobile-access/id1505710549
+https://apps.apple.com/us/app/yonomi/id991840741
+https://apps.apple.com/us/app/zentra-access/id1593437290
+https://brio.com.au/
+https://brionz.com/
+https://briouk.com/
+https://briousa.com/
+https://cisasmartaccess.allegion.com/login
+https://com.allegion.access.store/
+https://com.allegion.cisa.openx/
+https://com.allegion.cisa.openx_key/
+https://com.allegion.cisa.openxkey/
+https://com.allegion.cisa.smartaccess/
+https://com.allegion.freestyle/
+https://com.allegion.ifkey/
+https://com.allegion.leopard/
+https://com.allegion.schlagemobileaccess/
+https://com.allegion.sense.store/
+https://com.allegion.stingray/
+https://com.allegion.teachin/
+https://com.allegion.tigershark/
+https://com.interflex.key/
+https://com.my-mobilekey.key4friends/
+https://com.schlage.engage/
+https://com.schlage.overtur/
+https://com.simonsvoss.mobilekey.adminapp/
+https://com.simonsvoss.mobilekey.key4android/
+https://itunes.apple.com/app/id1038212933
+https://itunes.apple.com/app/id1462089647
+https://itunes.apple.com/app/id920140172
+https://keycontrol.allegion.com/it
+https://play.google.com/store/apps/details?id=com.allegion.cisa.smartaccess
+https://play.google.com/store/apps/details?id=com.allegion.freestyle
+https://play.google.com/store/apps/details?id=com.allegion.leopard
+https://play.google.com/store/apps/details?id=com.allegion.schlagemobileaccess
+https://play.google.com/store/apps/details?id=com.allegion.stingray
+https://play.google.com/store/apps/details?id=com.allegion.teachin
+https://play.google.com/store/apps/details?id=com.allegion.tigershark
+https://play.google.com/store/apps/details?id=com.breeze.hotel
+https://play.google.com/store/apps/details?id=com.breeze.lock&hl=en_AU
+https://play.google.com/store/apps/details?id=com.breezehotel.staff&hl=en_US
+https://play.google.com/store/apps/details?id=com.isonas.puremobile&hl=en_US&gl=US
+https://play.google.com/store/apps/details?id=com.schlage.overtur
+https://play.google.com/store/apps/details?id=com.schlage.smart
+https://play.google.com/store/apps/details?id=com.schlageabode.lock&hl=en_NZ
+https://play.google.com/store/apps/details?id=com.simonsvoss.mobilekey.adminapp
+https://play.google.com/store/apps/details?id=com.simonsvoss.mobilekey.key4android
+https://play.google.com/store/apps/details?id=com.sp_expert_connect.app
+https://play.google.com/store/apps/details?id=com.yonomi
+https://play.google.com/store/apps/details?id=com.yudu.kryptonite.na&hl=en_US&gl=US
+https://staebapp01.allegion.com/
+https://stanleyaccess.com/
+https://stczpisupplier.allegion.com/
+https://stisupplier.allegion.com/
+https://unicelarchitectural.com/
+https://www.allegion.ca/
+https://www.allegion.co.uk/
+https://www.ausloc.com/
+https://www.axasecurity.com/
+https://www.boss-idc.com/
+https://www.bossdoorcontrols.com/
+https://www.bricard.com/
+https://www.cisa.com/
+https://www.fireglass.com/
+https://www.fshlocking.com.au/
+https://www.gainsboroughhardware.com.au/
+https://www.interflex.com/
+https://www.interflex.de/
+https://www.isonas.com/
+https://www.krytonitelock.com/
+https://www.normbau.de/
+https://www.planopunkt.com/
+https://www.republicdoor.com/
+https://www.schlage.com/
+https://www.simons-voss.com/
+https://www.specadsystems.com/
+https://www.trelock.com/
+https://www.yonomi.com/
+https://zentra.co/
+https://zeroplus.co.uk/
+Interflex controllers
+Interflex desktop readers and encoders
+Interflex Managed Services (cloud)
+Interflex Software IF-6020
+Interflex Software IF-6040
+Interflex Software SP-EXPERT
+Interflex Terminals access control
+Interflex Terminals time recording
+MyEVO Lock Controller
+MyEVO RFID Transponder
+OpenX eCylinder
+OpenX eHandle
+OpenX Wall Reader
+Schlage Control
+Schlage CTE Single Door Controller
+Schlage Encode
+Schlage GWE Gateway
+Schlage LE/LEB
+Schlage NDE/NDEB
+Smart Software 4
+Von Duprin RU/RM
+Wall Reader 2

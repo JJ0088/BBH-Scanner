@@ -1,0 +1,38 @@
+{
+  "handle": "costco",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:22.580693",
+  "finished_at": "2025-10-20T10:59:22.581887",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 15,
+      "written": true,
+      "hash": "135f4aa3b066b17154d10ca130a2a9967929ba9d92398cc62413c9d7776e8fb6"
+    },
+    "httpx_seeds.txt": {
+      "count": 9,
+      "written": true,
+      "hash": "33508e0f3d9ab08ed7d31fd98117c5ceec9cd4aa8b69bec0c8b2022a81dbc047"
+    },
+    "katana_seeds.txt": {
+      "count": 15,
+      "written": true,
+      "hash": "f48059e6ad495d38792b2eeb7f0667406239d16dd749aa945859d9c95f2b2afb"
+    },
+    "nuclei_urls.txt": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "scope_count": 15,
+  "last_scope_hash": "76272ecad8fd1d488ab08b6700075be51f44b0bcd21e0982eb719784895abaeb"
+}

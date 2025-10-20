@@ -1,0 +1,38 @@
+{
+  "handle": "leather_wallet",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:22.989356",
+  "finished_at": "2025-10-20T10:59:22.990351",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 1,
+      "written": true,
+      "hash": "266a496576d5661341c1a4407f36534cd0a5bdbd395ff1ba9fc832ae380d6f62"
+    },
+    "httpx_seeds.txt": {
+      "count": 2,
+      "written": true,
+      "hash": "becd18584e884ba7c65fced5c60bbea48521c7ac4ec7b3e12a7ab4ec12cf37a3"
+    },
+    "katana_seeds.txt": {
+      "count": 1,
+      "written": true,
+      "hash": "266a496576d5661341c1a4407f36534cd0a5bdbd395ff1ba9fc832ae380d6f62"
+    },
+    "nuclei_urls.txt": {
+      "count": 1,
+      "written": true,
+      "hash": "23fd8be9d99fbe87ffd2976e1d5cfcf7859ed4e08631b738c667a73672cc1148"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 1,
+      "written": true,
+      "hash": "368cd073750ce6a701398319558b7f685abb754dd869852b99e432a5aa216782"
+    }
+  },
+  "scope_count": 2,
+  "last_scope_hash": "c2c3315c4c7e0d0893a6213a7ae22f87444ba55d61a2be5a4b8cc9633b649f91"
+}

@@ -1,0 +1,14 @@
+https://*-faq-*.cornershopapp.com/
+https://*-faq.cornershopapp.com/
+https://*-growth.cornershopapp.com/
+https://bananarama.cornershopapp.com/
+https://blog.cornershopapp.com/
+https://cornershop.io/*/
+https://cornershopapp.android/
+https://cornershopapp.com/*/
+https://github.com/cornershop/*/
+https://io.cornershop.ios/
+https://onelink.cornershopapp.com/
+https://superpal.com/*/
+https://superpal.io/*/
+https://tech.cornershop.io/

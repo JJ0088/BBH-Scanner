@@ -1,0 +1,8 @@
+FAX Programmable API
+https://plus.fax.android/
+https://plus.fax.faxplus/
+https://plus.scan.android/
+https://plus.scan.scanplus/
+https://plus.sign.android/
+https://plus.sign.signplus/
+https://www.alohi.com/

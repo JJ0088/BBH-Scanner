@@ -1,0 +1,38 @@
+{
+  "handle": "tennessee-valley-authority",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:23.275459",
+  "finished_at": "2025-10-20T10:59:23.276547",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 16,
+      "written": true,
+      "hash": "cf16acf1b57913fd0e834843f4a02222fba5971c9352aea6934905e3cea369f4"
+    },
+    "httpx_seeds.txt": {
+      "count": 19,
+      "written": true,
+      "hash": "ca8b3cf6de409c0c8dba22fd348b0087039b654f00d645e8c14cde76116c6909"
+    },
+    "katana_seeds.txt": {
+      "count": 15,
+      "written": true,
+      "hash": "9ce962eb9c3f78bcd53e776c2bdd7b29dcd49d117f5bf489d17abaf5c3bcf9a5"
+    },
+    "nuclei_urls.txt": {
+      "count": 8,
+      "written": true,
+      "hash": "115daf514e865827b3f2a16d124423e0bc91a76969f1b38d5e0500d0bc06a1e1"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 8,
+      "written": true,
+      "hash": "589c526c7904d2bcab4434898a4d6eaedd5f4feb27d27b355452990736dd5c58"
+    }
+  },
+  "scope_count": 24,
+  "last_scope_hash": "8ce91efd10610a060227644e386b2941170a20c2f762d3ac8b36118e6d9b0e13"
+}

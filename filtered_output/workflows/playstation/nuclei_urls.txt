@@ -1,0 +1,6 @@
+Android Playstation App
+https://api.direct.playstation.com/
+https://wallets.api.playstation.com/
+iOS Playstation App
+PlayStation 4
+PlayStation 5

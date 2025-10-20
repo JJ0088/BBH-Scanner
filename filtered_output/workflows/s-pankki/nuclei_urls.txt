@@ -1,0 +1,4 @@
+740514933
+https://api.s-kaupat.fi/
+https://api.sokos.fi/
+https://crosskey.io/stores/s-pankki/apis

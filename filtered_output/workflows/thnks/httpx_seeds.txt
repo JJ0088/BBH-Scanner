@@ -1,0 +1,4 @@
+https://api.thnks.com/
+https://app.thnks.com/
+https://com.thnks.appstore/
+https://com.thnks/

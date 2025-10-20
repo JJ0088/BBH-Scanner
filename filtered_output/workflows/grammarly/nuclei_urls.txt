@@ -1,0 +1,15 @@
+AppActions
+Browser Extensions
+Capture the Flag
+Grammarly Agent Runtime
+Grammarly AI Assistant
+Grammarly Auth Services
+Grammarly Business Features
+Grammarly Desktop for macOS
+Grammarly Desktop for Windows
+Grammarly Editor for MacOS
+Grammarly Editor for Windows
+Grammarly for Developers Text Editor SDK
+Grammarly for Microsoft Word
+MS Office Add-In
+Third party external services

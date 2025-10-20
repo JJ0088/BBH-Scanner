@@ -1,0 +1,38 @@
+{
+  "handle": "vodafone_oman",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:23.339455",
+  "finished_at": "2025-10-20T10:59:23.340531",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 6,
+      "written": true,
+      "hash": "32f28d41b8a53e7bf51f8dd4c14b66a9c7c88d6a56fcbb722d92b91caa6faab6"
+    },
+    "httpx_seeds.txt": {
+      "count": 7,
+      "written": true,
+      "hash": "1f655c8447762f81355beb68df802f63be3e9b4222320816874601ca6bfc10fc"
+    },
+    "katana_seeds.txt": {
+      "count": 6,
+      "written": true,
+      "hash": "32f28d41b8a53e7bf51f8dd4c14b66a9c7c88d6a56fcbb722d92b91caa6faab6"
+    },
+    "nuclei_urls.txt": {
+      "count": 1,
+      "written": true,
+      "hash": "d91e434848d0201824c928c7562f8a58091edefe995084756bfecde7c5ea4b77"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 1,
+      "written": true,
+      "hash": "67d1032c36f62007659699c0c7ffdc683f96c77d83fb233a68c5491b61e534dc"
+    }
+  },
+  "scope_count": 7,
+  "last_scope_hash": "fbe9bccd1c076a7ec8c086fbdbe6b7a0fa180d78399f9ee3e4ce77b35c5480c8"
+}

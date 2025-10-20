@@ -1,0 +1,27 @@
+Core Tier Assets
+https://card.metamask.io/
+https://community.metamask.io/
+https://developer.metamask.io/
+https://io.metamask.metamask/
+https://io.metamask/
+https://metamask.github.io/
+https://metamask.github.io/phishing-warning/<vX.Y.Z>
+https://metamask.io/
+https://mmi-support.metamask.io/
+https://permissionless.snaps.metamask.io/
+https://portfolio.metamask.io/
+https://signature-insights.api.cx.metamask.io/
+https://snaps.metamask.io/
+https://support.metamask.io/
+https://travel.metamask.io/
+https://user-storage.api.cx.metamask.io
+https://www.npmjs.com/search?q=%40metamask
+Message signing snap
+MetaMask Browser Extension
+Metamask Flask Extension
+MetaMask SDK
+Non-Core Tier Assets
+Snaps
+Snaps Development Packages
+Third Party Snaps
+Wallet Tier Assets

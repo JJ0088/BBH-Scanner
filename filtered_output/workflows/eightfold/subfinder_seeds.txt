@@ -1,0 +1,3 @@
+eightfold.ai
+https://*.eightfold.ai
+https://eightfold.ai/

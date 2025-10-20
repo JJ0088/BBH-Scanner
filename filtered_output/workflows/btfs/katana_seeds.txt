@@ -1,0 +1,1 @@
+https://readme.io,*.bittorrent.com,*.bt.co/

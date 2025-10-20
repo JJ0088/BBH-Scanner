@@ -1,0 +1,4 @@
+https://api.faraday.ai/
+https://app.faraday.ai/
+s3://faraday-secret
+s3://faraday-uploads

@@ -1,0 +1,12 @@
+https://*.metamask.io
+https://api.cx.metamask.io/
+https://card.metamask.io/
+https://community.metamask.io/
+https://developer.metamask.io/
+https://io.metamask.metamask/
+https://io.metamask/
+https://metamask.io/
+https://permissionless.snaps.metamask.io/
+https://portfolio.metamask.io/
+https://snaps.metamask.io/
+https://travel.metamask.io/

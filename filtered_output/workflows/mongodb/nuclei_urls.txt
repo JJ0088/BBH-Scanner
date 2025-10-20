@@ -1,0 +1,24 @@
+All Evergreen Assets (Excluding staging)
+artifactory.corp.mongodb.com/
+BI Connector
+C
+C Driver
+C++ Driver
+Cluster-To-Cluster sync
+Compass
+Enterprise Edition Products and Tools
+GO Driver
+Java Driver
+Kafka Connector
+MongoDB Community Server Local Instance
+MongoDB Driver: Swift
+MongoDB Owned GitHub Repositories
+MongoDB Realm SDKs
+MongoDB Shell
+PHP Driver
+Python Driver
+Relational Migrator
+Ruby Driver
+Rust Driver
+Spark Connector
+VS Code Plugin

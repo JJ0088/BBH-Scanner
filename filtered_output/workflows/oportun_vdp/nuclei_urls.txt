@@ -1,0 +1,3 @@
+https://account.oportun.com/creditcards
+https://account.oportun.com/services
+https://api.digit.co/

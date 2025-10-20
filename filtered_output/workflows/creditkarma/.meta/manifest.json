@@ -1,0 +1,38 @@
+{
+  "handle": "creditkarma",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:22.583447",
+  "finished_at": "2025-10-20T10:59:22.584540",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 18,
+      "written": true,
+      "hash": "9855782104f0d0e0136cd656553f496b54f9a564df54652c4386322df8175fe1"
+    },
+    "httpx_seeds.txt": {
+      "count": 18,
+      "written": true,
+      "hash": "2deb4bcbd1a8d293f7516f2f1e614affa91f8e4599ca387deb9669067b67292e"
+    },
+    "katana_seeds.txt": {
+      "count": 18,
+      "written": true,
+      "hash": "9855782104f0d0e0136cd656553f496b54f9a564df54652c4386322df8175fe1"
+    },
+    "nuclei_urls.txt": {
+      "count": 4,
+      "written": true,
+      "hash": "a8340b22b9a40dd7f3afd46cb16541cbb74e942c409206a8977faea7186028bb"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 4,
+      "written": true,
+      "hash": "c7f08a1ed52d66ff126545af688487d558c2af1f77a92923cc64a15a8f4fc042"
+    }
+  },
+  "scope_count": 24,
+  "last_scope_hash": "41e8a7c32e7fa9e56b8b1530727d1821cdcd9da77d951f5c217d6bde17aa11b6"
+}

@@ -1,0 +1,38 @@
+{
+  "handle": "nordsecurity",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:23.093501",
+  "finished_at": "2025-10-20T10:59:23.094561",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 4,
+      "written": true,
+      "hash": "d1c154fdc132f40876091ae4eb031dfdf2bbb632d7e8a4ca73b806f779e274f3"
+    },
+    "httpx_seeds.txt": {
+      "count": 15,
+      "written": true,
+      "hash": "674529fa0bf855e508353077c4d935e7b227f2b624abcd6da1a38a0b34ee2915"
+    },
+    "katana_seeds.txt": {
+      "count": 4,
+      "written": true,
+      "hash": "5bc01b5273327ffef758d12520619be420ca6f1807483af07196fba7e8747857"
+    },
+    "nuclei_urls.txt": {
+      "count": 12,
+      "written": true,
+      "hash": "bf79547d34c5d148c68340dd27e62c15c8f25de74623c8aaa61d95e6fa73d9f6"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 12,
+      "written": true,
+      "hash": "dd7cc5e61a2efea6963714f55c7272db5a3e6c70c859dcad95f73d926a98a823"
+    }
+  },
+  "scope_count": 17,
+  "last_scope_hash": "189b52314bc29f86c87551ea6e4d18504efb6e8e4d6171dbadb850e9cfd9563a"
+}

@@ -1,0 +1,7 @@
+*dhcp*.gobrightspeed.net
+brightspeed.com
+https://brightspeed.com/
+https://brightspeed.service-now.com/
+https://brightspeedtsm.service-now.com/
+https://dhcp.embarqhsd.net/
+https://gobrightspeed.net/

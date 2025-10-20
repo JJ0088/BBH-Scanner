@@ -1,0 +1,39 @@
+3PointData / CX2
+Active Networks
+Analytics & Customer Engagement (ACE)
+Cayan
+Comercia Global Payments
+ECSI
+eWay
+Ezidebit
+Global Payments Inc
+Global Payments Integrated
+GP AUNZ
+GP eCom
+GP Integrated
+GP Integrated - PayGateway
+GPE
+Greater Giving
+Heartland Payment Systems
+Heartland Restaurant / Retail / Payroll / Human Capital Management (Get Hired)
+http://cloud-sbox.storman.com
+http://portal-staging.storman.com
+https://bleepplc.co.uk/
+https://developer.globalpay.com/
+https://evo payments, inc./
+https://globalpaymentsinc.com and globalpayments.com - out of scope/
+https://pcamerica.com/
+https://remotesupport.heartland.us/
+Leaked Credentials
+Micropayments
+MineralTree
+My School Bucks
+Nextep
+OpenEdge
+Sentral
+Storman
+TouchNet
+TSYS
+UCS
+Xenial (Xenial)
+Zego

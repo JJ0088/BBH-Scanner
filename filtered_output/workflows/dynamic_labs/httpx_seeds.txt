@@ -1,0 +1,4 @@
+https://app.dynamic-preprod.xyz/
+https://app.dynamic.xyz/
+https://billing.dynamic.xyz/
+https://demo.dynamic.xyz/

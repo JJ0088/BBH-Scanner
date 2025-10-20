@@ -1,0 +1,4 @@
+https://api.creditkarma.com/
+https://www.creditkarma.com/all/advice
+https://www.creditkarma.com/reviews/
+https://www.creditkarma.com/savings

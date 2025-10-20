@@ -1,0 +1,7 @@
+https://api-stage.pricerunner.com/swagger-ui.html
+https://api-us.pricerunner.com/swagger-ui.html
+https://api.klarna.com/
+https://api.pricerunner.com/swagger-ui.html
+https://app.klarna.com/us/api/connected_card_bff/
+Kustom
+Merchant Portal

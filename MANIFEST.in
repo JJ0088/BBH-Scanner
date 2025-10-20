@@ -1,0 +1,6 @@
+# MANIFEST.in
+exclude data/*
+exclude logs/*
+exclude results/*
+exclude filtered_output/*
+exclude Documentazione/*

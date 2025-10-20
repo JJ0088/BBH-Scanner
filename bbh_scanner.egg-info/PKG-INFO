@@ -1,0 +1,5 @@
+Metadata-Version: 2.4
+Name: bbh-scanner
+Version: 0.3.0
+Summary: BBH-Scanner: filterer + runner per bug bounty automation
+Requires-Python: >=3.11

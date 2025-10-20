@@ -188,4 +188,3 @@ results/
 ---
 
 Fine documento (MVP). Prossimo capitolo: **Filterer**.
-

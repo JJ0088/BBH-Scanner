@@ -1,0 +1,34 @@
+54.175.255.192/27
+Coinbase WaaS (Wallet as a Service)
+http://coinbase.com
+https://api.coinbase.com/
+https://api.custody.coinbase.com/
+https://base.org
+https://blog.coinbase.com/
+https://chrome.google.com/webstore/detail/coinbase-wallet-extension/hnfanknocfeofbddgcijnmhnfnkdnaad
+https://cloud.coinbase.com/
+https://coinbase.com/
+https://com.coinbase.android/
+https://com.coinbase.ios/
+https://com.coinbase.pro/
+https://com.coinbase.wallite/
+https://commerce.coinbase.com/
+https://custody.coinbase.com/
+https://developers.coinbase.com/
+https://engineering.coinbase.com/
+https://github.com/coinbase/cb-mpc
+https://institutional.coinbase.com/
+https://international.coinbase.com/
+https://nft.coinbase.com/
+https://org.toshi.distribution/
+https://org.toshi/
+https://paradex.io/
+https://prime.coinbase.com/
+https://pro.coinbase.com/
+https://status.coinbase.com/
+https://support.coinbase.com/
+https://support.pro.coinbase.com/
+https://tagomi.com/
+N/A - Not Coinbase owned or operated
+Other
+Web3 Smart Contracts

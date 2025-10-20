@@ -1,0 +1,12 @@
+Assets which are owned by Paystack are in scope for this Vulnerability Disclosure Program
+https://api.paystack.co/
+https://checkout.paystack.com/
+https://com.paystack.zap/
+https://dashboard.paystack.com/
+https://decodefintech.com/
+https://nigerialogos.com/
+https://paystack.shop/
+https://paystackintegrations.com/
+https://paystackmfb.com/
+https://standard.paystack.co/
+https://zap.money/

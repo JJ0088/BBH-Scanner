@@ -1,0 +1,2 @@
+Any Asset Not Specifically Listed as In-Scope
+s3://floqast

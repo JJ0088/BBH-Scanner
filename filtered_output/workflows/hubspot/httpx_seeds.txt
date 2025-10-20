@@ -1,0 +1,13 @@
+Customer Connected Domain
+Customer Portal
+https://chatspot.ai/
+https://connect.com/
+https://events.hubspot.com/
+https://ir.hubspot.com/
+https://shop.hubspot.com/
+https://thespot.hubspot.com/
+https://trust.hubspot.com/
+HubSpot Android Mobile App
+HubSpot iOS Mobile App
+HubSpot Sales Office 365 add-in
+Other HubSpot-owned (sub)domains not listed as Out of Scope

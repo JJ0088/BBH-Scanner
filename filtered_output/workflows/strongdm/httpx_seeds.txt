@@ -1,0 +1,14 @@
+https://api.strongdm.com/
+https://app.strongdm.com/
+https://help.strongdm.com/
+https://sdm client - macos (sdm.app)/
+https://sdm client - windows (sdm.exe)/
+https://security.strongdm.com/
+https://status.strongdm.com/
+https://www.strongdm.com/
+Other Not Listed
+strongDM Gateway Docker/Kuberneters/Fargate Relay Container Image
+StrongDM Go SDK
+StrongDM Java SDK
+StrongDM Python SDK
+StrongDM Ruby SDK

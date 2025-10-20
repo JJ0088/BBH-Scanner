@@ -1,0 +1,3 @@
+https://github.com/
+https://hg.weblate.org/
+https://hosted.weblate.org/

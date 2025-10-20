@@ -1,0 +1,5 @@
+https://k8s.gcr.io/
+https://k8s.io/
+https://kubernetes-csi.github.io/
+https://kubernetes.io/
+https://prow.k8s.io/

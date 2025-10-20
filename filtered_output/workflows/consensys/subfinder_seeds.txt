@@ -1,0 +1,9 @@
+api.cx.metamask.io
+https://consensys-solutions.net/
+https://consensys.net/
+https://developer.metamask.io/
+https://on-ramp.metaswap-dev.codefi.network/
+https://staking.consensys.io/
+https://support.metamask.io/
+https://tickets.metamask.io/
+https://www.mesh.xyz/

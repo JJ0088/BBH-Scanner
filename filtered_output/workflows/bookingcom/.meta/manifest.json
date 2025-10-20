@@ -1,0 +1,38 @@
+{
+  "handle": "bookingcom",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:22.346357",
+  "finished_at": "2025-10-20T10:59:22.348010",
+  "duration_sec": 0.002,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 57,
+      "written": true,
+      "hash": "57a1a4fb538494e9baec17e73e57ad9d84b079bcf27513c3c64e4322970828ed"
+    },
+    "httpx_seeds.txt": {
+      "count": 64,
+      "written": true,
+      "hash": "f13060f70b8b233cbb8aef3c4c589eee34f63208e42a9fb26cac35b3cf9a1326"
+    },
+    "katana_seeds.txt": {
+      "count": 56,
+      "written": true,
+      "hash": "c9d9472891620d054e89744b414d9b06038a0163543ddb6cc708c3c03b3a3ee7"
+    },
+    "nuclei_urls.txt": {
+      "count": 15,
+      "written": true,
+      "hash": "d070c523e27b61d1f8de46b436f6d5de304206b38641a311da22e907ba0a9c16"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 15,
+      "written": true,
+      "hash": "b3b040a2d7a01ea2aeb133128513a856ad2c6088741e624b8d1b4b0c2660729c"
+    }
+  },
+  "scope_count": 72,
+  "last_scope_hash": "e2df3de9ff9ef3fc62d234e34e4dd590d7c6fbbd4683b7728bab54aedd23d260"
+}

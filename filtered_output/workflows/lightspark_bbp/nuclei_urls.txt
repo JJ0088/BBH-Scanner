@@ -1,0 +1,13 @@
+http://api.lightspark.com
+http://app.lightspark.com
+https://github.com/buildonspark/lrc20
+https://github.com/buildonspark/spark
+https://github.com/lightsparkdev/go-sdk
+https://github.com/lightsparkdev/lightspark-rs
+https://github.com/lightsparkdev/python-sdk
+https://link.uma.me
+lightsparkdev/flutter-sdk
+lightsparkdev/js-sdk
+lightsparkdev/kotlin-sdk
+lightsparkdev/lightspark-crypto-uniffi
+lightsparkdev/swift-wallet-sdk

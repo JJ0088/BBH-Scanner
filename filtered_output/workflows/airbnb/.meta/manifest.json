@@ -1,0 +1,38 @@
+{
+  "handle": "airbnb",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:22.269409",
+  "finished_at": "2025-10-20T10:59:22.270786",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 33,
+      "written": true,
+      "hash": "21a28de4cd10b8a88e7db6b3cbf0ee25cad8050a3938763101bd3462a3c8b3ce"
+    },
+    "httpx_seeds.txt": {
+      "count": 22,
+      "written": true,
+      "hash": "20cb1c13e5b040dbdd340a1542e2b84adb9794609944d332be6e960dc752a9bb"
+    },
+    "katana_seeds.txt": {
+      "count": 33,
+      "written": true,
+      "hash": "d0a08a9401c079783c2f85f66462ba9f35b786d840b410f17909bd1c98e94a0d"
+    },
+    "nuclei_urls.txt": {
+      "count": 2,
+      "written": true,
+      "hash": "8783bdee114705385bb4bebe093775cc6180161299a74b33006ab73ea452b859"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 2,
+      "written": true,
+      "hash": "7de72f8c6664d2da4156cc2b6d17ff123614f613f1b6e51795c0cd0427a6bc75"
+    }
+  },
+  "scope_count": 35,
+  "last_scope_hash": "d786c144ff3689577c774e8f60e149cdf700a85930f0c81b32d73d3c73956152"
+}

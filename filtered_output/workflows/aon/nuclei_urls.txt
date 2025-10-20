@@ -1,0 +1,13 @@
+51.105.161.173/
+academy.aon.de/
+ada.aon.fr/
+All internet-facing Aon assets are in scope
+assessment.aonanalytics.tech/
+dr-aonfinanciamiento.com.mx/
+https://www.aon.com
+info.aon.de/
+kdxf.aonanalytics.tech/
+kpi.eujkd.de/
+lonestatistik.aon.se/
+qa-assets.aon-hugeops.uk/
+qa-cms.aon-hugeops.uk/

@@ -1,0 +1,17 @@
+https://*.coda.io/*
+https://airflow-prod.coda.io/*
+https://airflow-prod.ops.coda.io/*
+https://coda.grammarly.com/
+https://coda.io/*
+https://codacontent.io/
+https://codahosted.io/
+https://data.coda.io/*
+https://head.coda.io/*
+https://infra.coda.io/*
+https://io.coda.codaapp/
+https://io.coda/
+https://shiny.ops.coda.io/*
+https://staging.coda.io/*
+https://status.coda.io/
+https://user-profile-prod.coda.io/*
+https://user-profile-test.coda.io/*

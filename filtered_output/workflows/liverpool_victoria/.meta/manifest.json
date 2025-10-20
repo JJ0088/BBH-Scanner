@@ -1,0 +1,38 @@
+{
+  "handle": "liverpool_victoria",
+  "filterer_version": "0.2.1",
+  "db_path": "/home/jj/Desktop/Project/BBH-Scanner/data/store.db",
+  "log_file": "bbh_filterer2025.10.20-10.59.22.log",
+  "started_at": "2025-10-20T10:59:23.000225",
+  "finished_at": "2025-10-20T10:59:23.001245",
+  "duration_sec": 0.001,
+  "files": {
+    "subfinder_seeds.txt": {
+      "count": 1,
+      "written": true,
+      "hash": "b93f23a060d619c7728a1e1abbbb4e4fe6748018b7d8f95743b894b88bf611e3"
+    },
+    "httpx_seeds.txt": {
+      "count": 1,
+      "written": true,
+      "hash": "de39208ae5cda64ba108ac4e4e38a8b1da00c0727bbb0f124db507d4434aafed"
+    },
+    "katana_seeds.txt": {
+      "count": 1,
+      "written": true,
+      "hash": "de39208ae5cda64ba108ac4e4e38a8b1da00c0727bbb0f124db507d4434aafed"
+    },
+    "nuclei_urls.txt": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "nuclei_urls.jsonl": {
+      "count": 0,
+      "written": true,
+      "hash": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "scope_count": 1,
+  "last_scope_hash": "bfd9705980d3e780e12a6fdbe5e504ddf4891f358c180440ffb4e0c30bb4bef1"
+}

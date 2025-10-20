@@ -1,0 +1,15 @@
+Android Playstation App
+https://api.direct.playstation.com/
+https://ca.account.sony.com/
+https://checkout.playstation.com/
+https://direct.playstation.com/
+https://my.account.sony.com/
+https://my.playstation.com/
+https://ps5.np.playstation.net/
+https://social.playstation.com/
+https://store.playstation.com/
+https://transact.playstation.com/
+https://wallets.api.playstation.com/
+iOS Playstation App
+PlayStation 4
+PlayStation 5

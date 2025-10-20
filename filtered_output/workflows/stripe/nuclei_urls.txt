@@ -1,0 +1,34 @@
+978516833
+https://api.stripe.com/
+https://api.taxjar.com/
+Onboarding Verification Link Crawling
+Organizations
+Sandboxes
+Stripe Apps
+Stripe Atlas
+Stripe Billing
+Stripe Capital
+Stripe Checkout
+Stripe Climate
+Stripe Connect
+Stripe Dashboard
+Stripe Data Pipeline
+Stripe Elements
+Stripe Financial Connections
+Stripe for Visual Studio Code
+Stripe Identity
+Stripe Invoicing
+Stripe Issuing
+Stripe Open Source
+Stripe Payment Links
+Stripe Payments
+Stripe Radar
+Stripe Revenue Recognition
+Stripe SDKs
+Stripe Sigma
+Stripe Tax
+Stripe Terminal
+Stripe Third Party Apps and Integrations
+Stripe Treasury
+Tap to Pay (Android)
+Tap to Pay (iOS)

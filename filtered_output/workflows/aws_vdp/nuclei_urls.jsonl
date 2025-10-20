@@ -1,0 +1,264 @@
+{"url": "Red Hat OpenShift Service on AWS (ROSA)"}
+{"url": "Amazon Neptune Analytics"}
+{"url": "Amazon Q in Supply Chain"}
+{"url": "AWS Backup"}
+{"url": "AWS Deep Learning Containers"}
+{"url": "Amazon Connect"}
+{"url": "AWS Database Migration Service (AWS DMS)"}
+{"url": "Amazon Q Business"}
+{"url": "Amazon Managed Grafana"}
+{"url": "AWS Chalice"}
+{"url": "Amazon FSx for Windows File Server"}
+{"url": "AWS HealthImaging"}
+{"url": "AWS App Mesh"}
+{"url": "Amazon DataZone"}
+{"url": "AWS Import/Export"}
+{"url": "Amazon Corretto"}
+{"url": "VPC Reachability Analyzer"}
+{"url": "https://github.com/aws/amazon-ecs-cli"}
+{"url": "AWS Direct Connect"}
+{"url": "AWS Backint Agent"}
+{"url": "Amazon Lex"}
+{"url": "AWS DeepLens"}
+{"url": "Amazon EC2 Auto Scaling"}
+{"url": "Ground Station"}
+{"url": "Alexa for Business"}
+{"url": "Amazon OpenSearch Serverless"}
+{"url": "AWS DataSync"}
+{"url": "Amazon DynamoDB"}
+{"url": "Amazon Managed Service for Prometheus"}
+{"url": "CloudEndure Migration"}
+{"url": "AWS AppFabric"}
+{"url": "AWS Billing and Cost Management"}
+{"url": "AWS Builder ID"}
+{"url": "AWS Data Pipeline"}
+{"url": "https://github.com/aws/amazon-ecs-agent"}
+{"url": "Amazon Elastic File System (Amazon EFS)"}
+{"url": "Amazon Machine Learning (Amazon ML)"}
+{"url": "AWS Directory Service for Microsoft Active Directory"}
+{"url": "AWS Elemental MediaLive"}
+{"url": "AWS Artifact"}
+{"url": "Amazon GameSparks"}
+{"url": "AWS Elemental MediaPackage"}
+{"url": "https://github.com/kubernetes-sigs/aws-iam-authenticator"}
+{"url": "AWS Ground Station"}
+{"url": "AWS IQ"}
+{"url": "Amazon GuardDuty ECS Runtime Monitoring"}
+{"url": "Amazon Managed Streaming for Apache Kafka (Amazon MSK)"}
+{"url": "AWS Fault Injection Service"}
+{"url": "Amazon Route 53"}
+{"url": "AWS Identity and Access Management (IAM)"}
+{"url": "AWS Client VPN"}
+{"url": "AWS CodeCommit"}
+{"url": "Amazon Elastic Inference"}
+{"url": "AWS Cloud Development Kit (AWS CDK)"}
+{"url": "AWS HealthScribe"}
+{"url": "https://github.com/kubernetes-sigs/aws-encryption-provider"}
+{"url": "AWS Elastic Beanstalk"}
+{"url": "AWS Blockchain Templates"}
+{"url": "All API's called by the AWS CLI"}
+{"url": "Amazon DocumentDB (with MongoDB compatibility)"}
+{"url": "Quivela"}
+{"url": "AWS App2Container"}
+{"url": "AWS Certificate Manager (ACM)"}
+{"url": "AWS Amplify"}
+{"url": "AWS CodePipeline"}
+{"url": "Amazon One Enterprise"}
+{"url": "AWS Identity and Access Management Access Analyzer"}
+{"url": "AWS Health Dashboard"}
+{"url": "AWS Clean Rooms ML"}
+{"url": "https://github.com/kubernetes-sigs/aws-fsx-csi-driver"}
+{"url": "AWS CloudTrail Lake"}
+{"url": "Amazon CodeGuru Profiler"}
+{"url": "AWS Cloud Map"}
+{"url": "https://github.com/aws/aws-cdk"}
+{"url": "Amazon Inspector Classic"}
+{"url": "Amazon Elastic Container Service (Amazon ECS)"}
+{"url": "https://github.com/kubernetes-sigs/aws-ebs-csi-driver"}
+{"url": "Amazon ElastiCache"}
+{"url": "AWS Config"}
+{"url": "Firecracker"}
+{"url": "AWS HealthOmics"}
+{"url": "AWS Elemental MediaStore"}
+{"url": "Amazon DevOps Guru"}
+{"url": "Amazon Q in Connect"}
+{"url": "AWS Health"}
+{"url": "Amazon Inspector"}
+{"url": "AWS Elemental MediaConnect"}
+{"url": "AWS CodeStar"}
+{"url": "https://github.com/kubernetes-sigs/aws-load-balancer-controller"}
+{"url": "AWS WAF"}
+{"url": "Amazon Q"}
+{"url": "AWS Cloud9"}
+{"url": "AWS Application Migration Service"}
+{"url": "Amazon FinSpace"}
+{"url": "Amazon Elastic Container Registry (Amazon ECR)"}
+{"url": "AWS DeepComposer"}
+{"url": "AWS B2B Data Interchange"}
+{"url": "AWS Audit Manager"}
+{"url": "Amazon CloudWatch Application Insights"}
+{"url": "AWS Application Composer"}
+{"url": "AWS IoT 1-Click"}
+{"url": "Amazon Interactive Video Service (Amazon IVS)"}
+{"url": "CloudEndure Disaster Recovery"}
+{"url": "Blazegraph"}
+{"url": "Amazon Macie"}
+{"url": "Amazon Forecast"}
+{"url": "Amazon EMR Serverless"}
+{"url": "Amazon Lookout for Vision"}
+{"url": "OpenSearch"}
+{"url": "Amazon DynamoDB Streams"}
+{"url": "AWS GovCloud (US)"}
+{"url": "Amazon ElastiCache Serverless"}
+{"url": "https://github.com/kubernetes-sigs/cluster-api-provider-aws"}
+{"url": "https://github.com/aws/aws-cli"}
+{"url": "AWS Auto Scaling"}
+{"url": "AWS Elemental MediaConvert"}
+{"url": "Amazon SageMaker"}
+{"url": "Amazon Data Lifecycle Manager"}
+{"url": "Services, Apps, Mobile"}
+{"url": "AWS Compute Optimizer"}
+{"url": "AWS Cloud Digital Interface (CDI) SDK"}
+{"url": "Amazon Keyspaces (for Apache Cassandra)"}
+{"url": "Amazon FSx for NetApp ONTAP"}
+{"url": "AWS Glue"}
+{"url": "Blox"}
+{"url": "Migration Evaluator"}
+{"url": "AWS CodeArtifact"}
+{"url": "AWS CloudTrail"}
+{"url": "Amazon Data Firehose"}
+{"url": "Amazon Mechanical Turk"}
+{"url": "Amazon FSx"}
+{"url": "Devices"}
+{"url": "NICE DCV"}
+{"url": "Amazon Honeycode"}
+{"url": "AWS Inferentia"}
+{"url": "Elastic Load Balancing (ELB)"}
+{"url": "Amazon Comprehend Medical"}
+{"url": "Amazon Chime SDK"}
+{"url": "Amazon GuardDuty"}
+{"url": "AWS CloudHSM"}
+{"url": "EC2 Image Builder"}
+{"url": "Amazon Managed Workflows for Apache Airflow (Amazon MWAA)"}
+{"url": "Amazon Macie Classic"}
+{"url": "AWS Data Exchange"}
+{"url": "AWS Cloud WAN"}
+{"url": "AWS HealthLake"}
+{"url": "AWS Network Firewall"}
+{"url": "Amazon Lookout for Equipment"}
+{"url": "AWS DeepRacer"}
+{"url": "AWS Firewall Manager"}
+{"url": "AWS Entity Resolution"}
+{"url": "Amazon MemoryDB"}
+{"url": "AWS Cloud Control API"}
+{"url": "AWS Application Discovery Service"}
+{"url": "https://github.com/amazonlinux/amazon-linux-2023"}
+{"url": "Amazon Kinesis Data Streams"}
+{"url": "Amazon Fraud Detector"}
+{"url": "AWS Console Mobile Application"}
+{"url": "AWS Batch"}
+{"url": "Amazon CloudWatch RUM"}
+{"url": "Amazon Monitron"}
+{"url": "Amazon Comprehend"}
+{"url": "Amazon MQ"}
+{"url": "Amazon CodeGuru Reviewer"}
+{"url": "Amazon Augmented AI (Amazon A2I)"}
+{"url": "AWS Command Line Interface (AWS CLI)"}
+{"url": "Amazon Lookout for Metrics"}
+{"url": "AWS Directory Service"}
+{"url": "Amazon Elastic Transcoder"}
+{"url": "Kiro"}
+{"url": "Service Quotas"}
+{"url": "Babelfish"}
+{"url": "Amazon Nimble Studio"}
+{"url": "AWS Application Auto Scaling"}
+{"url": "Amazon Q Developer"}
+{"url": "Amazon Cognito"}
+{"url": "https://github.com/kubernetes-sigs/aws-efs-csi-driver"}
+{"url": "Amazon Bedrock"}
+{"url": "Amazon GameLift"}
+{"url": "AWS AppSync"}
+{"url": "Anything not in scope"}
+{"url": "Amazon Athena"}
+{"url": "Amazon Elastic Block Store (Amazon EBS)"}
+{"url": "Amazon CloudWatch Internet Monitor"}
+{"url": "Amazon Kinesis Video Streams"}
+{"url": "Amazon Managed Blockchain (AMB)"}
+{"url": "https://github.com/aws/aws-sdk"}
+{"url": "Amazon AppStream"}
+{"url": "Amazon Q in QuickSight"}
+{"url": "AWS Fargate"}
+{"url": "Amazon Kinesis"}
+{"url": "Amazon Elastic Kubernetes Service (Amazon EKS)"}
+{"url": "Amazon Neptune"}
+{"url": "Amazon Managed Service for Apache Flink"}
+{"url": "AWS Distro for OpenTelemetry"}
+{"url": "AWS IAM Identity Center"}
+{"url": "AWS Application Cost Profiler"}
+{"url": "Amazon Cloud Directory"}
+{"url": "Amazon FSx for OpenZFS"}
+{"url": "https://github.com/aws/amazon-vpc-cni-k8s"}
+{"url": "Amazon FSx for Lustre"}
+{"url": "AWS Device Farm"}
+{"url": "AWS-Owned and Operated Thick Clients"}
+{"url": "Open Distro"}
+{"url": "AWS CodeBuild"}
+{"url": "AWS BugBust"}
+{"url": "Amazon SageMaker Ground Truth"}
+{"url": "Amazon Lumberyard"}
+{"url": "Amazon Chime"}
+{"url": "FreeRTOS"}
+{"url": "Amazon CodeGuru"}
+{"url": "AWS Deep Learning AMIs (DLAMI)"}
+{"url": "Amazon Braket"}
+{"url": "Amazon Detective"}
+{"url": "Amazon DevPay"}
+{"url": "Sequoia"}
+{"url": "Amazon CloudWatch Evidently"}
+{"url": "PartiQL"}
+{"url": "Amazon CodeCatalyst"}
+{"url": "Amazon CodeWhisperer"}
+{"url": "Amazon Kendra"}
+{"url": "AWS Elastic Disaster Recovery"}
+{"url": "https://github.com/aws/s2n-tls"}
+{"url": "Amazon Location Service"}
+{"url": "Amazon Q Developer Agent"}
+{"url": "AWS AppConfig"}
+{"url": "Amazon EventBridge"}
+{"url": "AWS CloudFormation"}
+{"url": "AWS Clean Rooms"}
+{"url": "Amazon Elastic Compute Cloud (Amazon EC2)"}
+{"url": "https://github.com/amazon-research/"}
+{"url": "Amazon EMR"}
+{"url": "AWS Control Tower"}
+{"url": "Amazon CloudWatch Events"}
+{"url": "AWS IoT Core"}
+{"url": "Vector Engine for Amazon OpenSearch Serverless"}
+{"url": "Amazon CloudWatch Logs"}
+{"url": "AWS Chatbot"}
+{"url": "Amazon CloudFront"}
+{"url": "Amazon AppFlow"}
+{"url": "AWS Glue DataBrew"}
+{"url": "AWS WorkDocs"}
+{"url": "AWS CloudShell"}
+{"url": "AWS Diode"}
+{"url": "Amazon Mobile Analytics"}
+{"url": "AWS IoT Analytics"}
+{"url": "AWS GameKit"}
+{"url": "Amazon CloudSearch"}
+{"url": "AWS CodeDeploy"}
+{"url": "AWS WorkMail"}
+{"url": "Amazon SageMaker HyperPod"}
+{"url": "Amazon Aurora"}
+{"url": "AWS Databases"}
+{"url": "Amazon CloudWatch"}
+{"url": "Bottlerocket"}
+{"url": "Amazon API Gateway"}
+{"url": "AWS App Runner"}
+{"url": "https://github.com/aws-samples"}
+{"url": "Alexa For Business"}
+{"url": "1023499075"}
+{"url": "AWS Global Accelerator"}
+{"url": "Amazon Lightsail"}
+{"url": "AWS Diode Messaging"}
+{"url": "AWS Elemental MediaTailor"}

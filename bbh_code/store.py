@@ -12,14 +12,15 @@ Responsabilità:
 Scelte:
 - Path dinamici via env (BBH_ROOT, BBH_DATA_DIR, BBH_DB_PATH) per portabilità.
 - row_factory=sqlite3.Row per ottenere dict(row) comodamente.
-- Upsert con ON CONFLICT per idempotenza (nessun duplicato).
+- **Upsert con ON CONFLICT(id) DO UPDATE** per idempotenza reale durante re-import.
+  (Prima era su `handle`/coppia, ma in re-import massivi il conflitto comune è su `id`.)
 """
 
 from __future__ import annotations
 import os
 import sqlite3
 from pathlib import Path
-from typing import List, Dict, Optional
+from typing import Any, List, Dict, Optional
 import json
 
 # === PATH DINAMICI ===
@@ -67,15 +68,16 @@ CREATE INDEX IF NOT EXISTS idx_scopes_program ON scopes(program_handle);
 
 # === FUNZIONI BASE ===
 
+
 def get_conn() -> sqlite3.Connection:
     """
     Apre la connessione, creando la cartella dati se manca.
     Abilita foreign_keys e imposta row_factory per accesso tipo dict.
     """
-    DATA_DIR.mkdir(parents=True, exist_ok=True)      # sqlite non crea le cartelle da solo
+    DATA_DIR.mkdir(parents=True, exist_ok=True)  # sqlite non crea le cartelle da solo
     conn = sqlite3.connect(DB_PATH)
-    conn.execute("PRAGMA foreign_keys = ON;")        # regola di integrità (non usiamo FK reali qui, ma buona pratica)
-    conn.row_factory = sqlite3.Row                   # consente dict(row)
+    conn.execute("PRAGMA foreign_keys = ON;")  # buona pratica
+    conn.row_factory = sqlite3.Row  # consente dict(row)
     return conn
 
 
@@ -107,18 +109,22 @@ class Store:
 
     # --- Programmi ---
 
-    def save_program(self, program: Dict):
+    def save_program(self, program: Dict[str, Any]) -> None:
         """
-        Upsert di un programma (idempotente).
-        Chiave di conflitto: handle (univoco).
-        Aggiorna nome, url, state, submission_state, last_fetch_at, scope_count, scope_hash.
+        Upsert di un programma (idempotente) sul **PRIMARY KEY(id)**.
+        Aggiorna: nome, url, state, submission_state, last_fetch_at, scope_count, scope_hash.
+        Motivo: nel re-import massivo il conflitto reale avviene su `id` (vedi IntegrityError su programs.id/scopes.id).
         """
         sql = """
-        INSERT INTO programs (id, handle, name, url, state, submission_state,
-                              last_fetch_at, scope_count, scope_hash)
-        VALUES (:id, :handle, :name, :url, :state, :submission_state,
-                :last_fetch_at, :scope_count, :scope_hash)
-        ON CONFLICT(handle) DO UPDATE SET
+        INSERT INTO programs (
+            id, handle, name, url, state, submission_state,
+            last_fetch_at, scope_count, scope_hash
+        ) VALUES (
+            :id, :handle, :name, :url, :state, :submission_state,
+            :last_fetch_at, :scope_count, :scope_hash
+        )
+        ON CONFLICT(id) DO UPDATE SET
+            handle=excluded.handle,
             name=excluded.name,
             url=excluded.url,
             state=excluded.state,
@@ -137,27 +143,30 @@ class Store:
 
     # --- Scopes ---
 
-    def save_scope(self, scope: Dict):
+    def save_scope(self, scope: Dict[str, Any]) -> None:
         """
-        Upsert di uno scope (idempotente) basato su (program_handle, asset_identifier).
+        Upsert di uno scope (idempotente) sul **PRIMARY KEY(id)**.
         Aggiorna i campi descrittivi e la normalizzazione (tipo/valore).
+        Nota: esiste anche UNIQUE(program_handle, asset_identifier) per coerenza.
         """
         sql = """
         INSERT INTO scopes (
             id, program_handle, asset_identifier, asset_type,
             eligible_for_bounty, instruction, max_severity,
             created_at, updated_at, normalized_type, normalized_value
-        )
-        VALUES (
+        ) VALUES (
             :id, :program_handle, :asset_identifier, :asset_type,
             :eligible_for_bounty, :instruction, :max_severity,
             :created_at, :updated_at, :normalized_type, :normalized_value
         )
-        ON CONFLICT(program_handle, asset_identifier) DO UPDATE SET
+        ON CONFLICT(id) DO UPDATE SET
+            program_handle=excluded.program_handle,
+            asset_identifier=excluded.asset_identifier,
             asset_type=excluded.asset_type,
             eligible_for_bounty=excluded.eligible_for_bounty,
             instruction=excluded.instruction,
             max_severity=excluded.max_severity,
+            created_at=excluded.created_at,
             updated_at=excluded.updated_at,
             normalized_type=excluded.normalized_type,
             normalized_value=excluded.normalized_value;
@@ -188,7 +197,8 @@ class Store:
 # === CLI ===
 # Piccola interfaccia a riga di comando per azioni veloci durante lo sviluppo.
 
-def main():
+
+def main() -> None:
     import argparse
 
     parser = argparse.ArgumentParser(description="Gestione DB BBH-Scanner")
@@ -225,4 +235,3 @@ def main():
 
 if __name__ == "__main__":
     main()
-

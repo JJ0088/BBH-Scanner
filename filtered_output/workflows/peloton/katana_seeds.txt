@@ -1,0 +1,5 @@
+https://cms.onepeloton.com/
+https://cosmos-stage.onepeloton.com/
+https://cosmos.onepeloton.com/
+https://qa1-cms.onepeloton.com/
+https://www.onepeloton.com/

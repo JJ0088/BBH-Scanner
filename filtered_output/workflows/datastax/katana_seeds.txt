@@ -1,0 +1,9 @@
+https://*cla.datastax.com/
+https://academy.datastax.com/
+https://astra.datastax.com/
+https://community.datastax.com/
+https://docs.datastax.com/
+https://downloads.datastax.com/
+https://langflow.datastax.com/
+https://langflow.org/
+https://www.datastax.com/
