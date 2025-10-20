@@ -1,0 +1,27 @@
+# --- Python ---
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+.venv/
+.env
+
+# --- Editor/OS ---
+.DS_Store
+*.swp
+*.swo
+*.tmp
+
+# --- Progetto BBH-Scanner ---
+# Database e backup locali (non versionare in pubblico)
+data/*.db
+data/backups/
+
+# Output runtime (li rigeneriamo)
+logs/
+results/
+
+# Documentazione generata/esportata (se non vuoi versionarla)
+# Documentazione/
+
