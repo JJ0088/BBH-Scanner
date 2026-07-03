@@ -1,151 +1,115 @@
-# BBH-Scanner — MVP (Fase 1 + Fase 2)
+# BBH-Scanner
 
-Scanner 24/7 per asset di programmi HackerOne.
+Scanner **recon 24/7** per asset di programmi bug bounty, pensato per girare su una
+singola macchina modesta (Acer Aspire 7, NixOS). Multi-piattaforma in prospettiva
+(**HackerOne** ora; Bugcrowd/YesWeHack/Intigriti in seguito).
 
-**Stato attuale**
-- **Fase 1 — Database**: import robusto del dump `H1-All-Scopes.json` in SQLite con normalizzazione `url|api|domain|wildcard`, indici, idempotenza, filtri incrementali.
-- **Fase 2 — Filterer**: generazione dei file *seme* per subfinder/httpx/katana/nuclei, hashing per idempotenza, manifest per handle, logging timestampato, notifica Slack (opt‑in).
+> **Rewrite v2 in corso.** Il nuovo codice vive in `bbh_scanner/`. Il vecchio MVP in
+> `bbh_code/` è **congelato come riferimento** e verrà rimosso quando il nuovo path lo
+> sostituisce. Progetto e razionale completo: [`Documentazione/architettura-v2.md`](Documentazione/architettura-v2.md).
+
+**Fase attuale: recon-only** — nessuno scan attivo (nuclei) finché l'infrastruttura non è
+solida e testata. Vedi le milestone in fondo al documento d'architettura.
+
+---
+
+## Cosa fa (v2)
+
+1. **Collector** — sincronizza programmi e scope da HackerOne (Hacker API v1), in modo
+   **incrementale** (filtro `updated_at` sugli structured scopes).
+2. **Store** — SQLite ridisegnato (connessione unica, WAL, upsert batch) con tabelle
+   `programs`, `scopes`, `assets`, `jobs`, `findings`, `events`, `sync_state`.
+3. **Recon passivo** — `subfinder → dnsx → httpx` sui seed derivati dagli scope; produce
+   asset scoperti e **delta** (nuovo sottodominio / nuovo host vivo) come findings.
+4. **Scheduler** — orchestratore residente che sincronizza, prioritizza (asset nuovi/cambiati
+   prima) ed esegue il recon entro un **budget di risorse**, ripartibile dopo un crash.
+5. **Notifiche Telegram** — findings, heartbeat, errori.
 
 ---
 
 ## Requisiti
-- Python 3.11+ (ok anche 3.13)
-- `sqlite3`
-- (per fasi successive) ProjectDiscovery: `subfinder`, `httpx`, `katana`, `nuclei`
-- Linux/Fedora target
 
-## Struttura progetto (layout attuale)
-```
-.
-├── bbh_code/
-│   ├── __init__.py
-│   ├── store.py            # layer DB (programs, scopes) + CLI init/info/list-*
-│   ├── import_scopes.py    # import JSON → DB con filtri incrementali
-│   └── filterer.py         # Fase 2: genera semi per PD tools + manifest + logging
-├── data/
-│   ├── H1-All-Scopes.json
-│   └── store.db
-├── results/
-│   └── filtered/<handle>/  # output del filterer (file + .hash + .meta)
-├── logs/
-│   └── bbh_filtererYYYY.MM.DD-HH.MM.SS.log
-└── README.md
-```
+- Python 3.11+
+- Tool ProjectDiscovery per il recon: `subfinder`, `dnsx`, `httpx`
+- Su NixOS: tutto gestito dal **flake** (dev shell + servizio systemd)
 
-## Variabili d'ambiente (path dinamici)
-- `BBH_ROOT` (default: dedotto dal path dei sorgenti)
-- `BBH_DATA_DIR` (default: `$BBH_ROOT/data`)
-- `BBH_DB_PATH` (default: `$BBH_DATA_DIR/store.db`)
-- `SLACK_WEBHOOK_URL` (opzionale; se presente invia un riepilogo al termine di import/filter)
+## Setup con Nix (consigliato su NixOS)
 
-Esempi:
 ```bash
-BBH_DATA_DIR="/mnt/ssd/bbh-data" python -m bbh_code.store info
-BBH_DB_PATH="/tmp/test.db"       python -m bbh_code.import_scopes -i data/H1-All-Scopes.json
+nix develop            # shell con python + subfinder/dnsx/httpx + pytest
+bbh init               # crea/migra il DB
 ```
+
+## Setup senza Nix
+
+```bash
+pip install -e .
+# installare a parte subfinder/dnsx/httpx (ProjectDiscovery)
+bbh init
+```
+
+## Configurazione (variabili d'ambiente)
+
+| Variabile | Descrizione |
+|-----------|-------------|
+| `HACKERONE_API_USERNAME` | API token identifier (Hacker API v1) |
+| `HACKERONE_API_TOKEN` | valore del token |
+| `TELEGRAM_BOT_TOKEN`, `TELEGRAM_CHAT_ID` | notifiche (opzionali) |
+| `BBH_ROOT`, `BBH_DATA_DIR`, `BBH_DB_PATH`, `BBH_LOGS_DIR` | path (default dedotti) |
+| `BBH_MAX_CONCURRENCY`, `BBH_NICE`, `BBH_TOOL_TIMEOUT`, `BBH_RETENTION_DAYS` | budget risorse |
+| `BBH_SYNC_INTERVAL`, `BBH_RECON_INTERVAL`, `BBH_HEARTBEAT_INTERVAL` | intervalli (secondi) |
+
+Le credenziali della Hacker API si generano dalle impostazioni di un account HackerOne
+(la **Community edition** è gratuita e sufficiente).
+
+## Comandi
+
+```bash
+bbh init                       # crea/migra il database
+bbh sync                       # sincronizza programmi/scope da HackerOne
+bbh sync --only-handle acme    # solo un programma
+bbh recon --limit 5            # recon passivo sui programmi dovuti (max 5)
+bbh status                     # stato, statistiche, eventi recenti
+bbh run --once                 # un giro completo (sync + recon + notifiche)
+bbh run                        # loop residente 24/7 (usato dal servizio systemd)
+```
+
+## 24/7 come servizio (modulo NixOS)
+
+```nix
+# flake dell'host
+imports = [ bbh-scanner.nixosModules.default ];
+services.bbh-scanner = {
+  enable = true;
+  environmentFile = "/run/secrets/bbh.env";   # HACKERONE_* e TELEGRAM_* qui
+  settings.BBH_SYNC_INTERVAL = "21600";
+  resources = { cpuQuota = "150%"; memoryMax = "1500M"; };
+};
+```
+
+Il servizio gira con `Nice`, `IOSchedulingClass=idle`, `CPUQuota` e `MemoryMax` per non
+saturare l'Acer, e riparte da solo (lo stato è nel DB).
 
 ---
 
-## Fase 1 — Database (import)
+## Sviluppo
 
-### Setup schema
 ```bash
-python -m bbh_code.store init
+python -m pytest -q      # 33 test: normalize, store, collector H1, queue, notify, recon
+ruff check . && black .  # lint/format (pre-commit configurato)
 ```
 
-### Import del dump HackerOne
-```bash
-# import completo con log ogni 1000 scope
-python -m bbh_code.import_scopes -i data/H1-All-Scopes.json --progress 1000
+## Struttura
 
-# dry-run: analizza senza scrivere
-python -m bbh_code.import_scopes -i data/H1-All-Scopes.json --dry-run --progress 2000
-
-# importa solo alcuni handle
-python -m bbh_code.import_scopes -i data/H1-All-Scopes.json --only-handles foo,bar
-
-# filtri incrementali
-python -m bbh_code.import_scopes -i data/H1-All-Scopes.json \
-  --skip-ineligible \
-  --min-updated-since 2025-01-01 \
-  --progress 2000
 ```
-
-### Verifiche rapide
-```bash
-python -m bbh_code.store info
-python -m bbh_code.store list-programs
-python -m bbh_code.store list-scopes
-
-# query utili
-sqlite3 data/store.db "SELECT program_handle, COUNT(*) c FROM scopes GROUP BY 1 ORDER BY c DESC LIMIT 10;"
-sqlite3 data/store.db "SELECT normalized_type, COUNT(*) FROM scopes GROUP BY 1 ORDER BY 2 DESC;"
+bbh_scanner/
+  config.py            normalize.py         logging_setup.py       cli.py
+  db/       (schema.sql, store.py)
+  collectors/ (base.py, hackerone.py, sync.py)
+  recon/      (tools.py, passive.py)
+  scheduler/  (queue.py, orchestrator.py)
+  notify/     (base.py, telegram.py)
+tests/                 nix/module.nix        flake.nix
+Documentazione/architettura-v2.md
+bbh_code/              # LEGACY, congelato come riferimento
 ```
-
----
-
-## Fase 2 — Filterer (generazione file *seme*)
-
-Genera file per i tool ProjectDiscovery, per **handle**:
-
-- `subfinder_seeds.txt`  → **domain** + **wildcard→domain** (subfinder accetta anche `https://...`)
-- `httpx_seeds.txt`      → **url + api + domain** (i domain sono in forma `https://host/`), **solo URL pulite**
-- `katana_seeds.txt`     → **solo domain + wildcard→https://dom/** (**no url**; **API solo se contengono `*`**)
-- `nuclei_urls.txt`      → **url + api**
-- `nuclei_urls.jsonl`    → stessa lista in **JSONL** (una riga = `{ "url": "..." }`)
-
-Per ogni file viene creato anche `.hash/<nome>.sha256` per evitare riscritture inutili.
-
-### Manifest per handle
-`results/filtered/<handle>/.meta/manifest.json` contiene:
-- `last_scope_hash`, `scope_count` (dallo stato DB)
-- `filterer_version`, `db_path`, `log_file`
-- `started_at`, `finished_at`, `duration_sec`
-- `files`: `count/written/hash` per ciascun file
-
-### Logging & Slack
-- Log timestampato: `logs/bbh_filterer<YYYY.MM.DD-HH.MM.SS>.log`
-- Se `SLACK_WEBHOOK_URL` è impostato viene inviato un riepilogo finale.
-
-### Comandi
-```bash
-# singolo handle, log progress
-python -m bbh_code.filterer --only-handles fiserv --skip-empty --progress 1
-
-# tutti gli handle, salta quelli invariati (scope_hash = manifest)
-python -m bbh_code.filterer --skip-unchanged --progress 50
-
-# forza riscrittura anche se hash invariato
-python -m bbh_code.filterer --only-handles fiserv --overwrite
-```
-
-### Esempio di run (dal tuo ambiente)
-```
-[Filterer] v0.2.0 Handles=1 files_written=1 files_skipped=4 skip_unchanged=0 duration_sec=0.14 log=bbh_filterer2025.10.20-01.58.02.log
-- fiserv
-    subfinder_seeds.txt written=False count=9718
-    httpx_seeds.txt    written=False count=10762
-    katana_seeds.txt   written=False count=9715
-    nuclei_urls.txt    written=False count=1051
-    nuclei_urls.jsonl  written=True count=1051
-```
-
-### Sanity check
-```bash
-grep -n '^[[:space:]]*$' -R results/filtered/<handle>/*.txt || echo "ok: nessuna riga vuota"
-awk 'index($0,"://")==0{print "NO_SCHEMA: "$0}' results/filtered/<handle>/httpx_seeds.txt | head
-grep '^\*\.' results/filtered/<handle>/subfinder_seeds.txt && echo "ATT: wildcard rimaste" || echo "ok: no wildcard"
-```
-
----
-
-## Troubleshooting
-- **fish shell**: evita process substitution `<(...)` e heredoc stile bash; usa stringhe inline o file `.sql`.
-- **Import lento**: usa `--progress N` per tracciare. L’import fa transazione unica + PRAGMA.
-- **Path di package**: la cartella deve chiamarsi `bbh_code/` e contenere `__init__.py`. Esegui dalla root del progetto.
-
----
-
-## Roadmap immediata
-- **Fase 3 — Runner/Orchestrator**: esecuzione periodica di subfinder → httpx → katana (headless, senza limit depth) → reduce → nuclei (output JSONL), con integrazione log durate e notifiche.
-- **Collector API (HackerOne)**: fetch aggiornamenti, salva in formato compatibile e richiama `import_scopes`.
