@@ -67,7 +67,9 @@
             echo "BBH-Scanner dev shell — python $(python --version)"
             echo "tool: subfinder/dnsx/httpx/nuclei disponibili nel PATH"
             echo "nota: per la temperatura GPU serve 'nvidia-smi' dal driver NVIDIA"
+            echo "comando: usa 'bbh <...>' (alias di 'python -m bbh_scanner.cli')"
             export BBH_ROOT="$PWD"
+            alias bbh="python -m bbh_scanner.cli"
           '';
         };
 
