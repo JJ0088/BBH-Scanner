@@ -27,6 +27,19 @@ nix develop
 Deve stampare le righe di benvenuto e mettere `subfinder/dnsx/httpx/nuclei` nel PATH.
 Dentro la shell puoi usare `bbh` (alias di `python -m bbh_scanner.cli`).
 
+> **Usi fish?** `nix develop` apre una shell **bash** dove `export` e l'alias `bbh`
+> funzionano già. Se preferisci restare in fish, l'alias e le variabili vanno in
+> sintassi fish (le variabili `export`-ate in bash **si** ereditano in una fish figlia,
+> ma alias e nuovi `export` no):
+> ```fish
+> alias bbh="python -m bbh_scanner.cli"
+> set -x HACKERONE_API_USERNAME JJ0088
+> set -x HACKERONE_API_TOKEN '...'
+> set -x TELEGRAM_BOT_TOKEN '...'
+> set -x TELEGRAM_CHAT_ID '...'
+> ```
+> In ogni shell puoi comunque usare direttamente `python -m bbh_scanner.cli <comando>`.
+
 - ❌ Se `nix develop` fallisce nel build → incolla l'errore (probabile fix nel `flake.nix`).
 - ✅ Verifica veloce: `which subfinder httpx nuclei && python -c "import psutil, requests; print('ok')"`
 
