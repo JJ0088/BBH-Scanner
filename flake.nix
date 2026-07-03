@@ -17,7 +17,9 @@
     flake-utils.lib.eachDefaultSystem (system:
       let
         pkgs = import nixpkgs { inherit system; };
-        python = pkgs.python311;
+        # Python 3.12: su nixpkgs recente 3.11 rompe (sphinx 9.1.0 non lo supporta più,
+        # trascinato dai tool di dev). Il codice richiede comunque solo >=3.11.
+        python = pkgs.python312;
 
         # Tool ProjectDiscovery: recon passivo (subfinder/dnsx/httpx) + scan attivo (nuclei).
         reconTools = [ pkgs.subfinder pkgs.dnsx pkgs.httpx pkgs.nuclei ];
@@ -61,7 +63,10 @@
 
         devShells.default = pkgs.mkShell {
           packages = [
-            (python.withPackages (ps: [ ps.requests ps.psutil ps.pytest ps.ruff ps.black ]))
+            # Solo le dipendenze runtime + pytest nell'ambiente Python.
+            (python.withPackages (ps: [ ps.requests ps.psutil ps.pytest ]))
+            # ruff come binario standalone (Rust: non trascina nulla nel Python env).
+            pkgs.ruff
           ] ++ reconTools;
           shellHook = ''
             echo "BBH-Scanner dev shell — python $(python --version)"
