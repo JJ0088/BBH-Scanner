@@ -68,6 +68,8 @@ Le credenziali della Hacker API si generano dalle impostazioni di un account Hac
 
 ```bash
 bbh init                       # crea/migra il database
+bbh doctor                     # verifica pre-avvio (DB, credenziali, tool, sensori, Telegram)
+bbh doctor --online            # + test raggiungibilità HackerOne e invio Telegram
 bbh sync                       # sincronizza programmi/scope da HackerOne
 bbh sync --only-handle acme    # solo un programma
 bbh recon --limit 5            # recon passivo sui programmi dovuti (max 5)

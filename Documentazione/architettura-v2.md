@@ -216,7 +216,10 @@ Altri due colli di bottiglia:
   backoff, requeue dei job orfani → 24/7 ripartibile), **findings `host_down`**, **retention**
   eventi. Comando `bbh jobs`. Prossimo sotto-passo: verifica end-to-end sull'Acer reale
   (`nix develop` con i tool + `nvidia-smi`).
-- **M3** — Orchestratore residente 24/7 come servizio systemd + timer, health, tuning sul campo.
+- **M3 (in corso)** — Servizio 24/7 production: **arresto pulito** (SIGTERM/SIGINT → finisce
+  il tick ed esce), **watchdog systemd** (sd_notify, opt-in nel modulo), comando **`bbh doctor`**
+  (verifica pre-avvio: DB, credenziali, tool, sensori, Telegram). Resta: **verifica sul campo
+  sull'Acer** (build del flake, `bbh doctor --online`, prima esecuzione reale, tuning durate/watchdog).
 - **M4** — Scan attivo opzionale (nuclei) gated per-policy; port dei quirk del vecchio runner.
 - **M5** — Seconda piattaforma (Bugcrowd) dietro la stessa astrazione `collectors/base`.
 - **M6** — **Frontend web** (oltre alla CLI): dashboard di stato/coda/findings/temperature,

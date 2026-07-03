@@ -143,6 +143,22 @@ def cmd_run(config: Config, args) -> int:  # pragma: no cover - loop
     return 0
 
 
+def cmd_doctor(config: Config, args) -> int:
+    from bbh_scanner.health import has_blocking_failures, run_checks
+
+    checks = run_checks(config, online=args.online)
+    symbol = {"ok": "✅", "warn": "⚠️ ", "fail": "❌"}
+    print("== bbh doctor ==")
+    for c in checks:
+        print(f"  {symbol.get(c.level, '•')} {c.name:20s} {c.detail}")
+    if has_blocking_failures(checks):
+        print("\n❌ Ci sono problemi bloccanti: risolvili prima di avviare il servizio.")
+        return 1
+    warns = sum(1 for c in checks if c.level == "warn")
+    print(f"\n✅ Pronto per l'avvio." + (f" ({warns} avvisi non bloccanti)" if warns else ""))
+    return 0
+
+
 def cmd_jobs(config: Config, args) -> int:
     store = _store(config)
     counts = store.job_counts()
@@ -179,6 +195,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     sub.add_parser("status", help="Mostra stato e statistiche")
 
+    p_doctor = sub.add_parser("doctor", help="Verifica pre-avvio (DB, credenziali, tool, sensori, Telegram)")
+    p_doctor.add_argument("--online", action="store_true",
+                          help="Testa anche la raggiungibilità di HackerOne e l'invio Telegram")
+
     p_jobs = sub.add_parser("jobs", help="Mostra la coda dei job")
     p_jobs.add_argument("--state", default=None,
                         help="Filtra per stato (queued|running|done|failed)")
@@ -203,6 +223,7 @@ _DISPATCH = {
     "sync": cmd_sync,
     "recon": cmd_recon,
     "status": cmd_status,
+    "doctor": cmd_doctor,
     "jobs": cmd_jobs,
     "sensors": cmd_sensors,
     "mode": cmd_mode,

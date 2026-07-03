@@ -12,10 +12,13 @@ Lo stato vive nel DB, quindi il processo è ripartibile dopo un crash/reboot.
 
 from __future__ import annotations
 
+import threading
 import time
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from typing import Dict, List, Optional
+
+from bbh_scanner import systemd
 
 from bbh_scanner.collectors import sync as sync_mod
 from bbh_scanner.collectors.hackerone import (
@@ -53,6 +56,10 @@ class Orchestrator:
         self._last_sync = 0.0
         self._last_heartbeat = 0.0
         self._last_mode: Optional[str] = None
+        self._stop = threading.Event()
+
+    def request_stop(self) -> None:
+        self._stop.set()
 
     def current_override(self) -> str:
         return self.store.get_state(MODE_OVERRIDE_KEY) or "auto"
@@ -320,12 +327,35 @@ class Orchestrator:
 
         return {"synced": int(did_sync), "recon": processed, "notified": notified}
 
+    def _install_signal_handlers(self) -> None:  # pragma: no cover
+        import signal
+
+        def _handler(*_):
+            self.request_stop()
+
+        for sig in (signal.SIGTERM, signal.SIGINT):
+            try:
+                signal.signal(sig, _handler)
+            except (ValueError, OSError):
+                pass  # non nel main thread: lo scheduler gira comunque
+
     def run_forever(self, tick_sleep: int = 60) -> None:  # pragma: no cover
+        """Loop residente 24/7. Arresto pulito su SIGTERM/SIGINT (systemd stop/reboot):
+        finisce il tick corrente ed esce. Integra il watchdog systemd se disponibile."""
+        self._install_signal_handlers()
         self.store.log_event("INFO", "orchestrator", "avvio loop 24/7")
         self.notifier.send(f"▶️ BBH-Scanner avviato — {_now_iso()}")
-        while True:
+        systemd.notify_ready()
+
+        while not self._stop.is_set():
             try:
                 self.run_once()
             except Exception as e:
                 self.store.log_event("ERROR", "orchestrator", f"tick fallito: {e}")
-            time.sleep(tick_sleep)
+            systemd.notify_watchdog()
+            # sleep interrompibile: uno stop sveglia subito il loop
+            self._stop.wait(timeout=tick_sleep)
+
+        systemd.notify_stopping()
+        self.store.log_event("INFO", "orchestrator", "arresto pulito")
+        self.notifier.send(f"⏹️ BBH-Scanner arrestato — {_now_iso()}")

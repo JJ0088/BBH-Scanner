@@ -80,6 +80,13 @@ def test_host_down_detection(tmp_path, monkeypatch):
     assert "host_down" in kinds
 
 
+def test_request_stop_sets_flag(tmp_path, monkeypatch):
+    _config, _store, orch = _setup(tmp_path, monkeypatch)
+    assert not orch._stop.is_set()
+    orch.request_stop()
+    assert orch._stop.is_set()
+
+
 def test_no_false_host_down_when_httpx_skipped(tmp_path, monkeypatch):
     config, store, orch = _setup(tmp_path, monkeypatch)
     _seed_program(store)

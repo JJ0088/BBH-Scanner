@@ -88,6 +88,17 @@ in
       default = 60;
       description = "Secondi tra un tick e l'altro dell'orchestratore.";
     };
+
+    watchdogSec = lib.mkOption {
+      type = lib.types.int;
+      default = 0;
+      description = ''
+        Se >0 abilita il watchdog systemd (Type=notify + WatchdogSec). Il daemon manda
+        READY all'avvio e WATCHDOG dopo ogni tick. IMPORTANTE: dev'essere più grande del
+        tick più lungo (un recon può durare minuti), altrimenti systemd riavvia il servizio.
+        Default 0 = disabilitato (consigliato finché non hai misurato le durate reali).
+      '';
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -137,6 +148,10 @@ in
         ReadWritePaths = [ cfg.dataDir ];
       } // lib.optionalAttrs (cfg.environmentFile != null) {
         EnvironmentFile = cfg.environmentFile;
+      } // lib.optionalAttrs (cfg.watchdogSec > 0) {
+        Type = "notify";
+        NotifyAccess = "main";
+        WatchdogSec = toString cfg.watchdogSec;
       };
     };
   };
