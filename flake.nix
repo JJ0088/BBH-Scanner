@@ -28,7 +28,7 @@
           src = ./.;
           pyproject = true;
           build-system = [ python.pkgs.setuptools python.pkgs.wheel ];
-          dependencies = [ python.pkgs.requests ];
+          dependencies = [ python.pkgs.requests python.pkgs.psutil ];
           # I tool recon devono essere nel PATH del comando `bbh`.
           nativeBuildInputs = [ pkgs.makeWrapper ];
           postInstall = ''
@@ -61,11 +61,12 @@
 
         devShells.default = pkgs.mkShell {
           packages = [
-            (python.withPackages (ps: [ ps.requests ps.pytest ps.ruff ps.black ]))
+            (python.withPackages (ps: [ ps.requests ps.psutil ps.pytest ps.ruff ps.black ]))
           ] ++ reconTools;
           shellHook = ''
             echo "BBH-Scanner dev shell — python $(python --version)"
             echo "tool: subfinder/dnsx/httpx disponibili nel PATH"
+            echo "nota: per la temperatura GPU serve 'nvidia-smi' dal driver NVIDIA"
             export BBH_ROOT="$PWD"
           '';
         };

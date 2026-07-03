@@ -9,6 +9,7 @@ description = "BBH-Scanner: scanner recon 24/7 multi-piattaforma (HackerOne, ...
 requires-python = ">=3.11"
 dependencies = [
     "requests>=2.28",
+    "psutil>=5.9",
 ]
 
 [project.optional-dependencies]
@@ -27,6 +28,7 @@ packages = [
     "bbh_scanner.db",
     "bbh_scanner.collectors",
     "bbh_scanner.recon",
+    "bbh_scanner.resources",
     "bbh_scanner.scheduler",
     "bbh_scanner.notify",
 ]

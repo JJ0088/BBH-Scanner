@@ -75,6 +75,46 @@ class ResourceBudget:
 
 
 @dataclass(frozen=True)
+class GovernorConfig:
+    """Governor termico/adattivo — lo scanner cede il passo quando usi il PC.
+
+    Tre regimi: TURBO (macchina libera e fresca), NORMAL, POWERSAVE (stai usando
+    il PC o fa caldo). Se la temperatura è critica → PAUSED (attende il raffreddamento).
+    Soglie tarate per Ryzen 7 5700U + RTX 3050; regolabili da env.
+    """
+
+    enabled: bool = field(default_factory=lambda: _env_bool("BBH_GOVERNOR", True))
+    turbo_enabled: bool = field(default_factory=lambda: _env_bool("BBH_TURBO", True))
+
+    # Temperature (°C)
+    cpu_cool: float = field(default_factory=lambda: float(_env_int("BBH_CPU_COOL", 65)))
+    cpu_hot: float = field(default_factory=lambda: float(_env_int("BBH_CPU_HOT", 82)))
+    cpu_critical: float = field(default_factory=lambda: float(_env_int("BBH_CPU_CRITICAL", 90)))
+    gpu_hot: float = field(default_factory=lambda: float(_env_int("BBH_GPU_HOT", 85)))
+    gpu_critical: float = field(default_factory=lambda: float(_env_int("BBH_GPU_CRITICAL", 92)))
+
+    # Carico di sistema misurato quando NON stiamo scansionando (= attività utente, %).
+    load_idle: float = field(default_factory=lambda: float(_env_int("BBH_LOAD_IDLE", 15)))
+    load_busy: float = field(default_factory=lambda: float(_env_int("BBH_LOAD_BUSY", 35)))
+
+    powersave_on_battery: bool = field(
+        default_factory=lambda: _env_bool("BBH_POWERSAVE_ON_BATTERY", True)
+    )
+    cooldown_sec: int = field(default_factory=lambda: _env_int("BBH_COOLDOWN", 120))
+
+    # Concorrenza/nice per regime (8 core: turbo lascia margine all'utente).
+    turbo_concurrency: int = field(default_factory=lambda: _env_int("BBH_TURBO_CONC", 4))
+    turbo_nice: int = field(default_factory=lambda: _env_int("BBH_TURBO_NICE", 5))
+    normal_concurrency: int = field(default_factory=lambda: _env_int("BBH_NORMAL_CONC", 2))
+    normal_nice: int = field(default_factory=lambda: _env_int("BBH_NORMAL_NICE", 10))
+    powersave_concurrency: int = field(default_factory=lambda: _env_int("BBH_PS_CONC", 1))
+    powersave_nice: int = field(default_factory=lambda: _env_int("BBH_PS_NICE", 19))
+
+    # GPU discreta NVIDIA da monitorare via nvidia-smi (RTX 3050).
+    monitor_nvidia: bool = field(default_factory=lambda: _env_bool("BBH_MONITOR_NVIDIA", True))
+
+
+@dataclass(frozen=True)
 class Config:
     root: Path
     data_dir: Path
@@ -89,6 +129,7 @@ class Config:
     hackerone: HackerOneConfig
     telegram: TelegramConfig
     budget: ResourceBudget
+    governor: GovernorConfig
 
     @staticmethod
     def load() -> "Config":
@@ -110,6 +151,7 @@ class Config:
             hackerone=HackerOneConfig(),
             telegram=TelegramConfig(),
             budget=ResourceBudget(),
+            governor=GovernorConfig(),
         )
 
     def ensure_dirs(self) -> None:

@@ -159,16 +159,38 @@ scansionati > più stantii. Un asset nuovo = superficie non ancora testata.
 
 ---
 
-## 7) Governance risorse (vincolo Acer)
+## 7) Governance risorse — Governor adattivo (vincolo Acer, daily-driver)
 
-Tre colli di bottiglia, progettati fin da subito:
-- **CPU/RAM**: concorrenza limitata (`BBH_MAX_CONCURRENCY`), `nice`/`ionice`, e nel modulo
-  NixOS `CPUQuota=`, `MemoryMax=`, `MemoryHigh=` sul servizio.
-- **Disco**: gli output crescono in fretta. Retention configurabile (`BBH_RETENTION_DAYS`),
-  compattazione, niente crawl pesanti in fase recon.
-- **Rete**: singola IP di casa → throttle sui tool, probe leggeri, niente scan attivi
-  (coerente con recon-only). Se in futuro serve intensità, si valuta VPS/proxy (l'immagine
-  OCI dal flake rende il trasloco banale).
+L'Acer (Ryzen 7 5700U 8c/16t, 16 GB DDR4, RTX 3050) è anche il PC di tutti i giorni,
+quindi lo scanner deve **cedere il passo** quando lo usi e spingere quando è libero,
+con la **temperatura** come limite di sicurezza sempre attivo.
+
+**Modulo `resources/`** (sensori + governor):
+- `sensors.py` legge **temp CPU** (`k10temp` via psutil o `/sys/class/hwmon`), **temp GPU**
+  (`nvidia-smi` per la RTX 3050, `amdgpu` per la integrata), **carico di sistema** e
+  **batteria**. Tutto a tolleranza di guasto: sensore assente → `None`, mai crash.
+- `governor.py` decide un **regime** a ogni chunk di lavoro:
+
+| Regime | Quando | Concorrenza / nice |
+|--------|--------|--------------------|
+| **TURBO** | manuale (`bbh mode turbo`, es. quando esci di casa): usa tutto il PC | `BBH_TURBO_CONC` (4) / 5 |
+| **NORMAL** | auto, macchina moderatamente carica | 2 / 10 |
+| **POWERSAVE** | stai usando il PC (load alto), batteria, o temp alta | 1 / 19 |
+| **PAUSED** | temperatura **critica** (CPU≥90°C o GPU≥92°C) | 0 (attende raffreddamento) |
+
+- La **temperatura vince su tutto**: anche in TURBO manuale, oltre la soglia "hot" (82/85°C)
+  si scala di un gradino, e a "critical" si va in PAUSED. Soglie tutte da env.
+- **Override manuale** via `bbh mode auto|turbo|powersave|paused`: scrive in `sync_state`,
+  il daemon lo raccoglie al tick successivo (nessun riavvio). In `auto` rileva l'attività
+  utente dal carico misurato tra un job e l'altro.
+- Il recon esegue i tool (I/O) **in parallelo** fino a `max_concurrency`, ma le scritture
+  SQLite restano nel thread principale (connessione unica → niente race).
+
+Altri due colli di bottiglia:
+- **Disco**: output in crescita → retention (`BBH_RETENTION_DAYS`), niente crawl pesanti.
+- **Rete**: singola IP di casa → probe leggeri, niente scan attivi (coerente con recon-only).
+  `CPUQuota`/`MemoryMax` nel modulo NixOS restano come tetto rigido di sicurezza; la
+  regolazione fine la fa il governor.
 
 ---
 
@@ -187,8 +209,10 @@ Tre colli di bottiglia, progettati fin da subito:
 - **M1 (questa)** — Fondamenta: config, DB+schema, normalize trapiantato+testato,
   collector H1 (parse+sync incrementale, testato con fake), notify Telegram, CLI
   (`init/sync/status/version`), flake+modulo NixOS, test verdi.
-- **M2** — Recon passivo end-to-end sull'Acer: `subfinder→dnsx→httpx`, tabella `assets`,
-  delta→`findings`, notifiche. Tuning budget risorse coi numeri reali.
+- **M2 (fatta)** — **Governor adattivo** (turbo/normal/powersave/pausa su temperatura +
+  attività utente), sensori CPU/GPU, override manuale `bbh mode`, comando `bbh sensors`,
+  recon parallelo thread-safe. Test del governor e del parsing sensori. Prossimo sotto-passo:
+  verifica end-to-end sull'Acer reale (`nix develop` con i tool + `nvidia-smi`).
 - **M3** — Orchestratore residente 24/7 come servizio systemd + timer, heartbeat, retention.
 - **M4** — Scan attivo opzionale (nuclei) gated per-policy; port dei quirk del vecchio runner.
 - **M5** — Seconda piattaforma (Bugcrowd) dietro la stessa astrazione `collectors/base`.

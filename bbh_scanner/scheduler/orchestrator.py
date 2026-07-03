@@ -13,6 +13,7 @@ Lo stato vive nel DB, quindi il processo è ripartibile dopo un crash/reboot.
 from __future__ import annotations
 
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from datetime import datetime, timezone
 from typing import Dict, List, Optional
 
@@ -25,9 +26,12 @@ from bbh_scanner.config import Config
 from bbh_scanner.db.store import Store
 from bbh_scanner.normalize import sha256_hex
 from bbh_scanner.notify.base import Notifier, NullNotifier
-from bbh_scanner.recon.passive import run_passive
+from bbh_scanner.recon.passive import ReconResult, run_passive
 from bbh_scanner.recon.tools import check_tools
+from bbh_scanner.resources.governor import Governor, ResourcePlan
 from bbh_scanner.scheduler.queue import select_due
+
+MODE_OVERRIDE_KEY = "governor:mode_override"
 
 
 def _now() -> datetime:
@@ -40,12 +44,21 @@ def _now_iso() -> str:
 
 class Orchestrator:
     def __init__(self, config: Config, store: Store,
-                 notifier: Optional[Notifier] = None):
+                 notifier: Optional[Notifier] = None,
+                 governor: Optional[Governor] = None):
         self.config = config
         self.store = store
         self.notifier = notifier or NullNotifier()
+        self.governor = governor or Governor(config.governor)
         self._last_sync = 0.0
         self._last_heartbeat = 0.0
+        self._last_mode: Optional[str] = None
+
+    def current_override(self) -> str:
+        return self.store.get_state(MODE_OVERRIDE_KEY) or "auto"
+
+    def set_mode(self, mode: str) -> None:
+        self.store.set_state(MODE_OVERRIDE_KEY, mode)
 
     # --- collector --------------------------------------------------------- #
 
@@ -80,27 +93,79 @@ class Orchestrator:
         return select_due(enriched, _now(), self.config.recon_interval_sec)
 
     def do_recon(self, max_handles: Optional[int] = None) -> int:
+        """Esegue il recon sui programmi dovuti, rispettando il governor.
+
+        La concorrenza e il `nice` sono decisi dal governor a ogni "chunk"; se la
+        temperatura è critica (PAUSED) il recon si ferma e riprenderà al prossimo tick.
+        Le chiamate ai tool (I/O) girano in parallelo; le letture/scritture SQLite
+        restano nel thread principale (connessione unica).
+        """
         tools = check_tools()
         due = self._due_programs()
         if max_handles is not None:
             due = due[:max_handles]
+        if not due:
+            return 0
+
+        override = self.current_override()
+        timeout = self.config.budget.tool_timeout_sec
         processed = 0
-        for cand in due:
-            self._recon_one(cand.platform, cand.handle, tools)
-            processed += 1
+        i = 0
+        while i < len(due):
+            plan = self.governor.plan(override=override)
+            self._note_mode(plan)
+            if not plan.can_work:
+                self.store.log_event(
+                    "INFO", "governor", f"recon in pausa: {plan.reason}",
+                    data={"mode": plan.mode.value},
+                )
+                break
+
+            chunk = due[i:i + max(1, plan.max_concurrency)]
+            # 1) preparazione (DB, main thread)
+            prepared = [
+                (c, *self._prepare_recon(c.platform, c.handle)) for c in chunk
+            ]
+            # 2) esecuzione tool (parallela, nessun accesso DB)
+            results: Dict[str, ReconResult] = {}
+            if plan.max_concurrency <= 1:
+                for cand, workdir, scopes in prepared:
+                    results[cand.handle] = run_passive(
+                        cand.handle, scopes, workdir, timeout=timeout,
+                        nice=plan.nice, tools=tools,
+                    )
+            else:
+                with ThreadPoolExecutor(max_workers=plan.max_concurrency) as ex:
+                    fut = {
+                        ex.submit(run_passive, cand.handle, scopes, workdir,
+                                  timeout, plan.nice, tools): cand
+                        for cand, workdir, scopes in prepared
+                    }
+                    for f in as_completed(fut):
+                        cand = fut[f]
+                        try:
+                            results[cand.handle] = f.result()
+                        except Exception as e:
+                            self.store.log_event(
+                                "ERROR", "recon", f"job {cand.handle} fallito: {e}",
+                                program_handle=cand.handle,
+                            )
+            # 3) persistenza (DB, main thread)
+            for cand, _workdir, _scopes in prepared:
+                res = results.get(cand.handle)
+                if res is not None:
+                    self._persist_and_mark(cand.platform, cand.handle, res)
+            processed += len(chunk)
+            i += len(chunk)
         return processed
 
-    def _recon_one(self, platform: str, handle: str, tools: Dict) -> None:
+    def _prepare_recon(self, platform: str, handle: str):
         scopes = self.store.list_scopes(platform, handle, types=("wildcard", "domain"))
         workdir = self.config.data_dir / "recon" / platform / handle
-        result = run_passive(
-            handle, scopes, workdir,
-            timeout=self.config.budget.tool_timeout_sec,
-            nice=self.config.budget.nice,
-            tools=tools,
-        )
+        return workdir, scopes
+
+    def _persist_and_mark(self, platform: str, handle: str, result: ReconResult) -> None:
         new_findings = self._persist_recon(platform, handle, result)
-        # aggiorna i marker di recon
         self.store.set_state(f"{platform}:{handle}:last_recon_at", _now_iso())
         prog = next(
             (p for p in self.store.list_programs(platform) if p["handle"] == handle), None
@@ -113,6 +178,21 @@ class Orchestrator:
             f"new_findings={new_findings} skipped={result.skipped_steps}",
             program_handle=handle,
         )
+
+    def _note_mode(self, plan: ResourcePlan) -> None:
+        """Notifica su Telegram solo quando il regime cambia (niente spam)."""
+        if plan.mode.value == self._last_mode:
+            return
+        self._last_mode = plan.mode.value
+        emoji = {"turbo": "🚀", "normal": "▶️", "powersave": "🐢", "paused": "⏸️"}.get(
+            plan.mode.value, "•"
+        )
+        self.store.log_event(
+            "INFO", "governor", f"regime → {plan.mode.value} ({plan.reason})",
+            data={"mode": plan.mode.value, "nice": plan.nice,
+                  "concurrency": plan.max_concurrency},
+        )
+        self.notifier.send(f"{emoji} regime: {plan.mode.value} — {plan.reason}")
 
     def _persist_recon(self, platform: str, handle: str, result) -> int:
         """Salva asset scoperti e genera findings per i nuovi sottodomini/host vivi."""

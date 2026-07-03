@@ -6,11 +6,18 @@
 #     enable = true;
 #     environmentFile = "/run/secrets/bbh.env";  # HACKERONE_* e TELEGRAM_* qui
 #     settings = {
-#       BBH_MAX_CONCURRENCY = "2";
 #       BBH_SYNC_INTERVAL = "21600";
+#       # Governor termico/adattivo (default tarati per Ryzen 7 5700U + RTX 3050):
+#       BBH_CPU_HOT = "82"; BBH_CPU_CRITICAL = "90";
+#       BBH_GPU_HOT = "85"; BBH_GPU_CRITICAL = "92";
+#       BBH_TURBO_CONC = "4"; BBH_PS_CONC = "1";
 #     };
-#     resources = { cpuQuota = "150%"; memoryMax = "1500M"; };
+#     resources = { cpuQuota = "600%"; memoryMax = "2G"; };
 #   };
+#
+# Nota: il CPUQuota di systemd è un tetto RIGIDO di sicurezza. La regolazione fine
+# (turbo/normal/powersave/pausa in base a temperatura e attività utente) la fa il
+# governor applicativo, quindi qui basta un tetto generoso per il turbo.
 self:
 { config, lib, pkgs, ... }:
 let
@@ -57,17 +64,21 @@ in
     resources = {
       cpuQuota = lib.mkOption {
         type = lib.types.str;
-        default = "150%";
-        description = "CPUQuota systemd (es. '150%' = 1.5 core su un Acer quad-core).";
+        default = "600%";
+        description = ''
+          CPUQuota systemd: tetto RIGIDO di sicurezza (es. '600%' = 6 core su 8).
+          La regolazione dinamica la fa il governor applicativo; qui serve solo un
+          tetto generoso per la modalità turbo.
+        '';
       };
       memoryMax = lib.mkOption {
         type = lib.types.str;
-        default = "1500M";
-        description = "Tetto rigido di memoria (MemoryMax).";
+        default = "2G";
+        description = "Tetto rigido di memoria (MemoryMax). 16 GB totali sull'Acer.";
       };
       memoryHigh = lib.mkOption {
         type = lib.types.str;
-        default = "1200M";
+        default = "1500M";
         description = "Soglia morbida di memoria (MemoryHigh).";
       };
     };

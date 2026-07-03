@@ -59,11 +59,60 @@ def cmd_recon(config: Config, args) -> int:
     return 0
 
 
+def cmd_sensors(config: Config, args) -> int:
+    from bbh_scanner.resources.governor import decide
+    from bbh_scanner.resources.sensors import sample_sensors
+    from bbh_scanner.scheduler.orchestrator import MODE_OVERRIDE_KEY
+
+    store = _store(config)
+    override = store.get_state(MODE_OVERRIDE_KEY) or "auto"
+    reading = sample_sensors(monitor_nvidia=config.governor.monitor_nvidia)
+    plan = decide(reading, config.governor, override)
+
+    def fmt(v, unit=""):
+        return f"{v}{unit}" if v is not None else "n/d"
+
+    print("== Sensori ==")
+    print(f"  CPU temp : {fmt(reading.cpu_temp, '°C')}")
+    print(f"  GPU temp : {fmt(reading.gpu_temp, '°C')}")
+    print(f"  CPU load : {fmt(reading.cpu_load, '%')}")
+    print(f"  batteria : {'sì' if reading.on_battery else ('no' if reading.on_battery is False else 'n/d')}"
+          f" ({fmt(reading.battery_percent, '%')})")
+    print("== Governor ==")
+    print(f"  override richiesto : {override}")
+    print(f"  regime deciso      : {plan.mode.value}  ({plan.reason})")
+    print(f"  concorrenza / nice : {plan.max_concurrency} / {plan.nice}")
+    store.close()
+    return 0
+
+
+def cmd_mode(config: Config, args) -> int:
+    from bbh_scanner.scheduler.orchestrator import MODE_OVERRIDE_KEY
+
+    valid = ("auto", "turbo", "powersave", "paused")
+    store = _store(config)
+    if args.value is None:
+        print(store.get_state(MODE_OVERRIDE_KEY) or "auto")
+        store.close()
+        return 0
+    if args.value not in valid:
+        print(f"❌ modalità non valida. Usa una di: {', '.join(valid)}", file=sys.stderr)
+        store.close()
+        return 2
+    store.set_state(MODE_OVERRIDE_KEY, args.value)
+    print(f"✅ modalità impostata: {args.value} (il daemon la raccoglie al prossimo tick)")
+    store.close()
+    return 0
+
+
 def cmd_status(config: Config, args) -> int:
+    from bbh_scanner.scheduler.orchestrator import MODE_OVERRIDE_KEY
+
     store = _store(config)
     stats = store.stats()
     print("== BBH-Scanner status ==")
     print(json.dumps(stats, indent=2))
+    print(f"\nmodalità: {store.get_state(MODE_OVERRIDE_KEY) or 'auto'}")
     print("\nProgrammi (primi 15):")
     for p in store.list_programs()[:15]:
         print(f"  {p['platform']:10s} {p['handle']:24s} "
@@ -110,6 +159,12 @@ def build_parser() -> argparse.ArgumentParser:
 
     sub.add_parser("status", help="Mostra stato e statistiche")
 
+    sub.add_parser("sensors", help="Mostra temperature CPU/GPU, carico e regime deciso")
+
+    p_mode = sub.add_parser("mode", help="Imposta/mostra la modalità (auto|turbo|powersave|paused)")
+    p_mode.add_argument("value", nargs="?", default=None,
+                        help="auto | turbo | powersave | paused (vuoto = mostra corrente)")
+
     p_run = sub.add_parser("run", help="Loop residente 24/7 (o --once)")
     p_run.add_argument("--once", action="store_true", help="Un solo giro e poi esci")
     p_run.add_argument("--tick", type=int, default=60, help="Secondi tra i tick")
@@ -123,6 +178,8 @@ _DISPATCH = {
     "sync": cmd_sync,
     "recon": cmd_recon,
     "status": cmd_status,
+    "sensors": cmd_sensors,
+    "mode": cmd_mode,
     "run": cmd_run,
     "version": cmd_version,
 }
@@ -131,7 +188,17 @@ _DISPATCH = {
 def main(argv=None) -> int:
     args = build_parser().parse_args(argv)
     config = Config.load()
-    return _DISPATCH[args.cmd](config, args)
+    try:
+        return _DISPATCH[args.cmd](config, args)
+    except BrokenPipeError:
+        # output troncato da una pipe (es. `bbh status | head`): usciamo puliti.
+        try:
+            import os
+
+            os.dup2(os.open(os.devnull, os.O_WRONLY), sys.stdout.fileno())
+        except Exception:
+            pass
+        return 0
 
 
 if __name__ == "__main__":

@@ -69,10 +69,29 @@ bbh init                       # crea/migra il database
 bbh sync                       # sincronizza programmi/scope da HackerOne
 bbh sync --only-handle acme    # solo un programma
 bbh recon --limit 5            # recon passivo sui programmi dovuti (max 5)
-bbh status                     # stato, statistiche, eventi recenti
+bbh status                     # stato, statistiche, eventi recenti, modalità
+bbh sensors                    # temperature CPU/GPU, carico, regime deciso
+bbh mode turbo                 # usa tutto il PC (es. quando esci di casa)
+bbh mode powersave             # footprint minimo (stai usando il PC)
+bbh mode auto                  # rileva l'attività e si adatta da solo
 bbh run --once                 # un giro completo (sync + recon + notifiche)
 bbh run                        # loop residente 24/7 (usato dal servizio systemd)
 ```
+
+### Governor adattivo (PC di tutti i giorni)
+
+Lo scanner si adatta perché gira sul tuo computer principale:
+
+- **turbo** — imposti tu (`bbh mode turbo`) quando la macchina è libera: usa tutto il PC,
+  l'unico freno è la **temperatura**.
+- **powersave** — quando stai usando il PC: 1 thread, `nice` 19, ti lascia lavorare.
+- **auto** — rileva l'attività dal carico di sistema e sceglie da solo.
+- **pausa automatica** se la temperatura è critica (CPU ≥ 90°C o GPU ≥ 92°C), in qualsiasi modalità.
+
+Soglie e regimi si regolano da env (default tarati per Ryzen 7 5700U + RTX 3050):
+`BBH_CPU_HOT`, `BBH_CPU_CRITICAL`, `BBH_GPU_HOT`, `BBH_GPU_CRITICAL`,
+`BBH_LOAD_BUSY`, `BBH_TURBO_CONC`, `BBH_PS_CONC`, `BBH_POWERSAVE_ON_BATTERY`.
+Per la temperatura GPU serve `nvidia-smi` (arriva col driver NVIDIA su NixOS).
 
 ## 24/7 come servizio (modulo NixOS)
 
@@ -107,6 +126,7 @@ bbh_scanner/
   db/       (schema.sql, store.py)
   collectors/ (base.py, hackerone.py, sync.py)
   recon/      (tools.py, passive.py)
+  resources/  (sensors.py, governor.py)     # governor termico/adattivo
   scheduler/  (queue.py, orchestrator.py)
   notify/     (base.py, telegram.py)
 tests/                 nix/module.nix        flake.nix
