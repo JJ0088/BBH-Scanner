@@ -92,26 +92,34 @@ class Orchestrator:
             enriched.append({**p, **markers})
         return select_due(enriched, _now(), self.config.recon_interval_sec)
 
-    def do_recon(self, max_handles: Optional[int] = None) -> int:
-        """Esegue il recon sui programmi dovuti, rispettando il governor.
+    def _enqueue_due(self) -> int:
+        """Accoda un job recon_passive per ogni programma dovuto (dedup nello Store)."""
+        n = 0
+        for cand in self._due_programs():
+            jid = self.store.enqueue_job(
+                "recon_passive", platform=cand.platform,
+                program_handle=cand.handle, priority=cand.priority,
+            )
+            if jid is not None:
+                n += 1
+        return n
 
-        La concorrenza e il `nice` sono decisi dal governor a ogni "chunk"; se la
-        temperatura è critica (PAUSED) il recon si ferma e riprenderà al prossimo tick.
-        Le chiamate ai tool (I/O) girano in parallelo; le letture/scritture SQLite
-        restano nel thread principale (connessione unica).
+    def do_recon(self, max_handles: Optional[int] = None) -> int:
+        """Recon guidato dalla coda `jobs`: enqueue dei dovuti → claim → esegui → chiusura.
+
+        **Ripartibile**: i job rimasti 'running' per un crash tornano 'queued'. Concorrenza
+        e `nice` li decide il governor a ogni giro; se la temperatura è critica (PAUSED) il
+        recon si ferma e riprende al prossimo tick. I tool (I/O) girano in parallelo, le
+        scritture SQLite nel thread principale (connessione unica).
         """
         tools = check_tools()
-        due = self._due_programs()
-        if max_handles is not None:
-            due = due[:max_handles]
-        if not due:
-            return 0
+        self.store.requeue_stale_running()
+        self._enqueue_due()
 
         override = self.current_override()
         timeout = self.config.budget.tool_timeout_sec
         processed = 0
-        i = 0
-        while i < len(due):
+        while max_handles is None or processed < max_handles:
             plan = self.governor.plan(override=override)
             self._note_mode(plan)
             if not plan.can_work:
@@ -121,43 +129,59 @@ class Orchestrator:
                 )
                 break
 
-            chunk = due[i:i + max(1, plan.max_concurrency)]
+            limit = max(1, plan.max_concurrency)
+            if max_handles is not None:
+                limit = min(limit, max_handles - processed)
+            claimed = self.store.claim_jobs(limit)
+            if not claimed:
+                break
+
             # 1) preparazione (DB, main thread)
             prepared = [
-                (c, *self._prepare_recon(c.platform, c.handle)) for c in chunk
+                (job, *self._prepare_recon(job["platform"], job["program_handle"]))
+                for job in claimed
             ]
             # 2) esecuzione tool (parallela, nessun accesso DB)
-            results: Dict[str, ReconResult] = {}
+            results: Dict[int, object] = {}
             if plan.max_concurrency <= 1:
-                for cand, workdir, scopes in prepared:
-                    results[cand.handle] = run_passive(
-                        cand.handle, scopes, workdir, timeout=timeout,
-                        nice=plan.nice, tools=tools,
+                for job, workdir, scopes in prepared:
+                    results[job["id"]] = self._run_passive_safe(
+                        job["program_handle"], scopes, workdir, timeout, plan.nice, tools
                     )
             else:
                 with ThreadPoolExecutor(max_workers=plan.max_concurrency) as ex:
                     fut = {
-                        ex.submit(run_passive, cand.handle, scopes, workdir,
-                                  timeout, plan.nice, tools): cand
-                        for cand, workdir, scopes in prepared
+                        ex.submit(self._run_passive_safe, job["program_handle"], scopes,
+                                  workdir, timeout, plan.nice, tools): job
+                        for job, workdir, scopes in prepared
                     }
                     for f in as_completed(fut):
-                        cand = fut[f]
-                        try:
-                            results[cand.handle] = f.result()
-                        except Exception as e:
-                            self.store.log_event(
-                                "ERROR", "recon", f"job {cand.handle} fallito: {e}",
-                                program_handle=cand.handle,
-                            )
-            # 3) persistenza (DB, main thread)
-            for cand, _workdir, _scopes in prepared:
-                res = results.get(cand.handle)
-                if res is not None:
-                    self._persist_and_mark(cand.platform, cand.handle, res)
-            processed += len(chunk)
-            i += len(chunk)
+                        results[fut[f]["id"]] = f.result()
+            # 3) persistenza + chiusura job (DB, main thread)
+            for job, _workdir, _scopes in prepared:
+                res = results.get(job["id"])
+                if isinstance(res, ReconResult):
+                    self._persist_and_mark(job["platform"], job["program_handle"], res)
+                    self.store.complete_job(job["id"])
+                else:
+                    state = self.store.fail_job(
+                        job["id"], str(res),
+                        retry_after_sec=self.config.governor.cooldown_sec,
+                    )
+                    self.store.log_event(
+                        "ERROR", "recon",
+                        f"job {job['program_handle']} fallito ({state}): {res}",
+                        program_handle=job["program_handle"],
+                    )
+                processed += 1
         return processed
+
+    def _run_passive_safe(self, handle, scopes, workdir, timeout, nice, tools):
+        """Esegue il recon senza sollevare: ritorna ReconResult o l'eccezione catturata."""
+        try:
+            return run_passive(handle, scopes, workdir, timeout=timeout, nice=nice, tools=tools)
+        except Exception as e:  # pragma: no cover - difensivo
+            return e
 
     def _prepare_recon(self, platform: str, handle: str):
         scopes = self.store.list_scopes(platform, handle, types=("wildcard", "domain"))
@@ -195,7 +219,8 @@ class Orchestrator:
         self.notifier.send(f"{emoji} regime: {plan.mode.value} — {plan.reason}")
 
     def _persist_recon(self, platform: str, handle: str, result) -> int:
-        """Salva asset scoperti e genera findings per i nuovi sottodomini/host vivi."""
+        """Salva asset scoperti e genera i delta (findings): nuovi sottodomini, nuovi
+        host vivi e host caduti."""
         new_count = 0
         now = _now_iso()
         rows = []
@@ -203,6 +228,14 @@ class Orchestrator:
             rows.append(("subdomain", sub, "subfinder"))
         for host in result.alive:
             rows.append(("host", host, "httpx"))
+
+        # host_down: solo se httpx ha davvero girato (altrimenti `alive` è vuoto per
+        # assenza del tool, non perché gli host sono caduti).
+        gone_hosts: List[str] = []
+        if "httpx" not in result.skipped_steps:
+            prev_alive = set(self.store.alive_hosts(platform, handle))
+            gone_hosts = sorted(prev_alive - set(result.alive))
+
         with self.store.transaction() as c:
             for kind, value, source in rows:
                 asset_id = f"{platform}:{handle}:{kind}:{value}"
@@ -210,19 +243,33 @@ class Orchestrator:
                     "INSERT INTO assets(id, platform, program_handle, kind, value, "
                     "source, alive, first_seen_at, last_seen_at) "
                     "VALUES(?,?,?,?,?,?,?,?,?) "
-                    "ON CONFLICT(id) DO UPDATE SET last_seen_at=excluded.last_seen_at;",
+                    "ON CONFLICT(id) DO UPDATE SET last_seen_at=excluded.last_seen_at, "
+                    "alive=excluded.alive, source=excluded.source;",
                     (asset_id, platform, handle, kind, value, source,
                      1 if kind == "host" else None, now, now),
                 )
+        for host in gone_hosts:
+            self.store.mark_host_down(platform, handle, host)
+
+        # findings: nuovi asset
         for kind, value, _ in rows:
             fkind = "new_subdomain" if kind == "subdomain" else "new_host"
             fp = sha256_hex([f"{platform}:{handle}:{fkind}:{value}"])
-            is_new = self.store.record_finding({
+            if self.store.record_finding({
                 "platform": platform, "program_handle": handle, "kind": fkind,
                 "fingerprint": fp, "severity": "info",
                 "title": f"{fkind}: {value}", "data": {"value": value},
-            })
-            if is_new:
+            }):
+                new_count += 1
+
+        # findings: host caduti (fingerprint stabile → una notifica per host)
+        for host in gone_hosts:
+            fp = sha256_hex([f"{platform}:{handle}:host_down:{host}"])
+            if self.store.record_finding({
+                "platform": platform, "program_handle": handle, "kind": "host_down",
+                "fingerprint": fp, "severity": "info",
+                "title": f"host_down: {host}", "data": {"value": host},
+            }):
                 new_count += 1
         return new_count
 
@@ -232,7 +279,9 @@ class Orchestrator:
         pending = self.store.unnotified_findings()
         sent_ids = []
         for f in pending:
-            emoji = {"new_subdomain": "🌐", "new_host": "🟢"}.get(f["kind"], "•")
+            emoji = {"new_subdomain": "🌐", "new_host": "🟢", "host_down": "🔴"}.get(
+                f["kind"], "•"
+            )
             ok = self.notifier.send(
                 f"{emoji} [{f['program_handle']}] {f['title']}"
             )
@@ -255,10 +304,18 @@ class Orchestrator:
 
         if now - self._last_heartbeat >= self.config.heartbeat_interval_sec:
             stats = self.store.stats()
+            jobs = self.store.job_counts()
             self.notifier.send(
                 f"💓 heartbeat — programmi:{stats['programs']} scope:{stats['scopes']} "
-                f"asset:{stats['assets']} findings:{stats['findings']}"
+                f"asset:{stats['assets']} findings:{stats['findings']} "
+                f"job(queued:{jobs.get('queued', 0)} failed:{jobs.get('failed', 0)})"
             )
+            # retention: pota gli eventi vecchi per non far crescere il DB all'infinito
+            pruned = self.store.prune_events(self.config.budget.retention_days)
+            if pruned:
+                self.store.log_event(
+                    "INFO", "retention", f"eventi potati: {pruned}"
+                )
             self._last_heartbeat = now
 
         return {"synced": int(did_sync), "recon": processed, "notified": notified}

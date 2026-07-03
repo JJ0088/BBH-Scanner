@@ -13,7 +13,7 @@ from __future__ import annotations
 import json
 import sqlite3
 from contextlib import contextmanager
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 from typing import Any, Dict, Iterable, List, Optional
 
@@ -259,6 +259,136 @@ class Store:
             "SELECT * FROM events ORDER BY id DESC LIMIT ?;", (limit,)
         ).fetchall()
         return [dict(r) for r in rows]
+
+    def prune_events(self, days: int) -> int:
+        """Cancella gli eventi più vecchi di `days` giorni (retention osservabilità)."""
+        cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
+        with self.transaction() as c:
+            cur = c.execute("DELETE FROM events WHERE ts < ?;", (cutoff,))
+            return cur.rowcount
+
+    # --- jobs (coda di lavoro con macchina a stati) ------------------------ #
+
+    def enqueue_job(self, kind: str, platform: Optional[str] = None,
+                    program_handle: Optional[str] = None, target: Optional[str] = None,
+                    priority: int = 0, sig: Optional[str] = None,
+                    next_due_at: Optional[str] = None) -> Optional[int]:
+        """Accoda un job se non ne esiste già uno identico queued/running.
+
+        Ritorna l'id del nuovo job, o None se già presente (dedup). Nota: usiamo un
+        controllo esplicito con `IS` (null-safe) perché nell'indice UNIQUE i target
+        NULL sarebbero considerati distinti.
+        """
+        now = _now_iso()
+        with self.transaction() as c:
+            existing = c.execute(
+                "SELECT id FROM jobs WHERE kind=? AND platform IS ? AND program_handle IS ? "
+                "AND target IS ? AND state IN ('queued','running');",
+                (kind, platform, program_handle, target),
+            ).fetchone()
+            if existing:
+                return None
+            cur = c.execute(
+                "INSERT INTO jobs(kind, platform, program_handle, target, state, priority, "
+                "attempts, next_due_at, sig, created_at) "
+                "VALUES(?,?,?,?, 'queued', ?, 0, ?, ?, ?);",
+                (kind, platform, program_handle, target, priority, next_due_at or now, sig, now),
+            )
+            return cur.lastrowid
+
+    def claim_jobs(self, limit: int) -> List[Dict]:
+        """Prende fino a `limit` job dovuti (queued, next_due_at<=now) e li marca running."""
+        now = _now_iso()
+        with self.transaction() as c:
+            rows = c.execute(
+                "SELECT * FROM jobs WHERE state='queued' AND (next_due_at IS NULL OR next_due_at<=?) "
+                "ORDER BY priority DESC, next_due_at ASC, id ASC LIMIT ?;",
+                (now, limit),
+            ).fetchall()
+            claimed = [dict(r) for r in rows]
+            for r in claimed:
+                c.execute(
+                    "UPDATE jobs SET state='running', started_at=?, attempts=attempts+1 WHERE id=?;",
+                    (now, r["id"]),
+                )
+                # rifletti nel dict restituito lo stato aggiornato
+                r["state"] = "running"
+                r["started_at"] = now
+                r["attempts"] = (r["attempts"] or 0) + 1
+        return claimed
+
+    def complete_job(self, job_id: int) -> None:
+        with self.transaction() as c:
+            c.execute(
+                "UPDATE jobs SET state='done', finished_at=?, error=NULL WHERE id=?;",
+                (_now_iso(), job_id),
+            )
+
+    def fail_job(self, job_id: int, error: str, retry_after_sec: Optional[int] = None,
+                 max_attempts: int = 3) -> str:
+        """Fallisce un job. Se sotto `max_attempts` e con `retry_after_sec`, lo ri-accoda
+        con backoff; altrimenti lo marca 'failed'. Ritorna lo stato finale."""
+        now = _now_iso()
+        with self.transaction() as c:
+            row = c.execute("SELECT attempts FROM jobs WHERE id=?;", (job_id,)).fetchone()
+            attempts = row["attempts"] if row else max_attempts
+            if retry_after_sec is not None and attempts < max_attempts:
+                next_due = (
+                    datetime.now(timezone.utc) + timedelta(seconds=retry_after_sec)
+                ).isoformat()
+                c.execute(
+                    "UPDATE jobs SET state='queued', next_due_at=?, error=?, finished_at=? WHERE id=?;",
+                    (next_due, error, now, job_id),
+                )
+                return "queued"
+            c.execute(
+                "UPDATE jobs SET state='failed', error=?, finished_at=? WHERE id=?;",
+                (error, now, job_id),
+            )
+            return "failed"
+
+    def requeue_stale_running(self) -> int:
+        """Alla ripartenza: i job rimasti 'running' (per un crash) tornano 'queued'."""
+        with self.transaction() as c:
+            cur = c.execute(
+                "UPDATE jobs SET state='queued', started_at=NULL WHERE state='running';"
+            )
+            return cur.rowcount
+
+    def list_jobs(self, states: Optional[Iterable[str]] = None, limit: int = 50) -> List[Dict]:
+        sql = "SELECT * FROM jobs"
+        params: List[Any] = []
+        if states:
+            slist = list(states)
+            sql += f" WHERE state IN ({','.join('?' * len(slist))})"
+            params.extend(slist)
+        sql += " ORDER BY id DESC LIMIT ?;"
+        params.append(limit)
+        return [dict(r) for r in self.conn.execute(sql, params).fetchall()]
+
+    def job_counts(self) -> Dict[str, int]:
+        rows = self.conn.execute(
+            "SELECT state, COUNT(*) AS n FROM jobs GROUP BY state;"
+        ).fetchall()
+        return {r["state"]: r["n"] for r in rows}
+
+    # --- assets (per detection host_down) ---------------------------------- #
+
+    def alive_hosts(self, platform: str, handle: str) -> List[str]:
+        rows = self.conn.execute(
+            "SELECT value FROM assets WHERE platform=? AND program_handle=? "
+            "AND kind='host' AND alive=1;",
+            (platform, handle),
+        ).fetchall()
+        return [r["value"] for r in rows]
+
+    def mark_host_down(self, platform: str, handle: str, value: str) -> None:
+        with self.transaction() as c:
+            c.execute(
+                "UPDATE assets SET alive=0, last_seen_at=? "
+                "WHERE platform=? AND program_handle=? AND kind='host' AND value=?;",
+                (_now_iso(), platform, handle, value),
+            )
 
     # --- stats ------------------------------------------------------------- #
 

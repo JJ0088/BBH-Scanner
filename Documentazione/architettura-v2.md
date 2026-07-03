@@ -211,11 +211,17 @@ Altri due colli di bottiglia:
   (`init/sync/status/version`), flake+modulo NixOS, test verdi.
 - **M2 (fatta)** — **Governor adattivo** (turbo/normal/powersave/pausa su temperatura +
   attività utente), sensori CPU/GPU, override manuale `bbh mode`, comando `bbh sensors`,
-  recon parallelo thread-safe. Test del governor e del parsing sensori. Prossimo sotto-passo:
-  verifica end-to-end sull'Acer reale (`nix develop` con i tool + `nvidia-smi`).
-- **M3** — Orchestratore residente 24/7 come servizio systemd + timer, heartbeat, retention.
+  recon parallelo thread-safe. Test del governor e del parsing sensori.
+- **M2.5 (fatta)** — **Coda `jobs`** cablata (enqueue→claim→esegui→complete/fail, dedup,
+  backoff, requeue dei job orfani → 24/7 ripartibile), **findings `host_down`**, **retention**
+  eventi. Comando `bbh jobs`. Prossimo sotto-passo: verifica end-to-end sull'Acer reale
+  (`nix develop` con i tool + `nvidia-smi`).
+- **M3** — Orchestratore residente 24/7 come servizio systemd + timer, health, tuning sul campo.
 - **M4** — Scan attivo opzionale (nuclei) gated per-policy; port dei quirk del vecchio runner.
 - **M5** — Seconda piattaforma (Bugcrowd) dietro la stessa astrazione `collectors/base`.
+- **M6** — **Frontend web** (oltre alla CLI): dashboard di stato/coda/findings/temperature,
+  controllo del regime (turbo/powersave), storico. Legge lo stesso Store SQLite; API leggera
+  sopra `db/store.py`. Da progettare quando il core 24/7 è stabile.
 
 ---
 

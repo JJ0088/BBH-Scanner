@@ -113,6 +113,9 @@ def cmd_status(config: Config, args) -> int:
     print("== BBH-Scanner status ==")
     print(json.dumps(stats, indent=2))
     print(f"\nmodalità: {store.get_state(MODE_OVERRIDE_KEY) or 'auto'}")
+    jobs = store.job_counts()
+    if jobs:
+        print("coda job: " + "  ".join(f"{k}:{v}" for k, v in sorted(jobs.items())))
     print("\nProgrammi (primi 15):")
     for p in store.list_programs()[:15]:
         print(f"  {p['platform']:10s} {p['handle']:24s} "
@@ -140,6 +143,23 @@ def cmd_run(config: Config, args) -> int:  # pragma: no cover - loop
     return 0
 
 
+def cmd_jobs(config: Config, args) -> int:
+    store = _store(config)
+    counts = store.job_counts()
+    print("== Coda job ==")
+    print("  " + ("  ".join(f"{k}:{v}" for k, v in sorted(counts.items())) or "(vuota)"))
+    states = [args.state] if args.state else None
+    rows = store.list_jobs(states=states, limit=args.limit)
+    if rows:
+        print(f"\nUltimi {len(rows)} job:")
+        for j in rows:
+            print(f"  #{j['id']:<5} {j['state']:8s} {j['kind']:14s} "
+                  f"{(j['program_handle'] or '-'):24s} attempts={j['attempts']}"
+                  + (f"  err={j['error'][:40]}" if j['error'] else ""))
+    store.close()
+    return 0
+
+
 def cmd_version(config: Config, args) -> int:
     print(f"bbh-scanner {__version__}")
     return 0
@@ -158,6 +178,11 @@ def build_parser() -> argparse.ArgumentParser:
     p_recon.add_argument("--limit", type=int, default=None, help="Max programmi per giro")
 
     sub.add_parser("status", help="Mostra stato e statistiche")
+
+    p_jobs = sub.add_parser("jobs", help="Mostra la coda dei job")
+    p_jobs.add_argument("--state", default=None,
+                        help="Filtra per stato (queued|running|done|failed)")
+    p_jobs.add_argument("--limit", type=int, default=20, help="Quanti job elencare")
 
     sub.add_parser("sensors", help="Mostra temperature CPU/GPU, carico e regime deciso")
 
@@ -178,6 +203,7 @@ _DISPATCH = {
     "sync": cmd_sync,
     "recon": cmd_recon,
     "status": cmd_status,
+    "jobs": cmd_jobs,
     "sensors": cmd_sensors,
     "mode": cmd_mode,
     "run": cmd_run,

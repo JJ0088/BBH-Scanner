@@ -21,8 +21,10 @@ solida e testata. Vedi le milestone in fondo al documento d'architettura.
    `programs`, `scopes`, `assets`, `jobs`, `findings`, `events`, `sync_state`.
 3. **Recon passivo** — `subfinder → dnsx → httpx` sui seed derivati dagli scope; produce
    asset scoperti e **delta** (nuovo sottodominio / nuovo host vivo) come findings.
-4. **Scheduler** — orchestratore residente che sincronizza, prioritizza (asset nuovi/cambiati
-   prima) ed esegue il recon entro un **budget di risorse**, ripartibile dopo un crash.
+4. **Scheduler** — orchestratore residente con **coda `jobs`** (enqueue→claim→esegui→
+   complete/fail, dedup, backoff): sincronizza, prioritizza (asset nuovi/cambiati prima) ed
+   esegue il recon entro il budget del governor. **Ripartibile dopo un crash**: i job rimasti
+   a metà tornano in coda al riavvio.
 5. **Notifiche Telegram** — findings, heartbeat, errori.
 
 ---
@@ -69,7 +71,9 @@ bbh init                       # crea/migra il database
 bbh sync                       # sincronizza programmi/scope da HackerOne
 bbh sync --only-handle acme    # solo un programma
 bbh recon --limit 5            # recon passivo sui programmi dovuti (max 5)
-bbh status                     # stato, statistiche, eventi recenti, modalità
+bbh status                     # stato, statistiche, eventi recenti, modalità, coda
+bbh jobs                       # coda dei job (queued/running/done/failed)
+bbh jobs --state failed        # solo i job falliti
 bbh sensors                    # temperature CPU/GPU, carico, regime deciso
 bbh mode turbo                 # usa tutto il PC (es. quando esci di casa)
 bbh mode powersave             # footprint minimo (stai usando il PC)
