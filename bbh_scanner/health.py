@@ -58,6 +58,19 @@ def run_checks(config: Config, online: bool = False,
         checks.append(Check("tool-recon", "warn",
                             f"mancanti: {', '.join(missing)} (step relativi saltati)"))
 
+    # --- Scan attivo (nuclei) ---
+    if config.active.enabled:
+        nuclei = check_tools(("nuclei",))["nuclei"]
+        if nuclei.available:
+            checks.append(Check("scan-attivo", "ok",
+                                f"abilitato — nuclei presente (rate={config.active.rate_limit}/s)"))
+        else:
+            checks.append(Check("scan-attivo", "warn",
+                                "abilitato ma 'nuclei' non è nel PATH"))
+    else:
+        checks.append(Check("scan-attivo", "ok",
+                            "disabilitato (BBH_ACTIVE_SCAN=1 per attivarlo)"))
+
     # --- Sensori + governor ---
     reading = sample_sensors(monitor_nvidia=config.governor.monitor_nvidia)
     plan = decide(reading, config.governor, "auto")

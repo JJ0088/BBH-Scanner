@@ -115,6 +115,27 @@ class GovernorConfig:
 
 
 @dataclass(frozen=True)
+class ActiveScanConfig:
+    """Scan attivo con nuclei — OPT-IN e con paletti (singola IP di casa).
+
+    Disabilitato di default. Gira solo quando il governor è in NORMAL/TURBO (mai in
+    powersave/pausa) ed è rate-limitato. Scansiona solo i bersagli in-scope raccolti
+    dal recon + gli scope url/api eleggibili.
+    """
+
+    enabled: bool = field(default_factory=lambda: _env_bool("BBH_ACTIVE_SCAN", False))
+    rate_limit: int = field(default_factory=lambda: _env_int("BBH_NUCLEI_RATE", 50))
+    concurrency: int = field(default_factory=lambda: _env_int("BBH_NUCLEI_CONC", 15))
+    # Filtro severità dei template (vuoto = default di nuclei). Es. "medium,high,critical".
+    severity: str = field(default_factory=lambda: _env("BBH_NUCLEI_SEVERITY", ""))
+    templates: str = field(default_factory=lambda: _env("BBH_NUCLEI_TEMPLATES", ""))
+    extra_args: str = field(default_factory=lambda: _env("BBH_NUCLEI_ARGS", ""))
+    timeout_sec: int = field(default_factory=lambda: _env_int("BBH_NUCLEI_TIMEOUT", 3600))
+    # Ogni quanto ri-scansionare attivamente un programma (secondi).
+    scan_interval_sec: int = field(default_factory=lambda: _env_int("BBH_ACTIVE_INTERVAL", 3 * 24 * 3600))
+
+
+@dataclass(frozen=True)
 class Config:
     root: Path
     data_dir: Path
@@ -130,6 +151,7 @@ class Config:
     telegram: TelegramConfig
     budget: ResourceBudget
     governor: GovernorConfig
+    active: ActiveScanConfig
 
     @staticmethod
     def load() -> "Config":
@@ -152,6 +174,7 @@ class Config:
             telegram=TelegramConfig(),
             budget=ResourceBudget(),
             governor=GovernorConfig(),
+            active=ActiveScanConfig(),
         )
 
     def ensure_dirs(self) -> None:

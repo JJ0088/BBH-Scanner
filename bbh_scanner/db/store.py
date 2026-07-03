@@ -220,6 +220,24 @@ class Store:
             )
             return True
 
+    def list_findings(self, kind: Optional[str] = None,
+                      severities: Optional[Iterable[str]] = None,
+                      limit: int = 50) -> List[Dict]:
+        sql = "SELECT * FROM findings"
+        clauses, params = [], []
+        if kind:
+            clauses.append("kind=?")
+            params.append(kind)
+        if severities:
+            slist = list(severities)
+            clauses.append(f"severity IN ({','.join('?' * len(slist))})")
+            params.extend(slist)
+        if clauses:
+            sql += " WHERE " + " AND ".join(clauses)
+        sql += " ORDER BY id DESC LIMIT ?;"
+        params.append(limit)
+        return [dict(r) for r in self.conn.execute(sql, params).fetchall()]
+
     def unnotified_findings(self, limit: int = 50) -> List[Dict]:
         rows = self.conn.execute(
             "SELECT * FROM findings WHERE notified_at IS NULL "
@@ -296,15 +314,24 @@ class Store:
             )
             return cur.lastrowid
 
-    def claim_jobs(self, limit: int) -> List[Dict]:
-        """Prende fino a `limit` job dovuti (queued, next_due_at<=now) e li marca running."""
+    def claim_jobs(self, limit: int, kinds: Optional[Iterable[str]] = None) -> List[Dict]:
+        """Prende fino a `limit` job dovuti (queued, next_due_at<=now) e li marca running.
+
+        `kinds` filtra per tipo (es. solo 'recon_passive' o solo 'nuclei_scan'), così
+        pipeline diverse non si rubano i job a vicenda.
+        """
         now = _now_iso()
+        sql = ("SELECT * FROM jobs WHERE state='queued' "
+               "AND (next_due_at IS NULL OR next_due_at<=?)")
+        params: List[Any] = [now]
+        if kinds:
+            klist = list(kinds)
+            sql += f" AND kind IN ({','.join('?' * len(klist))})"
+            params.extend(klist)
+        sql += " ORDER BY priority DESC, next_due_at ASC, id ASC LIMIT ?;"
+        params.append(limit)
         with self.transaction() as c:
-            rows = c.execute(
-                "SELECT * FROM jobs WHERE state='queued' AND (next_due_at IS NULL OR next_due_at<=?) "
-                "ORDER BY priority DESC, next_due_at ASC, id ASC LIMIT ?;",
-                (now, limit),
-            ).fetchall()
+            rows = c.execute(sql, params).fetchall()
             claimed = [dict(r) for r in rows]
             for r in claimed:
                 c.execute(

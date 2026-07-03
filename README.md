@@ -25,7 +25,9 @@ solida e testata. Vedi le milestone in fondo al documento d'architettura.
    complete/fail, dedup, backoff): sincronizza, prioritizza (asset nuovi/cambiati prima) ed
    esegue il recon entro il budget del governor. **Ripartibile dopo un crash**: i job rimasti
    a metà tornano in coda al riavvio.
-5. **Notifiche Telegram** — findings, heartbeat, errori.
+5. **Scan attivo (nuclei)** — opt-in, gated dal governor e rate-limitato: cerca
+   vulnerabilità sui bersagli in-scope e produce findings `vuln`.
+6. **Notifiche Telegram** — findings, heartbeat, errori.
 
 ---
 
@@ -73,6 +75,8 @@ bbh doctor --online            # + test raggiungibilità HackerOne e invio Teleg
 bbh sync                       # sincronizza programmi/scope da HackerOne
 bbh sync --only-handle acme    # solo un programma
 bbh recon --limit 5            # recon passivo sui programmi dovuti (max 5)
+bbh scan --limit 3             # scan attivo nuclei (opt-in, vedi sotto)
+bbh findings --severity high,critical   # elenca i findings
 bbh status                     # stato, statistiche, eventi recenti, modalità, coda
 bbh jobs                       # coda dei job (queued/running/done/failed)
 bbh jobs --state failed        # solo i job falliti
@@ -98,6 +102,21 @@ Soglie e regimi si regolano da env (default tarati per Ryzen 7 5700U + RTX 3050)
 `BBH_CPU_HOT`, `BBH_CPU_CRITICAL`, `BBH_GPU_HOT`, `BBH_GPU_CRITICAL`,
 `BBH_LOAD_BUSY`, `BBH_TURBO_CONC`, `BBH_PS_CONC`, `BBH_POWERSAVE_ON_BATTERY`.
 Per la temperatura GPU serve `nvidia-smi` (arriva col driver NVIDIA su NixOS).
+
+### Scan attivo (nuclei) — opt-in
+
+A differenza del recon (passivo), lo scan attivo manda richieste ai bersagli, quindi è
+**disattivato di default** e con paletti:
+
+- Si abilita con `BBH_ACTIVE_SCAN=1`.
+- Gira **solo in regime NORMAL/TURBO** (mai quando stai usando il PC o se scalda).
+- È **rate-limitato** per la singola IP di casa e scansiona **solo bersagli in-scope**
+  (scope url/api eleggibili + host vivi scoperti dal recon).
+- I findings `vuln` arrivano su Telegram **solo da severità medium in su**; il resto si
+  consulta con `bbh findings`.
+
+Configurabile: `BBH_NUCLEI_RATE` (req/s), `BBH_NUCLEI_CONC`, `BBH_NUCLEI_SEVERITY`
+(es. `medium,high,critical`), `BBH_NUCLEI_TEMPLATES`, `BBH_NUCLEI_ARGS`, `BBH_ACTIVE_INTERVAL`.
 
 ## 24/7 come servizio (modulo NixOS)
 
@@ -132,8 +151,10 @@ bbh_scanner/
   db/       (schema.sql, store.py)
   collectors/ (base.py, hackerone.py, sync.py)
   recon/      (tools.py, passive.py)
+  active/     (nuclei.py)                    # scan attivo (opt-in)
   resources/  (sensors.py, governor.py)     # governor termico/adattivo
   scheduler/  (queue.py, orchestrator.py)
+  health.py   systemd.py                     # bbh doctor + sd_notify
   notify/     (base.py, telegram.py)
 tests/                 nix/module.nix        flake.nix
 Documentazione/architettura-v2.md

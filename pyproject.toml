@@ -28,6 +28,7 @@ packages = [
     "bbh_scanner.db",
     "bbh_scanner.collectors",
     "bbh_scanner.recon",
+    "bbh_scanner.active",
     "bbh_scanner.resources",
     "bbh_scanner.scheduler",
     "bbh_scanner.notify",

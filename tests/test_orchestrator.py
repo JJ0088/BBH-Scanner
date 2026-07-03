@@ -80,6 +80,76 @@ def test_host_down_detection(tmp_path, monkeypatch):
     assert "host_down" in kinds
 
 
+class _RecordingNotifier:
+    def __init__(self):
+        self.sent = []
+
+    def send(self, text):
+        self.sent.append(text)
+        return True
+
+
+def _seed_url_target(store):
+    store.upsert_programs([{
+        "platform": "hackerone", "handle": "acme",
+        "offers_bounties": True, "submission_state": "open",
+    }])
+    store.upsert_scopes([{
+        "id": "hackerone:acme:https://acme.com/", "platform": "hackerone",
+        "program_handle": "acme", "asset_identifier": "https://acme.com/",
+        "normalized_type": "url", "normalized_value": "https://acme.com/",
+    }])
+
+
+def test_active_scan_disabled_by_default(tmp_path, monkeypatch):
+    _config, store, orch = _setup(tmp_path, monkeypatch)
+    _seed_program(store)
+    assert orch.do_active_scan() == 0  # BBH_ACTIVE_SCAN non impostato
+
+
+def test_active_scan_runs_and_filters_notifications(tmp_path, monkeypatch):
+    monkeypatch.setenv("BBH_ACTIVE_SCAN", "1")
+    _config, store, orch = _setup(tmp_path, monkeypatch)
+    _seed_url_target(store)
+
+    import bbh_scanner.scheduler.orchestrator as om
+    from bbh_scanner.active.nuclei import NucleiFinding, NucleiScanResult
+    from bbh_scanner.recon.tools import ToolStatus
+
+    monkeypatch.setattr(om, "check_tools",
+                        lambda t=None: {"nuclei": ToolStatus("nuclei", True, "/x")})
+    monkeypatch.setattr(om, "run_nuclei",
+                        lambda handle, targets, workdir, cfg, nice=10, timeout=3600, tools=None:
+                        NucleiScanResult(handle=handle, rc=0, findings=[
+                            NucleiFinding("cve", "RCE", "high", "https://acme.com/x", "acme.com"),
+                            NucleiFinding("tls", "TLS", "info", "https://acme.com/", "acme.com"),
+                        ]))
+    rec = _RecordingNotifier()
+    orch.notifier = rec
+
+    assert orch.do_active_scan() == 1
+    assert len(store.list_findings(kind="vuln")) == 2
+
+    orch.flush_notifications()
+    # solo il finding high viene notificato; l'info è soppresso
+    assert len(rec.sent) == 1
+    assert "RCE" in rec.sent[0]
+
+
+def test_active_scan_suspended_in_powersave(tmp_path, monkeypatch):
+    monkeypatch.setenv("BBH_ACTIVE_SCAN", "1")
+    _config, store, orch = _setup(tmp_path, monkeypatch)
+    _seed_url_target(store)
+
+    import bbh_scanner.scheduler.orchestrator as om
+    from bbh_scanner.recon.tools import ToolStatus
+    monkeypatch.setattr(om, "check_tools",
+                        lambda t=None: {"nuclei": ToolStatus("nuclei", True, "/x")})
+    orch.set_mode("powersave")  # regime troppo basso per lo scan attivo
+    assert orch.do_active_scan() == 0
+    assert store.job_counts().get("queued") == 1  # accodato ma non eseguito
+
+
 def test_request_stop_sets_flag(tmp_path, monkeypatch):
     _config, _store, orch = _setup(tmp_path, monkeypatch)
     assert not orch._stop.is_set()

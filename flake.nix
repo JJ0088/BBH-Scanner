@@ -19,8 +19,8 @@
         pkgs = import nixpkgs { inherit system; };
         python = pkgs.python311;
 
-        # I tool ProjectDiscovery usati dal recon passivo (in nixpkgs).
-        reconTools = [ pkgs.subfinder pkgs.dnsx pkgs.httpx ];
+        # Tool ProjectDiscovery: recon passivo (subfinder/dnsx/httpx) + scan attivo (nuclei).
+        reconTools = [ pkgs.subfinder pkgs.dnsx pkgs.httpx pkgs.nuclei ];
 
         bbh-scanner = python.pkgs.buildPythonApplication {
           pname = "bbh-scanner";
@@ -65,7 +65,7 @@
           ] ++ reconTools;
           shellHook = ''
             echo "BBH-Scanner dev shell — python $(python --version)"
-            echo "tool: subfinder/dnsx/httpx disponibili nel PATH"
+            echo "tool: subfinder/dnsx/httpx/nuclei disponibili nel PATH"
             echo "nota: per la temperatura GPU serve 'nvidia-smi' dal driver NVIDIA"
             export BBH_ROOT="$PWD"
           '';

@@ -143,6 +143,28 @@ lo step viene saltato e loggato, non crasha.
 
 ---
 
+## 5bis) Scan attivo — nuclei (`active/`)
+
+Fase attiva, **opt-in e con paletti**, perché a differenza del recon manda richieste
+potenzialmente intrusive ai bersagli da una singola IP di casa:
+
+```
+scope url/api + host vivi (recon)  ->  reduce/dedup  ->  nuclei -jsonl  ->  findings 'vuln'
+```
+
+- **Opt-in**: gira solo se `BBH_ACTIVE_SCAN=1` (default off).
+- **Gated dal governor**: eseguito solo in regime **NORMAL/TURBO**; in powersave (stai usando
+  il PC) o pausa (temperatura) è **sospeso**. Job kind `nuclei_scan`, separato dal recon.
+- **Rate-limitato** (`BBH_NUCLEI_RATE`, `BBH_NUCLEI_CONC`) e con filtro severità configurabile.
+- **Solo bersagli in-scope**: url/api eleggibili + host vivi già scoperti; niente scansioni
+  fuori scope.
+- **Findings `vuln`** con severità nuclei, dedup per `template_id + matched_at`. Notifica
+  Telegram **solo da medium in su** (info/low si consultano con `bbh findings`).
+
+Parsing dell'output (`parse_nuclei_jsonl`) separato dall'esecuzione → testabile senza tool.
+
+---
+
 ## 6) Scheduler / 24-7
 
 `orchestrator.tick()` (loop residente, invocato da systemd o auto-loop):
@@ -220,7 +242,11 @@ Altri due colli di bottiglia:
   il tick ed esce), **watchdog systemd** (sd_notify, opt-in nel modulo), comando **`bbh doctor`**
   (verifica pre-avvio: DB, credenziali, tool, sensori, Telegram). Resta: **verifica sul campo
   sull'Acer** (build del flake, `bbh doctor --online`, prima esecuzione reale, tuning durate/watchdog).
-- **M4** — Scan attivo opzionale (nuclei) gated per-policy; port dei quirk del vecchio runner.
+- **M4 (fatta)** — **Scan attivo (nuclei)**: OPT-IN (`BBH_ACTIVE_SCAN`), **gated dal governor**
+  (gira solo in NORMAL/TURBO, mai powersave/pausa), **rate-limitato** per la singola IP di casa.
+  Job kind `nuclei_scan`, bersagli = scope url/api + host vivi del recon, findings `vuln` con
+  severità; notifica Telegram solo da medium in su. Comandi `bbh scan` / `bbh findings`.
+  Parsing JSONL testato. Prossimo: validazione su target reali sull'Acer.
 - **M5** — Seconda piattaforma (Bugcrowd) dietro la stessa astrazione `collectors/base`.
 - **M6** — **Frontend web** (oltre alla CLI): dashboard di stato/coda/findings/temperature,
   controllo del regime (turbo/powersave), storico. Legge lo stesso Store SQLite; API leggera

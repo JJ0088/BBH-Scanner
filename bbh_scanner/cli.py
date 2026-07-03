@@ -105,6 +105,34 @@ def cmd_mode(config: Config, args) -> int:
     return 0
 
 
+def cmd_scan(config: Config, args) -> int:
+    from bbh_scanner.scheduler.orchestrator import Orchestrator
+
+    if not config.active.enabled:
+        print("⚠️  Scan attivo disabilitato. Abilitalo con BBH_ACTIVE_SCAN=1 "
+              "(gira solo in regime NORMAL/TURBO).", file=sys.stderr)
+        return 2
+    store = _store(config)
+    orch = Orchestrator(config, store, build_notifier(config.telegram))
+    scanned = orch.do_active_scan(max_handles=args.limit)
+    notified = orch.flush_notifications()
+    print(f"✅ Scan attivo: {scanned} programmi, {notified} notifiche inviate")
+    store.close()
+    return 0
+
+
+def cmd_findings(config: Config, args) -> int:
+    store = _store(config)
+    sev = [s.strip() for s in args.severity.split(",")] if args.severity else None
+    rows = store.list_findings(kind=args.kind, severities=sev, limit=args.limit)
+    print(f"== Findings ({len(rows)}) ==")
+    for f in rows:
+        print(f"  [{(f['severity'] or '?'):8s}] {f['kind']:14s} "
+              f"{(f['program_handle'] or '-'):22s} {f['title']}")
+    store.close()
+    return 0
+
+
 def cmd_status(config: Config, args) -> int:
     from bbh_scanner.scheduler.orchestrator import MODE_OVERRIDE_KEY
 
@@ -204,6 +232,14 @@ def build_parser() -> argparse.ArgumentParser:
                         help="Filtra per stato (queued|running|done|failed)")
     p_jobs.add_argument("--limit", type=int, default=20, help="Quanti job elencare")
 
+    p_scan = sub.add_parser("scan", help="Scan attivo nuclei (opt-in, gated dal governor)")
+    p_scan.add_argument("--limit", type=int, default=None, help="Max programmi per giro")
+
+    p_find = sub.add_parser("findings", help="Elenca i findings")
+    p_find.add_argument("--kind", default=None, help="Filtra per tipo (vuln|new_subdomain|...)")
+    p_find.add_argument("--severity", default=None, help="CSV: es. medium,high,critical")
+    p_find.add_argument("--limit", type=int, default=30)
+
     sub.add_parser("sensors", help="Mostra temperature CPU/GPU, carico e regime deciso")
 
     p_mode = sub.add_parser("mode", help="Imposta/mostra la modalità (auto|turbo|powersave|paused)")
@@ -225,6 +261,8 @@ _DISPATCH = {
     "status": cmd_status,
     "doctor": cmd_doctor,
     "jobs": cmd_jobs,
+    "scan": cmd_scan,
+    "findings": cmd_findings,
     "sensors": cmd_sensors,
     "mode": cmd_mode,
     "run": cmd_run,

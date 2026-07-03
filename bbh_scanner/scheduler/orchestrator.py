@@ -29,12 +29,19 @@ from bbh_scanner.config import Config
 from bbh_scanner.db.store import Store
 from bbh_scanner.normalize import sha256_hex
 from bbh_scanner.notify.base import Notifier, NullNotifier
+from bbh_scanner.active.nuclei import build_targets, run_nuclei
 from bbh_scanner.recon.passive import ReconResult, run_passive
 from bbh_scanner.recon.tools import check_tools
-from bbh_scanner.resources.governor import Governor, ResourcePlan
+from bbh_scanner.resources.governor import Governor, Mode, ResourcePlan
 from bbh_scanner.scheduler.queue import select_due
 
 MODE_OVERRIDE_KEY = "governor:mode_override"
+
+# Emoji per severità (findings vulnerabilità nuclei).
+_SEV_EMOJI = {"critical": "🟥", "high": "🟧", "medium": "🟨", "low": "🟦", "info": "⬜"}
+# Notifichiamo sempre gli asset-delta; per i vuln solo da medium in su.
+_NOTIFY_ALWAYS_KINDS = {"new_subdomain", "new_host", "host_down"}
+_NOTIFY_SEVERITIES = {"medium", "high", "critical"}
 
 
 def _now() -> datetime:
@@ -43,6 +50,16 @@ def _now() -> datetime:
 
 def _now_iso() -> str:
     return _now().isoformat()
+
+
+def _parse_iso(value: Optional[str]) -> Optional[datetime]:
+    if not value:
+        return None
+    try:
+        dt = datetime.fromisoformat(str(value).replace("Z", "+00:00"))
+        return dt.replace(tzinfo=timezone.utc) if dt.tzinfo is None else dt
+    except ValueError:
+        return None
 
 
 class Orchestrator:
@@ -139,7 +156,7 @@ class Orchestrator:
             limit = max(1, plan.max_concurrency)
             if max_handles is not None:
                 limit = min(limit, max_handles - processed)
-            claimed = self.store.claim_jobs(limit)
+            claimed = self.store.claim_jobs(limit, kinds=["recon_passive"])
             if not claimed:
                 break
 
@@ -280,21 +297,130 @@ class Orchestrator:
                 new_count += 1
         return new_count
 
+    # --- scan attivo (nuclei) ---------------------------------------------- #
+
+    def _active_targets(self, platform: str, handle: str) -> List[str]:
+        scopes = self.store.list_scopes(platform, handle, types=("url", "api"))
+        alive = self.store.alive_hosts(platform, handle)
+        return build_targets(scopes, alive)
+
+    def _enqueue_active_due(self) -> int:
+        """Accoda un job nuclei_scan per i programmi con bersagli e scaduti di intervallo."""
+        now = _now()
+        interval = self.config.active.scan_interval_sec
+        n = 0
+        for p in self.store.list_programs(enabled_only=True):
+            platform, handle = p["platform"], p["handle"]
+            if not self._active_targets(platform, handle):
+                continue
+            last = self.store.get_state(f"{platform}:{handle}:last_active_at")
+            if last:
+                last_dt = _parse_iso(last)
+                if last_dt and (now - last_dt).total_seconds() < interval:
+                    continue
+            if self.store.enqueue_job("nuclei_scan", platform=platform,
+                                      program_handle=handle) is not None:
+                n += 1
+        return n
+
+    def do_active_scan(self, max_handles: Optional[int] = None) -> int:
+        """Scan attivo con nuclei — OPT-IN e gated dal governor.
+
+        Non fa nulla se `BBH_ACTIVE_SCAN` è off o se `nuclei` non è installato. Gira solo
+        quando il regime è NORMAL o TURBO (mai powersave/pausa): lo scan attivo è pesante
+        e aggressivo per la rete, quindi cede il passo appena usi il PC.
+        """
+        if not self.config.active.enabled:
+            return 0
+        tools = check_tools(("nuclei",))
+        if not tools["nuclei"].available:
+            self.store.log_event(
+                "WARN", "nuclei", "scan attivo abilitato ma 'nuclei' non è nel PATH"
+            )
+            return 0
+
+        self._enqueue_active_due()
+        override = self.current_override()
+        timeout = self.config.active.timeout_sec
+        processed = 0
+        while max_handles is None or processed < max_handles:
+            plan = self.governor.plan(override=override)
+            if plan.mode not in (Mode.NORMAL, Mode.TURBO):
+                self.store.log_event(
+                    "INFO", "nuclei",
+                    f"scan attivo sospeso (regime {plan.mode.value})",
+                )
+                break
+            claimed = self.store.claim_jobs(1, kinds=["nuclei_scan"])
+            if not claimed:
+                break
+            job = claimed[0]
+            platform, handle = job["platform"], job["program_handle"]
+            targets = self._active_targets(platform, handle)
+            workdir = self.config.data_dir / "active" / platform / handle
+            try:
+                result = run_nuclei(
+                    handle, targets, workdir, self.config.active,
+                    nice=plan.nice, timeout=timeout, tools=tools,
+                )
+            except Exception as e:
+                self.store.fail_job(job["id"], str(e),
+                                    retry_after_sec=self.config.governor.cooldown_sec)
+                self.store.log_event("ERROR", "nuclei",
+                                     f"scan {handle} fallito: {e}", program_handle=handle)
+                processed += 1
+                continue
+            new_vulns = self._persist_nuclei(platform, handle, result)
+            self.store.set_state(f"{platform}:{handle}:last_active_at", _now_iso())
+            self.store.complete_job(job["id"])
+            self.store.log_event(
+                "INFO", "nuclei",
+                f"scan {handle}: bersagli={len(targets)} findings={len(result.findings)} "
+                f"nuovi={new_vulns}" + (" (nuclei assente/saltato)" if result.skipped else ""),
+                program_handle=handle,
+            )
+            processed += 1
+        return processed
+
+    def _persist_nuclei(self, platform: str, handle: str, result) -> int:
+        new_count = 0
+        for f in result.findings:
+            fp = sha256_hex([f"{platform}:{handle}:vuln:{f.template_id}:{f.matched_at}"])
+            if self.store.record_finding({
+                "platform": platform, "program_handle": handle, "kind": "vuln",
+                "fingerprint": fp, "severity": f.severity,
+                "title": f"{f.name} @ {f.matched_at}",
+                "data": {"template_id": f.template_id, "matched_at": f.matched_at,
+                         "host": f.host, "severity": f.severity},
+            }):
+                new_count += 1
+        return new_count
+
     # --- notify pending ---------------------------------------------------- #
+
+    def _should_notify(self, finding: Dict) -> bool:
+        if finding["kind"] in _NOTIFY_ALWAYS_KINDS:
+            return True
+        # vuln: solo da medium in su (info/low si vedono con `bbh findings`)
+        return (finding.get("severity") or "").lower() in _NOTIFY_SEVERITIES
+
+    def _finding_emoji(self, finding: Dict) -> str:
+        asset = {"new_subdomain": "🌐", "new_host": "🟢", "host_down": "🔴"}
+        if finding["kind"] in asset:
+            return asset[finding["kind"]]
+        return _SEV_EMOJI.get((finding.get("severity") or "").lower(), "•")
 
     def flush_notifications(self) -> int:
         pending = self.store.unnotified_findings()
-        sent_ids = []
+        sent_ids: List[int] = []
+        suppressed_ids: List[int] = []
         for f in pending:
-            emoji = {"new_subdomain": "🌐", "new_host": "🟢", "host_down": "🔴"}.get(
-                f["kind"], "•"
-            )
-            ok = self.notifier.send(
-                f"{emoji} [{f['program_handle']}] {f['title']}"
-            )
-            if ok:
+            if not self._should_notify(f):
+                suppressed_ids.append(f["id"])  # sotto soglia: segnata come vista
+                continue
+            if self.notifier.send(f"{self._finding_emoji(f)} [{f['program_handle']}] {f['title']}"):
                 sent_ids.append(f["id"])
-        self.store.mark_notified(sent_ids)
+        self.store.mark_notified(sent_ids + suppressed_ids)
         return len(sent_ids)
 
     # --- loop -------------------------------------------------------------- #
@@ -307,6 +433,7 @@ class Orchestrator:
             self._last_sync = now
             did_sync = True
         processed = self.do_recon()
+        scanned = self.do_active_scan()
         notified = self.flush_notifications()
 
         if now - self._last_heartbeat >= self.config.heartbeat_interval_sec:
@@ -325,7 +452,8 @@ class Orchestrator:
                 )
             self._last_heartbeat = now
 
-        return {"synced": int(did_sync), "recon": processed, "notified": notified}
+        return {"synced": int(did_sync), "recon": processed,
+                "scanned": scanned, "notified": notified}
 
     def _install_signal_handlers(self) -> None:  # pragma: no cover
         import signal
