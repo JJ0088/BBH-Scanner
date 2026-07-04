@@ -224,12 +224,16 @@ class Store:
 
     def list_findings(self, kind: Optional[str] = None,
                       severities: Optional[Iterable[str]] = None,
+                      program_handle: Optional[str] = None,
                       limit: int = 50) -> List[Dict]:
         sql = "SELECT * FROM findings"
         clauses, params = [], []
         if kind:
             clauses.append("kind=?")
             params.append(kind)
+        if program_handle:
+            clauses.append("program_handle=?")
+            params.append(program_handle)
         if severities:
             slist = list(severities)
             clauses.append(f"severity IN ({','.join('?' * len(slist))})")
@@ -488,6 +492,36 @@ class Store:
 
     def _group_counts(self, sql: str, params: Iterable[Any] = ()) -> Dict[str, int]:
         return {row[0]: row[1] for row in self.conn.execute(sql, tuple(params)).fetchall()}
+
+    def scope_type_counts(self, platform: str, handle: str) -> Dict[str, int]:
+        """Scope per tipo (wildcard/domain/url/api) di UN programma."""
+        return self._group_counts(
+            "SELECT normalized_type, COUNT(*) FROM scopes WHERE platform=? AND "
+            "program_handle=? GROUP BY 1;",
+            (platform, handle),
+        )
+
+    def program_report(self, platform: str, handle: str) -> Dict[str, Any]:
+        """Radiografia di un programma: scope, asset scoperti, findings per severità."""
+        counts = {
+            "subdomains": self.conn.execute(
+                "SELECT COUNT(*) FROM assets WHERE platform=? AND program_handle=? AND kind='subdomain';",
+                (platform, handle)).fetchone()[0],
+            "hosts": self.conn.execute(
+                "SELECT COUNT(*) FROM assets WHERE platform=? AND program_handle=? AND kind='host';",
+                (platform, handle)).fetchone()[0],
+            "alive": len(self.alive_hosts(platform, handle)),
+        }
+        vulns = self._group_counts(
+            "SELECT severity, COUNT(*) FROM findings WHERE platform=? AND program_handle=? "
+            "AND kind='vuln' GROUP BY 1;", (platform, handle))
+        return {
+            "scope_types": self.scope_type_counts(platform, handle),
+            "assets": counts,
+            "vuln_severities": vulns,
+            "last_recon_at": self.get_state(f"{platform}:{handle}:last_recon_at"),
+            "last_active_at": self.get_state(f"{platform}:{handle}:last_active_at"),
+        }
 
     def summary(self) -> Dict[str, Any]:
         """Riepilogo ricco per la dashboard `bbh status` (una sola raccolta di query)."""

@@ -193,6 +193,8 @@ class Config:
     sync_interval_sec: int
     recon_interval_sec: int
     heartbeat_interval_sec: int
+    # Notifica su Telegram l'inizio/fine di OGNI programma (utile in fase di verifica).
+    announce_progress: bool
     hackerone: HackerOneConfig
     telegram: TelegramConfig
     budget: ResourceBudget
@@ -217,6 +219,7 @@ class Config:
             sync_interval_sec=_env_int("BBH_SYNC_INTERVAL", 6 * 3600),
             recon_interval_sec=_env_int("BBH_RECON_INTERVAL", 24 * 3600),
             heartbeat_interval_sec=_env_int("BBH_HEARTBEAT_INTERVAL", 12 * 3600),
+            announce_progress=_env_bool("BBH_ANNOUNCE_PROGRESS", True),
             hackerone=HackerOneConfig(),
             telegram=TelegramConfig(),
             budget=ResourceBudget(),

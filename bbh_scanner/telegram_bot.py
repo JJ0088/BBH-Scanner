@@ -23,6 +23,7 @@ _MODES = ("auto", "turbo", "powersave", "paused")
 # Menu comandi mostrato da Telegram quando digiti "/" (registrato via setMyCommands).
 BOT_COMMANDS = [
     ("status", "dashboard live"),
+    ("report", "radiografia di un programma (es. /report github)"),
     ("findings", "ultimi findings (es. /findings high)"),
     ("logs", "ultimi eventi"),
     ("jobs", "stato della coda"),
@@ -96,6 +97,26 @@ def format_logs(store: Store, n: int = 10) -> str:
     return "📜 Log:\n" + "\n".join(lines)
 
 
+def format_report(store: Store, handle: str) -> str:
+    rep = store.program_report("hackerone", handle)
+
+    def fmt(d):
+        return " ".join(f"{k}:{v}" for k, v in d.items()) if d else "—"
+
+    a = rep["assets"]
+    lines = [
+        f"📋 {handle}",
+        f"scope: {fmt(rep['scope_types'])}",
+        f"recon: sub:{a['subdomains']} host:{a['hosts']} vivi:{a['alive']}",
+        f"nuclei: {fmt(rep['vuln_severities']) or 'nessun finding'}",
+    ]
+    vulns = store.list_findings(kind="vuln", program_handle=handle, limit=10)
+    if vulns:
+        lines.append("findings:")
+        lines += [f"[{v['severity']}] {v['title']}" for v in vulns]
+    return "\n".join(lines)
+
+
 def format_jobs(store: Store) -> str:
     counts = store.job_counts()
     return "🧰 coda: " + (", ".join(f"{k}:{v}" for k, v in sorted(counts.items())) or "vuota")
@@ -138,6 +159,10 @@ def handle_command(text: str, store: Store, config: Config) -> Optional[str]:
         return format_logs(store, n)
     if cmd == "jobs":
         return format_jobs(store)
+    if cmd == "report":
+        if not args:
+            return "uso: /report <handle>  (es. /report github)"
+        return format_report(store, args[0])
     if cmd == "sensors":
         return format_sensors(store, config)
     if cmd == "mode":

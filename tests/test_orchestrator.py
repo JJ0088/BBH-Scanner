@@ -129,6 +129,7 @@ def test_active_scan_disabled_by_default(tmp_path, monkeypatch):
 
 def test_active_scan_runs_and_filters_notifications(tmp_path, monkeypatch):
     monkeypatch.setenv("BBH_ACTIVE_SCAN", "1")
+    monkeypatch.setenv("BBH_ANNOUNCE_PROGRESS", "0")  # isola il filtro notifiche findings
     _config, store, orch = _setup(tmp_path, monkeypatch)
     _seed_url_target(store)
 

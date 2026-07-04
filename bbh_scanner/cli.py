@@ -300,6 +300,39 @@ def cmd_logs(config: Config, args) -> int:
     return 0
 
 
+def cmd_report(config: Config, args) -> int:
+    """Radiografia di UN programma: scope → recon → nuclei. Serve a verificare la pipeline."""
+    store = _store(config)
+    platform, handle = "hackerone", args.handle
+    rep = store.program_report(platform, handle)
+
+    def fmt(d):
+        return " ".join(f"{k}:{v}" for k, v in d.items()) if d else "—"
+
+    print(f"== Report: {handle} ==")
+    print(f"scope     : {fmt(rep['scope_types'])}")
+    a = rep["assets"]
+    print(f"recon     : sottodomini:{a['subdomains']} host:{a['hosts']} vivi:{a['alive']}"
+          f"   (ultima: {(rep['last_recon_at'] or 'mai')[:19].replace('T',' ')})")
+    print(f"nuclei    : {fmt(rep['vuln_severities']) or 'nessun finding'}"
+          f"   (ultima: {(rep['last_active_at'] or 'mai')[:19].replace('T',' ')})")
+
+    alive = store.alive_hosts(platform, handle)
+    if alive:
+        print(f"\nHost vivi ({len(alive)}, primi {min(len(alive), args.limit)}):")
+        for h in alive[:args.limit]:
+            print(f"  {h}")
+    vulns = store.list_findings(kind="vuln", program_handle=handle, limit=args.limit)
+    if vulns:
+        print(f"\nFindings vuln ({len(vulns)}):")
+        for v in vulns:
+            print(f"  [{v['severity']}] {v['title']}")
+    else:
+        print("\nFindings vuln: nessuno (nuclei non ha ancora trovato/girato su questo programma)")
+    store.close()
+    return 0
+
+
 def cmd_prune(config: Config, args) -> int:
     store = _store(config)
     n = store.prune_asset_findings()
@@ -371,6 +404,10 @@ def build_parser() -> argparse.ArgumentParser:
     p_scan = sub.add_parser("scan", help="Scan attivo nuclei (opt-in, gated dal governor)")
     p_scan.add_argument("--limit", type=int, default=None, help="Max programmi per giro")
 
+    p_report = sub.add_parser("report", help="Radiografia di un programma (scope → recon → nuclei)")
+    p_report.add_argument("handle", help="Handle del programma, es. github")
+    p_report.add_argument("--limit", type=int, default=25, help="Quanti host/findings elencare")
+
     p_prune = sub.add_parser("prune", help="Rimuove i findings di scoperta asset (ridondanti)")
     p_prune.add_argument("--vacuum", action="store_true", help="Compatta il DB dopo (recupera spazio)")
 
@@ -403,6 +440,7 @@ _DISPATCH = {
     "doctor": cmd_doctor,
     "jobs": cmd_jobs,
     "logs": cmd_logs,
+    "report": cmd_report,
     "prune": cmd_prune,
     "scan": cmd_scan,
     "findings": cmd_findings,

@@ -60,6 +60,21 @@ def _parse_iso(value: Optional[str]) -> Optional[datetime]:
         return None
 
 
+def _fmt_counts(counts: Dict[str, int]) -> str:
+    return ", ".join(f"{v} {k}" for k, v in counts.items()) if counts else "—"
+
+
+def _sev_breakdown(findings) -> str:
+    """Riepilogo severità per i findings nuclei: 'crit:0 high:1 med:2 low:0 info:5'."""
+    order = ("critical", "high", "medium", "low", "info")
+    counts = {s: 0 for s in order}
+    for f in findings:
+        sev = getattr(f, "severity", "info")
+        counts[sev] = counts.get(sev, 0) + 1
+    short = {"critical": "crit", "high": "high", "medium": "med", "low": "low", "info": "info"}
+    return " ".join(f"{short[s]}:{counts[s]}" for s in order)
+
+
 class Orchestrator:
     def __init__(self, config: Config, store: Store,
                  notifier: Optional[Notifier] = None,
@@ -163,6 +178,10 @@ class Orchestrator:
                 (job, *self._prepare_recon(job["platform"], job["program_handle"]))
                 for job in claimed
             ]
+            for job, _wd, _sc in prepared:
+                h = job["program_handle"]
+                scope = _fmt_counts(self.store.scope_type_counts(job["platform"], h))
+                self._announce(f"▶️ recon: {h} — scope: {scope}", handle=h)
             # 2) esecuzione tool (parallela, nessun accesso DB)
             results: Dict[int, object] = {}
             if plan.max_concurrency <= 1:
@@ -185,6 +204,11 @@ class Orchestrator:
                 if isinstance(res, ReconResult):
                     self._persist_and_mark(job["platform"], job["program_handle"], res)
                     self.store.complete_job(job["id"])
+                    h = job["program_handle"]
+                    skip = f" ⚠️ saltati: {res.skipped_steps}" if res.skipped_steps else ""
+                    self._announce(
+                        f"✅ recon {h}: {len(res.subdomains)} sottodomini, "
+                        f"{len(res.alive)} host vivi{skip}", handle=h)
                 else:
                     state = self.store.fail_job(
                         job["id"], str(res),
@@ -248,6 +272,18 @@ class Orchestrator:
                   "concurrency": plan.max_concurrency},
         )
         self.notifier.send(f"{emoji} regime: {plan.mode.value} — {plan.reason}")
+
+    def _announce(self, text: str, handle: Optional[str] = None,
+                  component: str = "progress") -> None:
+        """Milestone visibile ovunque: a schermo (stdout), su Telegram, nei log.
+
+        Usato per l'inizio/fine di ogni programma, così puoi verificare dal vivo che la
+        pipeline (recon → nuclei) stia davvero lavorando su ciascun target.
+        """
+        print(text, flush=True)
+        self.store.log_event("INFO", component, text, program_handle=handle)
+        if self.config.announce_progress:
+            self.notifier.send(text)
 
     def _persist_recon(self, platform: str, handle: str, result,
                        is_baseline: bool = False) -> int:
@@ -377,6 +413,7 @@ class Orchestrator:
             platform, handle = job["platform"], job["program_handle"]
             targets = self._active_targets(platform, handle)
             workdir = self.config.data_dir / "active" / platform / handle
+            self._announce(f"🔍 nuclei: {handle} — {len(targets)} bersagli", handle=handle)
             try:
                 result = run_nuclei(
                     handle, targets, workdir, self.config.active,
@@ -385,13 +422,18 @@ class Orchestrator:
             except Exception as e:
                 self.store.fail_job(job["id"], str(e),
                                     retry_after_sec=self.config.governor.cooldown_sec)
-                self.store.log_event("ERROR", "nuclei",
-                                     f"scan {handle} fallito: {e}", program_handle=handle)
+                self._announce(f"❌ nuclei {handle} fallito: {e}", handle=handle,
+                               component="nuclei")
                 processed += 1
                 continue
             new_vulns = self._persist_nuclei(platform, handle, result)
             self.store.set_state(f"{platform}:{handle}:last_active_at", _now_iso())
             self.store.complete_job(job["id"])
+            sev = _sev_breakdown(result.findings)
+            self._announce(
+                f"✅ nuclei {handle}: {len(result.findings)} findings [{sev}]"
+                + (" (nuclei saltato)" if result.skipped else ""),
+                handle=handle, component="nuclei")
             self.store.log_event(
                 "INFO", "nuclei",
                 f"scan {handle}: bersagli={len(targets)} findings={len(result.findings)} "
