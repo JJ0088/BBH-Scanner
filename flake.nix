@@ -79,6 +79,16 @@
         };
 
         checks.default = bbh-scanner;
+
+        # `nix run .# -- <comando>` — esegue bbh con tutti i tool già nel PATH (wrapProgram).
+        apps.default = {
+          type = "app";
+          program = "${bbh-scanner}/bin/bbh";
+        };
+        apps.bbh = {
+          type = "app";
+          program = "${bbh-scanner}/bin/bbh";
+        };
       }
     ) // systemIndependent;
 }
