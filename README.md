@@ -52,7 +52,19 @@ pip install -e .
 bbh init
 ```
 
-## Configurazione (variabili d'ambiente)
+## Configurazione
+
+Il modo più comodo: copia `.env.example` in `.env` e riempi i valori — ogni comando `bbh`
+lo carica automaticamente (niente `export` a ogni sessione; il `.env` è gitignorato).
+
+```bash
+cp .env.example .env && $EDITOR .env
+```
+
+In alternativa, tutte le variabili si possono passare dall'ambiente (l'ambiente reale ha la
+precedenza sul `.env`).
+
+### Variabili d'ambiente
 
 | Variabile | Descrizione |
 |-----------|-------------|

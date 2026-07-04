@@ -448,6 +448,39 @@ class Store:
             "jobs": count("jobs"),
         }
 
+    def _group_counts(self, sql: str, params: Iterable[Any] = ()) -> Dict[str, int]:
+        return {row[0]: row[1] for row in self.conn.execute(sql, tuple(params)).fetchall()}
+
+    def summary(self) -> Dict[str, Any]:
+        """Riepilogo ricco per la dashboard `bbh status` (una sola raccolta di query)."""
+        enabled = self.conn.execute(
+            "SELECT COUNT(*) FROM programs WHERE enabled=1;"
+        ).fetchone()[0]
+        last_sync = self.conn.execute(
+            "SELECT MAX(last_fetch_at) FROM programs;"
+        ).fetchone()[0]
+        return {
+            "stats": self.stats(),
+            "programs_enabled": enabled,
+            "last_sync_at": last_sync,
+            "scope_types": self._group_counts(
+                "SELECT normalized_type, COUNT(*) FROM scopes GROUP BY 1 ORDER BY 2 DESC;"
+            ),
+            "asset_kinds": self._group_counts(
+                "SELECT kind, COUNT(*) FROM assets GROUP BY 1 ORDER BY 2 DESC;"
+            ),
+            "alive_hosts": self.conn.execute(
+                "SELECT COUNT(*) FROM assets WHERE kind='host' AND alive=1;"
+            ).fetchone()[0],
+            "finding_kinds": self._group_counts(
+                "SELECT kind, COUNT(*) FROM findings GROUP BY 1 ORDER BY 2 DESC;"
+            ),
+            "vuln_severities": self._group_counts(
+                "SELECT severity, COUNT(*) FROM findings WHERE kind='vuln' GROUP BY 1;"
+            ),
+            "jobs": self.job_counts(),
+        }
+
 
 def _as_int(value: Any, default: Optional[int] = None) -> Optional[int]:
     if value is None:

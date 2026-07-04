@@ -11,6 +11,47 @@ from dataclasses import dataclass, field
 from pathlib import Path
 
 
+def load_env_files() -> list[Path]:
+    """Carica variabili da file `.env` (comodità: niente 'export' ogni sessione).
+
+    Ordine di ricerca (la prima trovata per ciascuna chiave vince, e le variabili
+    d'ambiente già impostate hanno SEMPRE la precedenza):
+      1. `$BBH_ENV_FILE` (se impostata)
+      2. `$BBH_ROOT/.env`  (o `./.env` se BBH_ROOT non è impostata)
+      3. `~/.config/bbh/.env`
+
+    Formato: `CHIAVE=valore`, righe vuote e `#commenti` ignorate. Ritorna i file caricati.
+    """
+    candidates: list[Path] = []
+    if os.environ.get("BBH_ENV_FILE"):
+        candidates.append(Path(os.environ["BBH_ENV_FILE"]))
+    root = os.environ.get("BBH_ROOT")
+    candidates.append(Path(root) / ".env" if root else Path.cwd() / ".env")
+    candidates.append(Path.home() / ".config" / "bbh" / ".env")
+
+    loaded: list[Path] = []
+    seen: set[Path] = set()
+    for path in candidates:
+        try:
+            path = path.expanduser()
+            if path in seen or not path.is_file():
+                continue
+            seen.add(path)
+            for line in path.read_text(encoding="utf-8").splitlines():
+                line = line.strip()
+                if not line or line.startswith("#") or "=" not in line:
+                    continue
+                key, _, val = line.partition("=")
+                key = key.strip()
+                val = val.strip().strip('"').strip("'")
+                if key and key not in os.environ:  # l'ambiente reale vince
+                    os.environ[key] = val
+            loaded.append(path)
+        except Exception:
+            continue
+    return loaded
+
+
 def _env(name: str, default: str = "") -> str:
     return os.environ.get(name, default)
 
@@ -155,6 +196,7 @@ class Config:
 
     @staticmethod
     def load() -> "Config":
+        load_env_files()  # carica .env prima di leggere l'ambiente
         default_root = Path(__file__).resolve().parents[1]
         root = Path(_env("BBH_ROOT", str(default_root)))
         data_dir = Path(_env("BBH_DATA_DIR", str(root / "data")))

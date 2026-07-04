@@ -1,6 +1,12 @@
 """CLI unificata: `bbh <comando>`.
 
-Comandi: init | sync | recon | status | run | version
+Comandi:
+  init sync recon scan     — pipeline (crea DB, sincronizza, recon passivo, scan attivo)
+  status findings jobs      — ispezione (dashboard, findings, coda)
+  sensors mode              — governor (temperature/regime, turbo/powersave)
+  doctor run version        — operazioni (verifica pre-avvio, loop 24/7, versione)
+
+Le credenziali si leggono da un file `.env` (vedi `.env.example`) o dall'ambiente.
 """
 
 from __future__ import annotations
@@ -134,23 +140,42 @@ def cmd_findings(config: Config, args) -> int:
 
 
 def cmd_status(config: Config, args) -> int:
+    from bbh_scanner.resources.governor import decide
+    from bbh_scanner.resources.sensors import sample_sensors
     from bbh_scanner.scheduler.orchestrator import MODE_OVERRIDE_KEY
 
     store = _store(config)
-    stats = store.stats()
-    print("== BBH-Scanner status ==")
-    print(json.dumps(stats, indent=2))
-    print(f"\nmodalità: {store.get_state(MODE_OVERRIDE_KEY) or 'auto'}")
-    jobs = store.job_counts()
-    if jobs:
-        print("coda job: " + "  ".join(f"{k}:{v}" for k, v in sorted(jobs.items())))
-    print("\nProgrammi (primi 15):")
-    for p in store.list_programs()[:15]:
-        print(f"  {p['platform']:10s} {p['handle']:24s} "
-              f"scopes={p['scope_count']} bounties={p['offers_bounties']}")
-    print("\nEventi recenti:")
-    for e in store.recent_events(10):
-        print(f"  {e['ts']} {e['level']:5s} [{e['component']}] {e['message']}")
+    s = store.summary()
+    st = s["stats"]
+    override = store.get_state(MODE_OVERRIDE_KEY) or "auto"
+    reading = sample_sensors(monitor_nvidia=config.governor.monitor_nvidia)
+    plan = decide(reading, config.governor, override)
+
+    def temp(v):
+        return f"{v}°C" if v is not None else "n/d"
+
+    def kv(d, default="—"):
+        return ", ".join(f"{k}:{v}" for k, v in d.items()) if d else default
+
+    ak = s["asset_kinds"]
+    last = (s["last_sync_at"] or "mai")[:19].replace("T", " ")
+
+    print(f"┌─ BBH-Scanner {__version__} " + "─" * 24)
+    print(f"│ regime    {plan.mode.value:9s} (override={override})  "
+          f"CPU {temp(reading.cpu_temp)} · GPU {temp(reading.gpu_temp)}")
+    print(f"│ programmi {st['programs']:<6} ({s['programs_enabled']} attivi)   ultima sync: {last}")
+    print(f"│ scope     {st['scopes']:<6} ({kv(s['scope_types'])})")
+    print(f"│ asset     {st['assets']:<6} (sottodomini:{ak.get('subdomain', 0)} "
+          f"host:{ak.get('host', 0)} vivi:{s['alive_hosts']})")
+    print(f"│ findings  {st['findings']:<6} (vuln → {kv(s['vuln_severities'], '0')})")
+    print(f"│ coda job  {kv(s['jobs'], 'vuota')}")
+    print("└" + "─" * 38)
+
+    if args.events:
+        print("\nEventi recenti:")
+        for e in store.recent_events(10):
+            ts = (e["ts"] or "")[11:19]
+            print(f"  {ts} {e['level']:5s} [{e['component']}] {e['message']}")
     store.close()
     return 0
 
@@ -210,8 +235,21 @@ def cmd_version(config: Config, args) -> int:
 
 
 def build_parser() -> argparse.ArgumentParser:
-    ap = argparse.ArgumentParser(prog="bbh", description="BBH-Scanner (recon 24/7)")
-    sub = ap.add_subparsers(dest="cmd", required=True)
+    ap = argparse.ArgumentParser(
+        prog="bbh",
+        description="BBH-Scanner — scanner recon/vuln 24/7 (HackerOne).",
+        epilog=(
+            "Esempi:\n"
+            "  bbh doctor --online          verifica che tutto sia pronto\n"
+            "  bbh sync                     scarica programmi/scope da HackerOne\n"
+            "  bbh run                      avvia il loop 24/7 (recon + scan + notifiche)\n"
+            "  bbh status --events          dashboard con eventi recenti\n"
+            "  bbh findings --kind vuln     mostra le vulnerabilità trovate\n"
+            "  bbh mode turbo               usa tutto il PC (es. quando esci)\n"
+        ),
+        formatter_class=argparse.RawDescriptionHelpFormatter,
+    )
+    sub = ap.add_subparsers(dest="cmd", required=True, metavar="<comando>")
 
     sub.add_parser("init", help="Crea/migra il database")
 
@@ -221,7 +259,8 @@ def build_parser() -> argparse.ArgumentParser:
     p_recon = sub.add_parser("recon", help="Esegui recon passivo sui programmi dovuti")
     p_recon.add_argument("--limit", type=int, default=None, help="Max programmi per giro")
 
-    sub.add_parser("status", help="Mostra stato e statistiche")
+    p_status = sub.add_parser("status", help="Dashboard: stato, sensori, coda, findings")
+    p_status.add_argument("--events", action="store_true", help="Mostra anche gli eventi recenti")
 
     p_doctor = sub.add_parser("doctor", help="Verifica pre-avvio (DB, credenziali, tool, sensori, Telegram)")
     p_doctor.add_argument("--online", action="store_true",

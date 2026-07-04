@@ -69,3 +69,23 @@ def test_events(tmp_path):
     events = store.recent_events()
     assert events[0]["message"] == "ciao"
     assert events[0]["component"] == "test"
+
+
+def test_summary(tmp_path):
+    store = _store(tmp_path)
+    store.upsert_programs([{
+        "platform": "hackerone", "handle": "a", "offers_bounties": True,
+        "submission_state": "open", "scope_count": 1,
+    }])
+    store.upsert_scopes([{
+        "id": "hackerone:a:*.a.com", "platform": "hackerone", "program_handle": "a",
+        "asset_identifier": "*.a.com", "normalized_type": "wildcard",
+        "normalized_value": "*.a.com",
+    }])
+    store.record_finding({"platform": "hackerone", "program_handle": "a", "kind": "vuln",
+                          "fingerprint": "v1", "severity": "high", "title": "x"})
+    s = store.summary()
+    assert s["stats"]["programs"] == 1
+    assert s["programs_enabled"] == 1
+    assert s["scope_types"].get("wildcard") == 1
+    assert s["vuln_severities"].get("high") == 1
