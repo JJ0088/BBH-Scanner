@@ -110,6 +110,18 @@ in
     };
     users.groups.${cfg.user} = { };
 
+    # `bbh-ctl <cmd>`: esegue bbh come utente del servizio, sul DB del servizio.
+    # Così `bbh-ctl status|jobs|findings|mode turbo|sensors` parlano col 24/7 residente.
+    environment.systemPackages = [
+      (pkgs.writeShellScriptBin "bbh-ctl" ''
+        exec sudo -u ${cfg.user} \
+          env BBH_ROOT=${cfg.dataDir} \
+              BBH_DATA_DIR=${cfg.dataDir}/data \
+              BBH_LOGS_DIR=${cfg.dataDir}/logs \
+          ${cfg.package}/bin/bbh "$@"
+      '')
+    ];
+
     systemd.services.bbh-scanner = {
       description = "BBH-Scanner recon 24/7";
       wantedBy = [ "multi-user.target" ];
