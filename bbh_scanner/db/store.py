@@ -33,6 +33,8 @@ def connect(db_path: Path) -> sqlite3.Connection:
     conn.execute("PRAGMA synchronous=NORMAL;")
     conn.execute("PRAGMA foreign_keys=ON;")
     conn.execute("PRAGMA temp_store=MEMORY;")
+    # più connessioni (es. il bot Telegram): attendi invece di fallire su lock.
+    conn.execute("PRAGMA busy_timeout=5000;")
     return conn
 
 

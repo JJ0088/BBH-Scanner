@@ -52,6 +52,11 @@ def load_env_files() -> list[Path]:
     return loaded
 
 
+# Chiave sync_state per l'override manuale del regime (auto|turbo|powersave|paused).
+# Definita qui (modulo neutro) così orchestrator e bot Telegram la condividono.
+MODE_OVERRIDE_KEY = "governor:mode_override"
+
+
 def _env(name: str, default: str = "") -> str:
     return os.environ.get(name, default)
 

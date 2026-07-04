@@ -25,7 +25,7 @@ from bbh_scanner.collectors.hackerone import (
     HackerOneClient,
     HackerOneCollector,
 )
-from bbh_scanner.config import Config
+from bbh_scanner.config import MODE_OVERRIDE_KEY, Config
 from bbh_scanner.db.store import Store
 from bbh_scanner.normalize import sha256_hex
 from bbh_scanner.notify.base import Notifier, NullNotifier
@@ -34,8 +34,6 @@ from bbh_scanner.recon.passive import ReconResult, run_passive
 from bbh_scanner.recon.tools import check_tools
 from bbh_scanner.resources.governor import Governor, Mode, ResourcePlan
 from bbh_scanner.scheduler.queue import select_due
-
-MODE_OVERRIDE_KEY = "governor:mode_override"
 
 # Emoji per severità (findings vulnerabilità nuclei).
 _SEV_EMOJI = {"critical": "🟥", "high": "🟧", "medium": "🟨", "low": "🟦", "info": "⬜"}
@@ -513,6 +511,15 @@ class Orchestrator:
         self.store.log_event("INFO", "orchestrator", "avvio loop 24/7")
         self.notifier.send(f"▶️ BBH-Scanner avviato — {_now_iso()}")
         systemd.notify_ready()
+
+        # bot Telegram a comandi (thread con connessione DB propria)
+        if self.config.telegram.configured:
+            from bbh_scanner.telegram_bot import TelegramPoller
+
+            TelegramPoller(self.config, self.store.db_path, stop_event=self._stop).start_thread()
+            self.store.log_event(
+                "INFO", "telegram", "bot comandi attivo (/status /logs /findings /mode …)"
+            )
 
         while not self._stop.is_set():
             try:

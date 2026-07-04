@@ -130,6 +130,27 @@ A differenza del recon (passivo), lo scan attivo manda richieste ai bersagli, qu
 Configurabile: `BBH_NUCLEI_RATE` (req/s), `BBH_NUCLEI_CONC`, `BBH_NUCLEI_SEVERITY`
 (es. `medium,high,critical`), `BBH_NUCLEI_TEMPLATES`, `BBH_NUCLEI_ARGS`, `BBH_ACTIVE_INTERVAL`.
 
+## Controllo dal vivo via Telegram
+
+Quando il loop 24/7 (`bbh run`) è attivo e Telegram è configurato, parte anche un **bot a
+comandi**: scrivi al tuo bot per interrogare/controllare lo scanner **mentre lavora**.
+
+| Comando | Effetto |
+|---------|---------|
+| `/status` | dashboard live (regime, temperatura, programmi, asset, findings, coda) |
+| `/findings [sev]` | ultimi findings (es. `/findings high`) |
+| `/logs [n]` | ultimi n eventi |
+| `/jobs` | stato della coda |
+| `/sensors` | temperature e regime |
+| `/mode <auto\|turbo\|powersave\|paused>` | cambia regime |
+| `/pause` · `/resume` | sospendi / riprendi |
+
+Il bot risponde **solo** ai messaggi provenienti dal tuo `TELEGRAM_CHAT_ID` (ignora gli altri),
+usa una connessione DB propria (letture concorrenti col loop) e legge lo stato in tempo reale.
+
+L'**heartbeat** periodico (riepilogo automatico) è ogni 12h di default: `BBH_HEARTBEAT_INTERVAL`
+(secondi) per cambiarlo.
+
 ## 24/7 come servizio (modulo NixOS)
 
 ```nix
