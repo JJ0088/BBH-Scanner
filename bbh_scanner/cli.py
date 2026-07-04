@@ -13,6 +13,8 @@ from __future__ import annotations
 
 import argparse
 import json
+import os
+import shutil
 import sys
 
 from bbh_scanner import __version__
@@ -229,6 +231,62 @@ def cmd_jobs(config: Config, args) -> int:
     return 0
 
 
+def cmd_setup(config: Config, args) -> int:
+    """Onboarding in un comando: .env → doctor → init → (sync)."""
+    env_path = config.root / ".env"
+    example = config.root / ".env.example"
+
+    # 1) credenziali via .env
+    if not config.hackerone.configured:
+        if not env_path.exists() and example.exists():
+            shutil.copy(example, env_path)
+            print(f"📝 Creato {env_path} da .env.example.")
+        print("→ Apri .env e inserisci le credenziali HackerOne (username = "
+              "IDENTIFIER del token, vedi hackerone.com/settings/api_token),\n"
+              "  poi rilancia:  bbh setup")
+        return 0
+
+    # 2) verifica
+    from bbh_scanner.health import has_blocking_failures, run_checks
+    checks = run_checks(config, online=not args.offline)
+    symbol = {"ok": "✅", "warn": "⚠️ ", "fail": "❌"}
+    for c in checks:
+        print(f"  {symbol.get(c.level, '•')} {c.name:20s} {c.detail}")
+    if has_blocking_failures(checks):
+        print("\n❌ Problemi bloccanti: risolvili e rilancia.")
+        return 1
+
+    # 3) init + sync
+    store = _store(config)
+    print(f"\n✅ Database pronto in {config.db_path}")
+    if not args.no_sync:
+        from bbh_scanner.collectors import sync as sync_mod
+        from bbh_scanner.collectors.hackerone import HackerOneClient, HackerOneCollector
+        print("⏳ Sincronizzo programmi/scope da HackerOne (può richiedere 1-2 minuti)…")
+        result = sync_mod.sync(HackerOneCollector(HackerOneClient(config.hackerone)), store)
+        print(f"✅ Sync: {result}")
+    store.close()
+    print("\n🎉 Tutto pronto. Prossimi passi:\n"
+          "   bbh run              # loop 24/7 (recon + scan + notifiche)\n"
+          "   bbh status           # dashboard\n"
+          "   bbh recon --limit 1  # prova un singolo programma")
+    return 0
+
+
+def cmd_watch(config: Config, args) -> int:  # pragma: no cover - loop interattivo
+    import time
+
+    try:
+        while True:
+            sys.stdout.write("\033[2J\033[H")  # pulisci schermo
+            cmd_status(config, args)
+            sys.stdout.write(f"\n(aggiorno ogni {args.interval}s — Ctrl-C per uscire)\n")
+            sys.stdout.flush()
+            time.sleep(args.interval)
+    except KeyboardInterrupt:
+        return 0
+
+
 def cmd_version(config: Config, args) -> int:
     print(f"bbh-scanner {__version__}")
     return 0
@@ -253,6 +311,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     sub.add_parser("init", help="Crea/migra il database")
 
+    p_setup = sub.add_parser("setup", help="Onboarding guidato: .env → doctor → init → sync")
+    p_setup.add_argument("--offline", action="store_true", help="Salta i test di rete nel doctor")
+    p_setup.add_argument("--no-sync", action="store_true", help="Non sincronizzare alla fine")
+
     p_sync = sub.add_parser("sync", help="Sincronizza programmi/scope dal collector")
     p_sync.add_argument("--only-handle", default=None, help="Sincronizza un solo handle")
 
@@ -261,6 +323,10 @@ def build_parser() -> argparse.ArgumentParser:
 
     p_status = sub.add_parser("status", help="Dashboard: stato, sensori, coda, findings")
     p_status.add_argument("--events", action="store_true", help="Mostra anche gli eventi recenti")
+
+    p_watch = sub.add_parser("watch", help="Dashboard dal vivo (si aggiorna a intervalli)")
+    p_watch.add_argument("--interval", type=int, default=5, help="Secondi tra un refresh e l'altro")
+    p_watch.add_argument("--events", action="store_true", help="Mostra anche gli eventi recenti")
 
     p_doctor = sub.add_parser("doctor", help="Verifica pre-avvio (DB, credenziali, tool, sensori, Telegram)")
     p_doctor.add_argument("--online", action="store_true",
@@ -295,7 +361,9 @@ def build_parser() -> argparse.ArgumentParser:
 
 _DISPATCH = {
     "init": cmd_init,
+    "setup": cmd_setup,
     "sync": cmd_sync,
+    "watch": cmd_watch,
     "recon": cmd_recon,
     "status": cmd_status,
     "doctor": cmd_doctor,
