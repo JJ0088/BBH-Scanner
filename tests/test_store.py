@@ -71,6 +71,30 @@ def test_events(tmp_path):
     assert events[0]["component"] == "test"
 
 
+def test_prune_asset_findings(tmp_path):
+    store = _store(tmp_path)
+    store.record_finding({"platform": "h", "program_handle": "a", "kind": "new_subdomain",
+                          "fingerprint": "s1", "title": "x"})
+    store.record_finding({"platform": "h", "program_handle": "a", "kind": "new_host",
+                          "fingerprint": "h1", "title": "y"})
+    store.record_finding({"platform": "h", "program_handle": "a", "kind": "vuln",
+                          "fingerprint": "v1", "severity": "high", "title": "z"})
+    assert store.prune_asset_findings() == 2      # rimuove subdomain+host, tiene vuln
+    assert store.stats()["findings"] == 1
+    assert store.list_findings(kind="vuln")[0]["title"] == "z"
+
+
+def test_asset_values(tmp_path):
+    store = _store(tmp_path)
+    from bbh_scanner.db.store import _now_iso
+    with store.transaction() as c:
+        c.execute("INSERT INTO assets(id,platform,program_handle,kind,value,first_seen_at,"
+                  "last_seen_at) VALUES('i','h','a','subdomain','x.a.com',?,?);",
+                  (_now_iso(), _now_iso()))
+    assert store.asset_values("h", "a", "subdomain") == {"x.a.com"}
+    assert store.asset_values("h", "a", "host") == set()
+
+
 def test_summary(tmp_path):
     store = _store(tmp_path)
     store.upsert_programs([{

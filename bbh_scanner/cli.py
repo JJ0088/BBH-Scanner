@@ -287,6 +287,18 @@ def cmd_watch(config: Config, args) -> int:  # pragma: no cover - loop interatti
         return 0
 
 
+def cmd_prune(config: Config, args) -> int:
+    store = _store(config)
+    n = store.prune_asset_findings()
+    print(f"🧹 rimossi {n} findings di scoperta asset (ridondanti con la tabella 'assets')")
+    if args.vacuum:
+        print("compattazione del DB (VACUUM)…")
+        store.vacuum()
+        print("✅ fatto")
+    store.close()
+    return 0
+
+
 def cmd_version(config: Config, args) -> int:
     print(f"bbh-scanner {__version__}")
     return 0
@@ -340,6 +352,9 @@ def build_parser() -> argparse.ArgumentParser:
     p_scan = sub.add_parser("scan", help="Scan attivo nuclei (opt-in, gated dal governor)")
     p_scan.add_argument("--limit", type=int, default=None, help="Max programmi per giro")
 
+    p_prune = sub.add_parser("prune", help="Rimuove i findings di scoperta asset (ridondanti)")
+    p_prune.add_argument("--vacuum", action="store_true", help="Compatta il DB dopo (recupera spazio)")
+
     p_find = sub.add_parser("findings", help="Elenca i findings")
     p_find.add_argument("--kind", default=None, help="Filtra per tipo (vuln|new_subdomain|...)")
     p_find.add_argument("--severity", default=None, help="CSV: es. medium,high,critical")
@@ -368,6 +383,7 @@ _DISPATCH = {
     "status": cmd_status,
     "doctor": cmd_doctor,
     "jobs": cmd_jobs,
+    "prune": cmd_prune,
     "scan": cmd_scan,
     "findings": cmd_findings,
     "sensors": cmd_sensors,

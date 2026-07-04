@@ -213,15 +213,12 @@ class Orchestrator:
     def _persist_and_mark(self, platform: str, handle: str, result: ReconResult) -> None:
         # baseline = prima mappatura in assoluto di questo programma
         is_baseline = self.store.get_state(f"{platform}:{handle}:last_recon_at") is None
-        new_findings = self._persist_recon(platform, handle, result)
+        new_findings = self._persist_recon(platform, handle, result, is_baseline=is_baseline)
         if is_baseline:
-            # registra la superficie ma NON notificare: è il punto di partenza, non un delta.
-            suppressed = self.store.suppress_unnotified(
-                platform, handle, kinds=["new_subdomain", "new_host", "host_down"]
-            )
             self.store.log_event(
                 "INFO", "recon",
-                f"baseline {handle}: {suppressed} asset mappati (notifiche soppresse)",
+                f"baseline {handle}: {len(result.subdomains)} sottodomini / "
+                f"{len(result.alive)} host mappati (nessun finding: è il punto di partenza)",
                 program_handle=handle,
             )
         self.store.set_state(f"{platform}:{handle}:last_recon_at", _now_iso())
@@ -252,19 +249,23 @@ class Orchestrator:
         )
         self.notifier.send(f"{emoji} regime: {plan.mode.value} — {plan.reason}")
 
-    def _persist_recon(self, platform: str, handle: str, result) -> int:
-        """Salva asset scoperti e genera i delta (findings): nuovi sottodomini, nuovi
-        host vivi e host caduti."""
+    def _persist_recon(self, platform: str, handle: str, result,
+                       is_baseline: bool = False) -> int:
+        """Salva gli asset scoperti (inventario in `assets`) e genera **solo i delta**
+        come findings: sottodomini/host *nuovi rispetto a ciò che era già noto* e host
+        caduti. Sul **baseline** non genera alcun finding di asset (sarebbe l'intera
+        superficie): l'inventario vive nella tabella `assets`."""
         new_count = 0
         now = _now_iso()
-        rows = []
-        for sub in result.subdomains:
-            rows.append(("subdomain", sub, "subfinder"))
-        for host in result.alive:
-            rows.append(("host", host, "httpx"))
 
-        # host_down: solo se httpx ha davvero girato (altrimenti `alive` è vuoto per
-        # assenza del tool, non perché gli host sono caduti).
+        # cosa era già noto PRIMA di questo giro (per isolare i veri nuovi)
+        existing_subs = self.store.asset_values(platform, handle, "subdomain")
+        existing_hosts = self.store.asset_values(platform, handle, "host")
+
+        rows = [("subdomain", s, "subfinder") for s in result.subdomains]
+        rows += [("host", h, "httpx") for h in result.alive]
+
+        # host_down: solo se httpx ha davvero girato
         gone_hosts: List[str] = []
         if "httpx" not in result.skipped_steps:
             prev_alive = set(self.store.alive_hosts(platform, handle))
@@ -285,16 +286,24 @@ class Orchestrator:
         for host in gone_hosts:
             self.store.mark_host_down(platform, handle, host)
 
-        # findings: nuovi asset
-        for kind, value, _ in rows:
-            fkind = "new_subdomain" if kind == "subdomain" else "new_host"
-            fp = sha256_hex([f"{platform}:{handle}:{fkind}:{value}"])
-            if self.store.record_finding({
-                "platform": platform, "program_handle": handle, "kind": fkind,
-                "fingerprint": fp, "severity": "info",
-                "title": f"{fkind}: {value}", "data": {"value": value},
-            }):
-                new_count += 1
+        # findings SOLO sui delta (mai sul baseline: gli asset stanno in `assets`)
+        if not is_baseline:
+            for value in (s for s in result.subdomains if s not in existing_subs):
+                fp = sha256_hex([f"{platform}:{handle}:new_subdomain:{value}"])
+                if self.store.record_finding({
+                    "platform": platform, "program_handle": handle, "kind": "new_subdomain",
+                    "fingerprint": fp, "severity": "info",
+                    "title": f"new_subdomain: {value}", "data": {"value": value},
+                }):
+                    new_count += 1
+            for value in (h for h in result.alive if h not in existing_hosts):
+                fp = sha256_hex([f"{platform}:{handle}:new_host:{value}"])
+                if self.store.record_finding({
+                    "platform": platform, "program_handle": handle, "kind": "new_host",
+                    "fingerprint": fp, "severity": "info",
+                    "title": f"new_host: {value}", "data": {"value": value},
+                }):
+                    new_count += 1
 
         # findings: host caduti (fingerprint stabile → una notifica per host)
         for host in gone_hosts:

@@ -40,12 +40,32 @@ def test_do_recon_drains_job_queue(tmp_path, monkeypatch):
     processed = orch.do_recon()
     assert processed == 1
     assert store.job_counts().get("done") == 1
-    # senza tool, il seed 'acme.com' diventa un asset subdomain + finding new_subdomain
+    # senza tool, il seed 'acme.com' diventa un asset subdomain; il baseline NON crea findings
     assert store.stats()["assets"] >= 1
-    assert store.stats()["findings"] >= 1
+    assert store.stats()["findings"] == 0
 
     # secondo giro: nessun programma dovuto (last_recon_at appena impostato) → 0
     assert orch.do_recon() == 0
+
+
+def test_recon_findings_are_deltas_not_baseline(tmp_path, monkeypatch):
+    from bbh_scanner.recon.passive import ReconResult
+    _config, store, orch = _setup(tmp_path, monkeypatch)
+    _seed_program(store)
+
+    # baseline: due sottodomini → 2 asset, ZERO findings (è il punto di partenza)
+    orch._persist_and_mark("hackerone", "acme", ReconResult(
+        handle="acme", subdomains=["a.acme.com", "b.acme.com"], skipped_steps=["httpx"]))
+    assert store.stats()["assets"] == 2
+    assert store.stats()["findings"] == 0
+
+    # secondo giro: un sottodominio NUOVO → un solo finding (il delta)
+    orch._persist_and_mark("hackerone", "acme", ReconResult(
+        handle="acme", subdomains=["a.acme.com", "b.acme.com", "c.acme.com"],
+        skipped_steps=["httpx"]))
+    assert store.stats()["assets"] == 3
+    assert store.stats()["findings"] == 1
+    assert "c.acme.com" in store.list_findings(kind="new_subdomain")[0]["title"]
 
 
 def test_paused_governor_skips_recon(tmp_path, monkeypatch):

@@ -420,6 +420,26 @@ class Store:
 
     # --- assets (per detection host_down) ---------------------------------- #
 
+    def asset_values(self, platform: str, handle: str, kind: str) -> set:
+        """Insieme dei valori asset già noti per (programma, tipo) — per rilevare i NUOVI."""
+        rows = self.conn.execute(
+            "SELECT value FROM assets WHERE platform=? AND program_handle=? AND kind=?;",
+            (platform, handle, kind),
+        ).fetchall()
+        return {r["value"] for r in rows}
+
+    def prune_asset_findings(self) -> int:
+        """Elimina i findings di scoperta asset (new_subdomain/new_host): sono ridondanti
+        con la tabella `assets`. Utile per recuperare spazio dopo un baseline massiccio."""
+        with self.transaction() as c:
+            cur = c.execute(
+                "DELETE FROM findings WHERE kind IN ('new_subdomain','new_host');"
+            )
+            return cur.rowcount
+
+    def vacuum(self) -> None:
+        self.conn.execute("VACUUM;")
+
     def alive_hosts(self, platform: str, handle: str) -> List[str]:
         rows = self.conn.execute(
             "SELECT value FROM assets WHERE platform=? AND program_handle=? "

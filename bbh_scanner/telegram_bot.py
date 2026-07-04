@@ -20,6 +20,19 @@ from bbh_scanner.db.store import Store
 OFFSET_KEY = "telegram:update_offset"
 _MODES = ("auto", "turbo", "powersave", "paused")
 
+# Menu comandi mostrato da Telegram quando digiti "/" (registrato via setMyCommands).
+BOT_COMMANDS = [
+    ("status", "dashboard live"),
+    ("findings", "ultimi findings (es. /findings high)"),
+    ("logs", "ultimi eventi"),
+    ("jobs", "stato della coda"),
+    ("sensors", "temperature e regime"),
+    ("mode", "auto | turbo | powersave | paused"),
+    ("pause", "sospendi lo scanner"),
+    ("resume", "riprendi (auto)"),
+    ("help", "elenco comandi"),
+]
+
 HELP = (
     "🤖 BBH-Scanner — comandi:\n"
     "/status — dashboard live\n"
@@ -165,6 +178,16 @@ class TelegramPoller:
     def _send(self, text: str) -> None:
         self._api("sendMessage", chat_id=self.config.telegram.chat_id, text=text)
 
+    def register_commands(self) -> bool:
+        """Registra il menu comandi in Telegram (la lista che appare digitando '/')."""
+        import json
+        cmds = [{"command": c, "description": d} for c, d in BOT_COMMANDS]
+        try:
+            self._api("setMyCommands", commands=json.dumps(cmds))
+            return True
+        except Exception:
+            return False
+
     def poll_once(self, store: Store, offset: int) -> int:
         """Un giro di getUpdates. Ritorna il nuovo offset. Ignora chat non autorizzate."""
         body = self._api("getUpdates", offset=offset, timeout=20)
@@ -182,6 +205,7 @@ class TelegramPoller:
 
     def run(self) -> None:  # pragma: no cover - loop di rete
         store = Store(self.db_path)  # connessione propria del thread
+        self.register_commands()     # popola il menu "/" in Telegram
         try:
             offset = int(store.get_state(OFFSET_KEY) or 0)
             while not self._stop.is_set():
