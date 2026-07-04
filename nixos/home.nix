@@ -1,4 +1,5 @@
-# --- /etc/nixos/home.nix ---
+# --- home.nix (Home Manager per l'utente jj) ---
+# Gestito nel repo BBH-Scanner/nixos e caricato dal flake.
 { config, pkgs, ... }:
 
 {
@@ -46,31 +47,19 @@
       	bbh = "~/BBH-Scanner/scripts/bbh";
         ls = "eza --icons";
         #rebuild = "sudo nixos-rebuild switch";
-        conf = "nvim /etc/nixos/configuration.nix";
-        homeconf = "nvim /etc/nixos/home.nix";
+        conf = "nvim ~/BBH-Scanner/nixos/configuration.nix";
+        homeconf = "nvim ~/BBH-Scanner/nixos/home.nix";
     };
 
     functions = {
       rebuild = ''
-        # 1. Crea la cartella per i backup nella tua home
-        set backup_dir $HOME/nixos-backups
-        mkdir -p $backup_dir
+        # La config ora vive nel repo git (~/BBH-Scanner/nixos) ed è gestita
+        # coi flake. Git è la tua cronologia/backup: se vuoi un punto di
+        # ripristino, committa prima di ribuildare.
+        set flake_dir "$HOME/BBH-Scanner/nixos"
 
-        # 2. Cerca il prossimo numero disponibile (1, 2, 3...)
-        set num 1
-        while test -f "$backup_dir/configuration.nix.bak.$num"
-            set num (math $num + 1)
-        end
-
-        # 3. Copia i file attuali mettendogli il numero in fondo
-        cp /etc/nixos/configuration.nix $backup_dir/configuration.nix.bak.$num
-        cp /etc/nixos/home.nix $backup_dir/home.nix.bak.$num
-
-        echo " Backup n.$num salvato al sicuro in $backup_dir"
-        echo " Avvio il Rebuild..."
-
-        # 4. Esegue il vero comando di rebuild
-        sudo nixos-rebuild switch
+        echo " Rebuild dal flake in $flake_dir ..."
+        sudo nixos-rebuild switch --flake "$flake_dir#Workstation"
       '';
       # PERSONALIZZAZIONE PROMPT
 

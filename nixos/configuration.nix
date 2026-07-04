@@ -2,7 +2,8 @@
 { config, pkgs, ... }:
 
 {
-  imports = [ ./hardware-configuration.nix <home-manager/nixos> ];
+  # home-manager NON è più importato qui via canale: lo carica il flake.nix.
+  imports = [ ./hardware-configuration.nix ];
 
 # ==========================================
 # 1. CORE SYSTEM
@@ -148,7 +149,10 @@
       nordvpn = super.stdenv.mkDerivation {
         pname = "nordvpn";
         version = "4.4.0";
-        src = /etc/nixos/nordvpn_4.4.0_amd64.deb;
+        # Path relativo al flake: metti il .deb in ~/BBH-Scanner/nixos/ e
+        # traccialo in git (i flake "puri" vedono solo i file versionati):
+        #   git -C ~/BBH-Scanner add -f nixos/nordvpn_4.4.0_amd64.deb
+        src = ./nordvpn_4.4.0_amd64.deb;
 
         nativeBuildInputs = [
           pkgs.dpkg
