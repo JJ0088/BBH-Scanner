@@ -287,6 +287,19 @@ def cmd_watch(config: Config, args) -> int:  # pragma: no cover - loop interatti
         return 0
 
 
+def cmd_logs(config: Config, args) -> int:
+    store = _store(config)
+    level = "ERROR" if args.errors else args.level
+    rows = store.list_events(level=level, component=args.component, limit=args.limit)
+    if not rows:
+        print("(nessun evento — se il servizio non è mai partito, il DB è vuoto)")
+    for e in reversed(rows):  # dal più vecchio al più recente (ordine di lettura)
+        ts = (e["ts"] or "")[:19].replace("T", " ")
+        print(f"{ts} {e['level']:5s} [{e['component'] or '-'}] {e['message']}")
+    store.close()
+    return 0
+
+
 def cmd_prune(config: Config, args) -> int:
     store = _store(config)
     n = store.prune_asset_findings()
@@ -349,6 +362,12 @@ def build_parser() -> argparse.ArgumentParser:
                         help="Filtra per stato (queued|running|done|failed)")
     p_jobs.add_argument("--limit", type=int, default=20, help="Quanti job elencare")
 
+    p_logs = sub.add_parser("logs", help="Mostra i log/eventi dell'applicazione")
+    p_logs.add_argument("--level", default=None, help="Filtra per livello (INFO|WARN|ERROR)")
+    p_logs.add_argument("--component", default=None, help="Filtra per componente (recon|telegram|…)")
+    p_logs.add_argument("--errors", action="store_true", help="Solo errori (scorciatoia)")
+    p_logs.add_argument("--limit", type=int, default=40, help="Quanti eventi mostrare")
+
     p_scan = sub.add_parser("scan", help="Scan attivo nuclei (opt-in, gated dal governor)")
     p_scan.add_argument("--limit", type=int, default=None, help="Max programmi per giro")
 
@@ -383,6 +402,7 @@ _DISPATCH = {
     "status": cmd_status,
     "doctor": cmd_doctor,
     "jobs": cmd_jobs,
+    "logs": cmd_logs,
     "prune": cmd_prune,
     "scan": cmd_scan,
     "findings": cmd_findings,

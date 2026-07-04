@@ -527,7 +527,12 @@ class Orchestrator:
 
             TelegramPoller(self.config, self.store.db_path, stop_event=self._stop).start_thread()
             self.store.log_event(
-                "INFO", "telegram", "bot comandi attivo (/status /logs /findings /mode …)"
+                "INFO", "telegram", "avvio bot comandi (/status /logs /findings /mode …)"
+            )
+        else:
+            self.store.log_event(
+                "WARN", "telegram",
+                "bot NON avviato: TELEGRAM_BOT_TOKEN/CHAT_ID mancanti (usa .env o export)"
             )
 
         while not self._stop.is_set():

@@ -71,6 +71,17 @@ def test_events(tmp_path):
     assert events[0]["component"] == "test"
 
 
+def test_list_events_filters(tmp_path):
+    store = _store(tmp_path)
+    store.log_event("INFO", "recon", "ok")
+    store.log_event("ERROR", "telegram", "polling errore")
+    store.log_event("WARN", "recon", "tool mancante")
+    assert len(store.list_events()) == 3
+    errs = store.list_events(level="ERROR")
+    assert len(errs) == 1 and errs[0]["component"] == "telegram"
+    assert len(store.list_events(component="recon")) == 2
+
+
 def test_prune_asset_findings(tmp_path):
     store = _store(tmp_path)
     store.record_finding({"platform": "h", "program_handle": "a", "kind": "new_subdomain",

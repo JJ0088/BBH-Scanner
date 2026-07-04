@@ -205,7 +205,19 @@ class TelegramPoller:
 
     def run(self) -> None:  # pragma: no cover - loop di rete
         store = Store(self.db_path)  # connessione propria del thread
-        self.register_commands()     # popola il menu "/" in Telegram
+        # verifica di connessione: log esplicito così 'bbh logs' mostra se il bot è vivo.
+        try:
+            me = self._api("getMe")
+            if me.get("ok"):
+                uname = (me.get("result") or {}).get("username", "?")
+                store.log_event("INFO", "telegram", f"bot connesso: @{uname}")
+                self.register_commands()
+            else:
+                store.log_event("ERROR", "telegram", f"getMe fallito: {me}")
+        except Exception as e:
+            store.log_event("ERROR", "telegram", f"connessione Telegram fallita: {e}")
+
+        error_logged = False
         try:
             offset = int(store.get_state(OFFSET_KEY) or 0)
             while not self._stop.is_set():
@@ -214,7 +226,11 @@ class TelegramPoller:
                     if new_offset != offset:
                         offset = new_offset
                         store.set_state(OFFSET_KEY, str(offset))
-                except Exception:
+                    error_logged = False
+                except Exception as e:
+                    if not error_logged:  # logga il primo errore, poi evita lo spam
+                        store.log_event("ERROR", "telegram", f"polling errore: {e}")
+                        error_logged = True
                     self._sleep(5)
         finally:
             store.close()

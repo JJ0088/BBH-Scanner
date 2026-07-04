@@ -297,6 +297,22 @@ class Store:
         ).fetchall()
         return [dict(r) for r in rows]
 
+    def list_events(self, level: Optional[str] = None, component: Optional[str] = None,
+                    limit: int = 40) -> List[Dict]:
+        sql = "SELECT * FROM events"
+        clauses, params = [], []
+        if level:
+            clauses.append("level=?")
+            params.append(level.upper())
+        if component:
+            clauses.append("component=?")
+            params.append(component)
+        if clauses:
+            sql += " WHERE " + " AND ".join(clauses)
+        sql += " ORDER BY id DESC LIMIT ?;"
+        params.append(limit)
+        return [dict(r) for r in self.conn.execute(sql, params).fetchall()]
+
     def prune_events(self, days: int) -> int:
         """Cancella gli eventi più vecchi di `days` giorni (retention osservabilità)."""
         cutoff = (datetime.now(timezone.utc) - timedelta(days=days)).isoformat()
