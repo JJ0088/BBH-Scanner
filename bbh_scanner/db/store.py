@@ -256,6 +256,23 @@ class Store:
                 [(_now_iso(), i) for i in ids],
             )
 
+    def suppress_unnotified(self, platform: str, handle: str,
+                            kinds: Optional[Iterable[str]] = None) -> int:
+        """Segna come 'viste' (senza notificare) le finding pendenti di un programma.
+
+        Usato per il **baseline**: alla prima mappatura di un programma registriamo la
+        superficie ma non sommergiamo di notifiche; da lì in poi si notificano solo i delta.
+        """
+        sql = ("UPDATE findings SET notified_at=? WHERE platform=? AND program_handle=? "
+               "AND notified_at IS NULL")
+        params: List[Any] = [_now_iso(), platform, handle]
+        if kinds:
+            klist = list(kinds)
+            sql += f" AND kind IN ({','.join('?' * len(klist))})"
+            params.extend(klist)
+        with self.transaction() as c:
+            return c.execute(sql, params).rowcount
+
     # --- events ------------------------------------------------------------ #
 
     def log_event(self, level: str, component: str, message: str,

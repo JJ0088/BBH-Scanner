@@ -150,6 +150,55 @@ def test_active_scan_suspended_in_powersave(tmp_path, monkeypatch):
     assert store.job_counts().get("queued") == 1  # accodato ma non eseguito
 
 
+def test_baseline_recon_suppresses_notifications(tmp_path, monkeypatch):
+    _config, store, orch = _setup(tmp_path, monkeypatch)
+    _seed_program(store)
+    rec = _RecordingNotifier()
+    orch.notifier = rec
+    orch.set_mode("powersave")
+
+    orch.do_recon()
+    rec.sent.clear()                              # scarta la notifica di cambio regime
+    assert store.stats()["assets"] >= 1          # superficie mappata nel DB
+    assert orch.flush_notifications() == 0        # ma niente notifiche di finding (baseline)
+    assert rec.sent == []
+
+
+def test_flush_batches_asset_deltas(tmp_path, monkeypatch):
+    _config, store, orch = _setup(tmp_path, monkeypatch)
+    rec = _RecordingNotifier()
+    orch.notifier = rec
+    for i in range(3):
+        store.record_finding({"platform": "hackerone", "program_handle": "acme",
+                              "kind": "new_subdomain", "fingerprint": f"s{i}",
+                              "title": f"new_subdomain: s{i}"})
+    for i in range(2):
+        store.record_finding({"platform": "hackerone", "program_handle": "acme",
+                              "kind": "new_host", "fingerprint": f"h{i}",
+                              "title": f"new_host: h{i}"})
+
+    sent = orch.flush_notifications()
+    assert sent == 1                    # UN riepilogo, non 5 messaggi
+    assert "+3 sottodomini" in rec.sent[0]
+    assert "+2 host" in rec.sent[0]
+    assert store.unnotified_findings() == []
+
+
+def test_flush_vuln_medium_plus_only(tmp_path, monkeypatch):
+    _config, store, orch = _setup(tmp_path, monkeypatch)
+    rec = _RecordingNotifier()
+    orch.notifier = rec
+    store.record_finding({"platform": "hackerone", "program_handle": "acme", "kind": "vuln",
+                          "fingerprint": "v1", "severity": "high", "title": "RCE @ x"})
+    store.record_finding({"platform": "hackerone", "program_handle": "acme", "kind": "vuln",
+                          "fingerprint": "v2", "severity": "info", "title": "TLS @ y"})
+
+    sent = orch.flush_notifications()
+    assert sent == 1                    # solo il high; l'info è soppresso
+    assert "RCE" in rec.sent[0]
+    assert store.unnotified_findings() == []   # anche l'info è marcato come visto
+
+
 def test_request_stop_sets_flag(tmp_path, monkeypatch):
     _config, _store, orch = _setup(tmp_path, monkeypatch)
     assert not orch._stop.is_set()

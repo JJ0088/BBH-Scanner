@@ -213,7 +213,19 @@ class Orchestrator:
         return workdir, scopes
 
     def _persist_and_mark(self, platform: str, handle: str, result: ReconResult) -> None:
+        # baseline = prima mappatura in assoluto di questo programma
+        is_baseline = self.store.get_state(f"{platform}:{handle}:last_recon_at") is None
         new_findings = self._persist_recon(platform, handle, result)
+        if is_baseline:
+            # registra la superficie ma NON notificare: è il punto di partenza, non un delta.
+            suppressed = self.store.suppress_unnotified(
+                platform, handle, kinds=["new_subdomain", "new_host", "host_down"]
+            )
+            self.store.log_event(
+                "INFO", "recon",
+                f"baseline {handle}: {suppressed} asset mappati (notifiche soppresse)",
+                program_handle=handle,
+            )
         self.store.set_state(f"{platform}:{handle}:last_recon_at", _now_iso())
         prog = next(
             (p for p in self.store.list_programs(platform) if p["handle"] == handle), None
@@ -398,30 +410,57 @@ class Orchestrator:
 
     # --- notify pending ---------------------------------------------------- #
 
-    def _should_notify(self, finding: Dict) -> bool:
-        if finding["kind"] in _NOTIFY_ALWAYS_KINDS:
-            return True
-        # vuln: solo da medium in su (info/low si vedono con `bbh findings`)
-        return (finding.get("severity") or "").lower() in _NOTIFY_SEVERITIES
-
-    def _finding_emoji(self, finding: Dict) -> str:
-        asset = {"new_subdomain": "🌐", "new_host": "🟢", "host_down": "🔴"}
-        if finding["kind"] in asset:
-            return asset[finding["kind"]]
-        return _SEV_EMOJI.get((finding.get("severity") or "").lower(), "•")
-
     def flush_notifications(self) -> int:
-        pending = self.store.unnotified_findings()
-        sent_ids: List[int] = []
-        suppressed_ids: List[int] = []
+        """Invia le notifiche pendenti, senza spam:
+
+        - **asset-delta** (nuovi sottodomini/host, host caduti): **un riepilogo per
+          programma** (es. "🌐 [acme] +3 sottodomini, +1 host") invece di un messaggio
+          per asset;
+        - **vuln**: un messaggio per finding, ma **solo da medium in su** (info/low
+          vengono soppressi e si consultano con `bbh findings`).
+
+        Tutte le finding processate vengono marcate come viste (anche quelle soppresse),
+        così la coda non si accumula.
+        """
+        pending = self.store.unnotified_findings(limit=2000)
+        if not pending:
+            return 0
+
+        deltas: Dict[str, Dict[str, int]] = {}   # handle -> {kind: count}
+        vulns: List[Dict] = []
+        to_mark: List[int] = []
+        sent = 0
+
         for f in pending:
-            if not self._should_notify(f):
-                suppressed_ids.append(f["id"])  # sotto soglia: segnata come vista
-                continue
-            if self.notifier.send(f"{self._finding_emoji(f)} [{f['program_handle']}] {f['title']}"):
-                sent_ids.append(f["id"])
-        self.store.mark_notified(sent_ids + suppressed_ids)
-        return len(sent_ids)
+            to_mark.append(f["id"])
+            kind = f["kind"]
+            if kind in _NOTIFY_ALWAYS_KINDS:
+                deltas.setdefault(f["program_handle"], {}).setdefault(kind, 0)
+                deltas[f["program_handle"]][kind] += 1
+            elif (f.get("severity") or "").lower() in _NOTIFY_SEVERITIES:
+                vulns.append(f)
+            # else: vuln sotto soglia → soppresso (solo marcato)
+
+        # un riepilogo per programma per gli asset-delta
+        for handle, kinds in deltas.items():
+            bits = []
+            if kinds.get("new_subdomain"):
+                bits.append(f"+{kinds['new_subdomain']} sottodomini")
+            if kinds.get("new_host"):
+                bits.append(f"+{kinds['new_host']} host vivi")
+            if kinds.get("host_down"):
+                bits.append(f"−{kinds['host_down']} host caduti")
+            if self.notifier.send(f"🌐 [{handle}] {', '.join(bits)}"):
+                sent += 1
+
+        # un messaggio per ogni vuln medium+
+        for f in vulns:
+            emoji = _SEV_EMOJI.get((f.get("severity") or "").lower(), "•")
+            if self.notifier.send(f"{emoji} [{f['program_handle']}] {f['title']}"):
+                sent += 1
+
+        self.store.mark_notified(to_mark)
+        return sent
 
     # --- loop -------------------------------------------------------------- #
 
