@@ -1,0 +1,94 @@
+{
+  description = "BBH-Scanner — scanner recon 24/7 multi-piattaforma";
+
+  inputs = {
+    nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+    flake-utils.url = "github:numtide/flake-utils";
+  };
+
+  outputs = { self, nixpkgs, flake-utils }:
+    let
+      # Output non legati a un sistema specifico: il modulo NixOS.
+      systemIndependent = {
+        nixosModules.default = import ./nix/module.nix self;
+        nixosModules.bbh-scanner = import ./nix/module.nix self;
+      };
+    in
+    flake-utils.lib.eachDefaultSystem (system:
+      let
+        pkgs = import nixpkgs { inherit system; };
+        # Python 3.12: su nixpkgs recente 3.11 rompe (sphinx 9.1.0 non lo supporta più,
+        # trascinato dai tool di dev). Il codice richiede comunque solo >=3.11.
+        python = pkgs.python312;
+
+        # Tool ProjectDiscovery: recon passivo (subfinder/dnsx/httpx) + scan attivo (nuclei).
+        reconTools = [ pkgs.subfinder pkgs.dnsx pkgs.httpx pkgs.nuclei ];
+
+        bbh-scanner = python.pkgs.buildPythonApplication {
+          pname = "bbh-scanner";
+          version = "0.4.0";
+          src = ./.;
+          pyproject = true;
+          build-system = [ python.pkgs.setuptools python.pkgs.wheel ];
+          dependencies = [ python.pkgs.requests python.pkgs.psutil ];
+          # I tool recon devono essere nel PATH del comando `bbh`.
+          nativeBuildInputs = [ pkgs.makeWrapper ];
+          postInstall = ''
+            wrapProgram $out/bin/bbh \
+              --prefix PATH : ${pkgs.lib.makeBinPath reconTools}
+          '';
+          # I test girano senza rete né tool: sicuri in sandbox.
+          nativeCheckInputs = [ python.pkgs.pytest ];
+          checkPhase = ''
+            runHook preCheck
+            ${python.pkgs.pytest}/bin/pytest -q
+            runHook postCheck
+          '';
+        };
+      in
+      {
+        packages = {
+          default = bbh-scanner;
+          bbh-scanner = bbh-scanner;
+
+          # Immagine OCI generata dal flake (per un eventuale trasloco su VPS).
+          docker = pkgs.dockerTools.buildLayeredImage {
+            name = "bbh-scanner";
+            tag = "latest";
+            contents = [ bbh-scanner ] ++ reconTools;
+            config.Entrypoint = [ "${bbh-scanner}/bin/bbh" ];
+            config.Cmd = [ "run" ];
+          };
+        };
+
+        devShells.default = pkgs.mkShell {
+          packages = [
+            # Solo le dipendenze runtime + pytest nell'ambiente Python.
+            (python.withPackages (ps: [ ps.requests ps.psutil ps.pytest ]))
+            # ruff come binario standalone (Rust: non trascina nulla nel Python env).
+            pkgs.ruff
+          ] ++ reconTools;
+          shellHook = ''
+            echo "BBH-Scanner dev shell — python $(python --version)"
+            echo "tool: subfinder/dnsx/httpx/nuclei disponibili nel PATH"
+            echo "nota: per la temperatura GPU serve 'nvidia-smi' dal driver NVIDIA"
+            echo "comando: usa 'bbh <...>' (alias di 'python -m bbh_scanner.cli')"
+            export BBH_ROOT="$PWD"
+            alias bbh="python -m bbh_scanner.cli"
+          '';
+        };
+
+        checks.default = bbh-scanner;
+
+        # `nix run .# -- <comando>` — esegue bbh con tutti i tool già nel PATH (wrapProgram).
+        apps.default = {
+          type = "app";
+          program = "${bbh-scanner}/bin/bbh";
+        };
+        apps.bbh = {
+          type = "app";
+          program = "${bbh-scanner}/bin/bbh";
+        };
+      }
+    ) // systemIndependent;
+}

@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+# Avvia lo scanner 24/7 in UN comando:
+#   - entra nell'ambiente Nix (tutti i tool: subfinder/dnsx/httpx/nuclei)
+#   - carica il .env in automatico (credenziali)
+#   - impedisce al laptop di andare in sleep mentre lavora
+#
+#   ./scripts/start
+#
+# Per farlo sopravvivere alla chiusura del terminale, lancialo in background:
+#   systemd-run --user --unit=bbh --collect --working-directory="$PWD" ./scripts/start
+#   # log:  journalctl --user -u bbh -f     stop:  systemctl --user stop bbh
+set -euo pipefail
+REPO="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
+cd "$REPO"
+
+if [ ! -f .env ]; then
+  echo "⚠️  Manca il file .env con le credenziali. Crealo (vedi .env.example) e riprova." >&2
+  exit 1
+fi
+
+echo "▶️  Avvio scanner 24/7 nell'ambiente Nix (tool + .env + no-sleep)…"
+exec nix develop --command \
+  systemd-inhibit --what=sleep:idle:handle-lid-switch --why=bbh-scanner \
+  python -m bbh_scanner.cli run

@@ -1,0 +1,12 @@
+#!/usr/bin/env bash
+# Wrapper: esegue 'bbh' DENTRO l'ambiente Nix, così i tool (subfinder/dnsx/httpx/nuclei)
+# ci sono sempre e il .env viene caricato in automatico. Funziona da qualsiasi shell (fish inclusa).
+#
+#   scripts/bbh status      scripts/bbh findings      scripts/bbh logs --errors
+#
+# Suggerimento (alias permanente in fish):
+#   echo 'alias bbh ~/BBH-Scanner/scripts/bbh' >> ~/.config/fish/config.fish
+set -euo pipefail
+REPO="$(cd "$(dirname "$(readlink -f "$0")")/.." && pwd)"
+cd "$REPO"
+exec nix develop --command python -m bbh_scanner.cli "$@"
